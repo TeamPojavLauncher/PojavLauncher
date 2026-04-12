@@ -27,7 +27,7 @@ def getVersionName = {
     }else {
         def branchName = currentBranch.getName()
         def commitAbbreviation = latestCommit.abbreviatedId
-        return "hebe-${dateToday}-${commitAbbreviation}-${branchName}"
+        return "crocus-${dateToday}-${commitAbbreviation}-${branchName}"
     }
 }
 
@@ -50,7 +50,7 @@ configurations {
 }
 
 android {
-    namespace 'git.artdeell.mojo'
+    namespace 'net.kdt.pojavlaunch'
 
     compileSdk = 36
 
@@ -74,7 +74,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "git.artdeell.mojo"
+        applicationId "net.kdt.pojavlaunch"
         minSdkVersion 21
         targetSdkVersion 36
         versionCode getDateSeconds()
@@ -103,8 +103,8 @@ android {
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.customDebug
-            resValue 'string', 'application_package', 'git.artdeell.mojo.debug'
-            resValue 'string', 'storageProviderAuthorities', 'git.artdeell.mojo.scoped.gamefolder.debug'
+            resValue 'string', 'application_package', 'net.kdt.pojavlaunch.debug'
+            resValue 'string', 'storageProviderAuthorities', 'net.kdt.pojavlaunch.scoped.gamefolder.debug'
         }
         proguard {
             initWith debug
@@ -123,8 +123,8 @@ android {
             // defaultConfig already set
             // multiDexEnabled = true
             // debuggable = true
-            resValue 'string', 'storageProviderAuthorities', 'git.artdeell.mojo.scoped.gamefolder'
-            resValue 'string', 'application_package', 'git.artdeell.mojo'
+            resValue 'string', 'storageProviderAuthorities', 'net.kdt.pojavlaunch.scoped.gamefolder'
+            resValue 'string', 'application_package', 'net.kdt.pojavlaunch'
         }
         gplay {
             initWith release
