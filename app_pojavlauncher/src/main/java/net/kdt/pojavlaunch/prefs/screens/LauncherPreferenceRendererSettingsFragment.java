@@ -10,7 +10,6 @@ import android.text.TextWatcher;
 import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
-import androidx.preference.SwitchPreference;
 
 import git.artdeell.mojo.R;
 
@@ -19,14 +18,12 @@ import java.util.Objects;
 public class LauncherPreferenceRendererSettingsFragment extends LauncherPreferenceFragment {
     EditTextPreference GLSLCachePreference;
     ListPreference MultiDrawEmulationPreference;
-    SwitchPreference ComputeMultiDrawPreference;
     Preference.SummaryProvider MultiDrawSummaryProvider;
 
     @Override
     public void onCreatePreferences(Bundle b, String str) {
         addPreferencesFromResource(R.xml.pref_renderer);
         GLSLCachePreference = findPreference("mg_renderer_setting_glsl_cache_size");
-        ComputeMultiDrawPreference = findPreference("mg_renderer_multidrawCompute");
         MultiDrawEmulationPreference = findPreference("mg_renderer_setting_multidraw");
         GLSLCachePreference.setOnBindEditTextListener((editText) -> {
             editText.setInputType(TYPE_CLASS_NUMBER);
@@ -68,19 +65,13 @@ public class LauncherPreferenceRendererSettingsFragment extends LauncherPreferen
     }
 
     private void updateMultiDrawSummary() {
-        if (MultiDrawEmulationPreference != null) {
-            if (MultiDrawEmulationPreference.getSummaryProvider() != null) {
-                MultiDrawSummaryProvider = MultiDrawEmulationPreference.getSummaryProvider();
-            }
-            if (ComputeMultiDrawPreference.isChecked()) {
-                MultiDrawEmulationPreference.setEnabled(false);
-                MultiDrawEmulationPreference.setSummaryProvider(null);
-                MultiDrawEmulationPreference.setSummary("(Experimental) Compute");
-            } else if (MultiDrawEmulationPreference != null) {
-                MultiDrawEmulationPreference.setEnabled(true);
-                MultiDrawEmulationPreference.setSummaryProvider(MultiDrawSummaryProvider);
-            }
+     if (MultiDrawEmulationPreference != null) {
+        if (MultiDrawEmulationPreference.getSummaryProvider() != null) {
+            MultiDrawSummaryProvider = MultiDrawEmulationPreference.getSummaryProvider();
         }
+        MultiDrawEmulationPreference.setEnabled(true);
+        MultiDrawEmulationPreference.setSummaryProvider(MultiDrawSummaryProvider);
+     }
     }
 
     private void updateGLSLCacheSummary() {
