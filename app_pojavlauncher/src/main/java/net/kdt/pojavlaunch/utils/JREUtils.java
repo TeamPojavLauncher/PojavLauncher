@@ -151,6 +151,11 @@ public class JREUtils {
             envMap.put("POJAVEXEC_EGL","libltw.so");
         }
 
+        if(renderer.equals("opengles_mobileglues")) {
+           envMap.put("MG_DIR_PATH", Tools.DIR_DATA + "/MobileGlues");
+           envMap.put("POJAVEXEC_EGL","libmobileglues.so");
+        }
+
         if(LauncherPreferences.PREF_BIG_CORE_AFFINITY) envMap.put("POJAV_BIG_CORE_AFFINITY", "1");
 
         if(GLInfoUtils.getGlInfo().isAdreno() && !PREF_ZINK_PREFER_SYSTEM_DRIVER) {
@@ -242,10 +247,11 @@ public class JREUtils {
         switch (renderer){
             case "opengles2":
             case "opengles2_5":
-            case "opengles3":
-                renderLibrary = "libgl4es_114.so"; break;
+            case "opengles3": renderLibrary = "libgl4es_114.so"; break;
             case "vulkan_zink": renderLibrary = "libOSMesa.so"; break;
             case "opengles3_ltw" : renderLibrary = "libltw.so"; break;
+            case "opengles_mobileglues" :renderLibrary = "libmobileglues.so"; break;
+            case "opengles3_nggl4es" : renderLibrary = "libng_gl4es.so"; break;
             default:
                 Log.w("RENDER_LIBRARY", "No renderer selected, defaulting to opengles2");
                 renderLibrary = "libgl4es_114.so";
