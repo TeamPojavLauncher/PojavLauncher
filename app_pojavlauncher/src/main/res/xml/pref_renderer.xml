@@ -61,11 +61,6 @@
                 android:summary="@string/mg_renderer_summary_dsaExt"
                 android:key="mg_renderer_dsaExt"
                 android:defaultValue="false" />
-            <SwitchPreference
-                android:title="@string/mg_renderer_title_multidrawCompute"
-                android:summary="@string/mg_renderer_summary_multidrawCompute"
-                android:key="mg_renderer_multidrawCompute"
-                android:defaultValue="false" />
         </PreferenceCategory>
     </PreferenceCategory>
 </PreferenceScreen>

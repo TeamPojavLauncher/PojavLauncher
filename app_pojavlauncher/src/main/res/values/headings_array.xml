@@ -71,6 +71,7 @@
         <item>Prefer BaseVertex</item>
         <item>Prefer MultiDraw Indirect</item>
         <item>Force DrawElements</item>
+        <item>Compute</item>
     </string-array>
     <string-array name="mg_renderer_values_multidraw">
         <item>0</item>
@@ -78,6 +79,7 @@
         <item>2</item>
         <item>3</item>
         <item>4</item>
+        <item>5</item>
     </string-array>
     <string-array name="mg_renderer_names_errorSetting">
         <item>Auto</item>
