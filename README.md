@@ -3,10 +3,19 @@
 <img src="https://github.com/PojavLauncherTeam/PojavLauncher/blob/v3_openjdk/app_pojavlauncher/src/main/assets/pojavlauncher.png" align="left" width="130" height="150" alt="PojavLauncher logo">
 
 [![Android CI](https://github.com/TeamPojavLauncher/PojavLauncher/workflows/Android%20CI/badge.svg)](https://github.com/TeamPojavLauncher/PojavLauncher/actions)
+<img src="https://img.shields.io/badge/platform-Android-green" alt="Platform"/>
+<img src="https://img.shields.io/badge/minSdk-26-blue" alt="Min SDK"/>
+[![Watch on GitHub](https://img.shields.io/github/watchers/TeamPojavLauncher/PojavLauncher.svg?style=social)](https://github.com/TeamPojavLauncher/PojavLauncher/watchers) 
+[![Star on GitHub](https://img.shields.io/github/stars/TeamPojavLauncher/PojavLauncher.svg?style=social)](https://github.com/TeamPojavLauncher/PojavLauncher/stargazers)
+[![Fork on GitHub](https://img.shields.io/github/forks/TeamPojavLauncher/PojavLauncher.svg?style=social)](https://github.com/TeamPojavLauncher/PojavLauncher/network/members)
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/m/TeamPojavLauncher/PojavLauncher)](https://github.com/TeamPojavLauncher/PojavLauncher/actions)
+[![Issues](https://img.shields.io/github/issues/TeamPojavLauncher/PojavLauncher?color=orange)](https://github.com/TeamPojavLauncher/PojavLauncher/issues)
 [![Crowdin](https://badges.crowdin.net/pojavlauncher/localized.svg)](https://crowdin.com/project/pojavlauncher)
-[![Discord](https://img.shields.io/discord/724163890803638273.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/2HYpzs4gZT)
-[![Twitter Follow](https://img.shields.io/twitter/follow/plaunchteam?color=blue&style=flat-square)](https://twitter.com/PLaunchTeam)
+<a href="https://discord.gg/2HYpzs4gZT"><img src="https://img.shields.io/discord/1355213558631366897?color=5865F2&logo=discord&logoColor=white&label=&style=flat" alt="Discord"></a>
+<a href="https://github.com/TeamPojavLauncher/PojavLauncher"><img src="https://img.shields.io/badge/github-PojavLauncher-green?logo=github" alt="GitHub"></a>
+[![Latest Release](https://img.shields.io/github/v/tag/TeamPojavLauncher/PojavLauncher?sort=semver)](https://github.com/TeamPojavLauncher/PojavLauncher/releases "View latest release")
+[![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue)](https://github.com/TeamPojavLauncher/PojavLauncher/blob/v3_openjdk/LICENSE)
+[![X (Twitter) Follow](https://img.shields.io/twitter/follow/plaunchteam?color=blue&style=flat-square)](https://x.com/PLaunchTeam)
 
 *From [Boardwalk](https://github.com/zhuowei/Boardwalk)'s ashes here comes PojavLauncher!*
 
@@ -41,7 +50,7 @@ For more details, check out our [wiki](https://pojavlauncher.app/)!
 
 You can get PojavLauncher via three methods:
 
-1. **Releases:** Download the latest prebuilt app from [nightly.link](https://nightly.link/TeamPojavLauncher/PojavLauncher/actions/runs/24035895902) or select from our [stable releases](https://github.com/TeamPojavLauncher/PojavLauncher/releases) or [automatic builds](https://github.com/TeamPojavLauncher/PojavLauncher/actions).
+1. **Releases:** Download the latest prebuilt app from [nightly.link](https://nightly.link/TeamPojavLauncher/PojavLauncher/actions/runs/24409371694) or select from our [stable releases](https://github.com/TeamPojavLauncher/PojavLauncher/releases) or [automatic builds](https://github.com/TeamPojavLauncher/PojavLauncher/actions).
 2. **Google Play:** Get it from Google Play by clicking on this badge: [![Google Play](https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=net.kdt.pojavlaunch)
 3. **Build from Source:** Follow the [building instructions](#building) below.
 
