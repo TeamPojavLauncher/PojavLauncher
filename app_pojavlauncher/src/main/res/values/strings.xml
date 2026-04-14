@@ -67,6 +67,8 @@
     <string name="mcl_setting_renderer_gles2_4">Holy GL4ES - (all versions, fast)</string>
     <string name="mcl_setting_renderer_vulkan_zink">Zink (Vulkan) - (all versions, mid)</string>
     <string name="mcl_setting_renderer_ltw">LTW (OpenGL ES 3) - 1.17+ only</string>
+       <string name="mcl_setting_renderer_mobileglues">MobileGlues (OpenGL ES) - (1.17+ only, fast)</string>
+    <string name="mcl_setting_renderer_nggl4es">Krypton Wrapper (OpenGL ES 3)</string>
     <string name="mcl_setting_veroption_release">Release</string>
     <string name="mcl_setting_veroption_snapshot">Snapshot</string>
     <string name="mcl_setting_veroption_oldalpha">Old-alpha</string>
@@ -90,6 +92,8 @@
     <string name="global_select">Select</string>
     <string name="global_retry">Retry</string>
     <string name="global_default">Default</string>
+    <string name="global_off">Off</string>
+
 
     <!-- MainActivity: strings -->
     <string name="mcn_exit_title">Application/Game exited with code %d, check latestlog.txt for more details.</string>
@@ -482,4 +486,24 @@
     <string name="modloader_dl_install_legacy_fabric_instance">Create Legacy Fabric instance</string>
     <string name="instance_delete">Delete instance</string>
     <string name="instance_delete_confirmation">Are you sure you want to delete the instance? This will permanently delete all worlds, mods, resources and any other data in the instance directory. This action cannot be undone!</string>
+    <string name="preference_renderer_mobileglues_settings">MobileGlues Renderer Settings</string>
+    <string name="mg_renderer_glsl_cache">Max GLSL cache size</string>
+    <string name="mg_renderer_angle">Use ANGLE as driver</string>
+    <string name="mg_renderer_multidraw">Multidraw emulation mode</string>
+    <string name="mg_renderer_title_errorSetting">Error Filtering</string>
+    <string name="mg_renderer_title_timerQueryExt">Disable GPU Utilization in F3 menu</string>
+    <string name="mg_renderer_summary_timerQueryExt">Fixes random crashes when F3 is open on some Mali devices</string>
+    <string name="preference_ANGLE_only">ANGLE Only Options</string>
+    <string name="mg_renderer_title_angleDepthClearFixMode">Fix hand and held items from going through blocks</string>
+    <string name="mg_renderer_summary_angleDepthClearFixMode">Only affects ANGLE, can affect performance.</string>
+    <string name="mg_renderer_title_gl43exts">Advertise Experimental OpenGL 4.3 extensions</string>
+    <string name="mg_renderer_summary_gl43exts">May help with mod crashes. Disable if not needed, can cause crashes.</string>
+    <string name="mg_renderer_title_computeShaderext">Advertise Experimental Compute Shader extension</string>
+    <string name="mg_renderer_summary_computeShaderext">May help with shaderpack glitches. Disable if not needed, can cause crashes.</string>
+    <string name="mg_renderer_summary_multidrawCompute">Uses compute shaders for multidraw emulation</string>
+    <string name="mg_renderer_title_dsaExt">Advertise Experimental Direct State Access extension</string>
+    <string name="mg_renderer_summary_dsaExt">May help with Iris shaderpacks, required for AcceleratedRendering mod</string>
+    <string name="mg_renderer_title_fsr">AMD FSR 1 Upscaling</string>
+    <string name="mcl_setting_title_renderer_settings">Extra Renderer Settings</string>
+    <string name="mcl_setting_title_renderer_subtitle">Renderer specific settings</string>
 </resources>

@@ -80,18 +80,15 @@ public class JREUtils {
     }
 
     // Sets up ANGLE driver environment
-    public static void setupAngleEnv(Context ctx, Map<String, String> envMap) {
-        if (!LauncherPreferences.PREF_USE_ANGLE) return;
-        LibraryPlugin angle = LibraryPlugin.discoverPlugin(ctx, LibraryPlugin.ID_ANGLE_PLUGIN);
-        if (angle == null) return;
-        String[] angleLibs = {"libEGL_angle.so", "libGLESv2_angle.so"};
-        if (!angle.checkLibraries(angleLibs)) {
-            Log.e("AngleEnvSetup", "AnglePlugin exists, but the ANGLE libraries are not present. Is the plugin corrupted?");
-            return;
-        }
-        envMap.put("LIBGL_EGL", angle.resolveAbsolutePath(angleLibs[0]));
-        envMap.put("LIBGL_GLES", angle.resolveAbsolutePath(angleLibs[1]));
+    public static void setupAngleEnv(Context context, Map<String, String> envMap) {
+       if (!LauncherPreferences.PREF_USE_ANGLE) return;
+       String nativeLibDir = context.getApplicationInfo().nativeLibraryDir;
+       String eglPath = nativeLibDir + "/libEGL_angle.so";
+       String glesPath = nativeLibDir + "/libGLESv2_angle.so";
+       envMap.put("LIBGL_EGL", eglPath);
+       envMap.put("LIBGL_GLES", glesPath);
     }
+
 
     public static void setupFfmpegEnv(Context ctx, Map<String, String> envMap) {
         LibraryPlugin ffmpeg = LibraryPlugin.discoverPlugin(ctx, LibraryPlugin.ID_FFMPEG_PLUGIN);
@@ -140,15 +137,18 @@ public class JREUtils {
 		}
 		envMap.put("MOD_ANDROID_RUNTIME", modRuntimeDir.getAbsolutePath());
 
-        if(!renderer.equals("opengles2")) { // Don't enable ANGLE for GL4ES for now (it's currently broken)
-            setupAngleEnv(context, envMap);
-        }
         setupFfmpegEnv(context, envMap);
 
         envMap.put("MOJO_RENDERER", renderer);
 
         if(renderer.equals("opengles3_ltw")) {
             envMap.put("POJAVEXEC_EGL","libltw.so");
+            setupAngleEnv(context, envMap);
+        }
+
+        if(renderer.equals("opengles_mobileglues")) {
+           envMap.put("MG_DIR_PATH", Tools.DIR_DATA + "/MobileGlues");
+           envMap.put("POJAVEXEC_EGL","libmobileglues.so");
         }
 
         if(LauncherPreferences.PREF_BIG_CORE_AFFINITY) envMap.put("POJAV_BIG_CORE_AFFINITY", "1");
@@ -242,10 +242,11 @@ public class JREUtils {
         switch (renderer){
             case "opengles2":
             case "opengles2_5":
-            case "opengles3":
-                renderLibrary = "libgl4es_114.so"; break;
+            case "opengles3": renderLibrary = "libgl4es_114.so"; break;
             case "vulkan_zink": renderLibrary = "libOSMesa.so"; break;
             case "opengles3_ltw" : renderLibrary = "libltw.so"; break;
+            case "opengles_mobileglues" :renderLibrary = "libmobileglues.so"; break;
+            case "opengles3_nggl4es" : renderLibrary = "libng_gl4es.so"; break;
             default:
                 Log.w("RENDER_LIBRARY", "No renderer selected, defaulting to opengles2");
                 renderLibrary = "libgl4es_114.so";
