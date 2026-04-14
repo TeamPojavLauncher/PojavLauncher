@@ -44,11 +44,9 @@ public class LauncherPreferenceVideoFragment extends LauncherPreferenceFragment 
         requirePreference("alternate_surface", SwitchPreferenceCompat.class).setChecked(LauncherPreferences.PREF_USE_ALTERNATE_SURFACE);
         requirePreference("force_vsync", SwitchPreferenceCompat.class).setChecked(LauncherPreferences.PREF_FORCE_VSYNC);
 
-        // Show ANGLE switch only if AnglePlugin is available
-        LibraryPlugin angle = LibraryPlugin.discoverPlugin(getContext(), LibraryPlugin.ID_ANGLE_PLUGIN);
         SwitchPreferenceCompat angleSwitch = requirePreference("use_angle", SwitchPreferenceCompat.class);
-        angleSwitch.setVisible(angle != null);
-        angleSwitch.setChecked(LauncherPreferences.PREF_USE_ANGLE);
+        angleSwitch.setVisible(true);
+        angleSwitch.setChecked(LauncherPreferences.PREF_USE_ANGLE);  
 
         ListPreference rendererListPreference = requirePreference("renderer",
                 ListPreference.class);
