@@ -16,8 +16,9 @@ import net.kdt.pojavlaunch.*;
 import net.kdt.pojavlaunch.multirt.MultiRTUtils;
 import net.kdt.pojavlaunch.utils.FileUtils;
 import net.kdt.pojavlaunch.utils.JREUtils;
-
 import net.kdt.pojavlaunch.utils.FileUtils;
+
+import java.io.File;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 
