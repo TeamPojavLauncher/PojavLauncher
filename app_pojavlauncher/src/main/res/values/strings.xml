@@ -503,4 +503,6 @@
     <string name="mg_renderer_title_dsaExt">Advertise Experimental Direct State Access extension</string>
     <string name="mg_renderer_summary_dsaExt">May help with Iris shaderpacks, required for AcceleratedRendering mod</string>
     <string name="mg_renderer_title_fsr">AMD FSR 1 Upscaling</string>
+    <string name="mcl_setting_title_renderer_settings">Extra Renderer Settings</string>
+    <string name="mcl_setting_title_renderer_subtitle">Renderer specific settings</string>
 </resources>
