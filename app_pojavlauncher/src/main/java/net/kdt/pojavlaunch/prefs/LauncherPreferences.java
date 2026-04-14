@@ -218,7 +218,7 @@ public class LauncherPreferences {
     }
 
     public static void writeMGRendererSettings() throws IOException {
-        LinkedHashMap<String, Object> MGConfigJson = new LinkedHashMap<>();.
+        LinkedHashMap<String, Object> MGConfigJson = new LinkedHashMap<>();
         MGConfigJson.put("enableANGLE", Integer.parseInt(DEFAULT_PREF.getString("mg_renderer_setting_angle", "0")));
         MGConfigJson.put("enableNoError", Integer.parseInt(DEFAULT_PREF.getString("mg_renderer_setting_errorSetting", "0")));
         MGConfigJson.put("fsr1Setting", Integer.parseInt(DEFAULT_PREF.getString("mg_renderer_setting_fsr", "0")));
