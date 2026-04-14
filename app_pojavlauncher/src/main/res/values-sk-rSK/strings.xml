@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- App name part -->
-    <string name="app_name">MojoLauncher (Minecraft: Java Edition pre Android)</string>
-    <string name="app_short_name">MojoLauncher</string>
+    <string name="app_name">PojavLauncher (Minecraft: Java Edition pre Android)</string>
+    <string name="app_short_name">PojavLauncher</string>
     <!-- Action bar part -->
     <!-- Languages list part -->
     <!-- Login strings -->
@@ -13,7 +13,7 @@
     <!-- AlertDialog title -->
     <string name="alerttitle_installmod">Vybrať installer módu</string>
     <!-- Error messages -->
-    <string name="error_fatal">MojoLauncher neočakávane spadol</string>
+    <string name="error_fatal">PojavLauncher neočakávane spadol</string>
     <string name="error_no_version">Žiadne verzie!</string>
     <string name="error_show_more">Zobraziť viac</string>
     <string name="error_show_less">Zobraziť menej</string>
@@ -197,7 +197,7 @@
     <string name="pedit_java_runtime">Java Runtime</string>
     <string name="pedit_renderer">Vykresľovač</string>
     <string name="notif_channel_name">Všeobecné nastavenia notifikácií</string>
-    <string name="lazy_service_default_title">Mojo Foreground Service</string>
+    <string name="lazy_service_default_title">Pojav Foreground Service</string>
     <string name="use_global_default">(Použiť predvolené nastavenie)</string>
     <string name="default_control">Predvolené kontrolky</string>
     <string name="progresslayout_tasks_in_progress">Počet prebiehajúcich operácií: %d</string>
@@ -226,7 +226,7 @@
     <string name="preference_gyro_sample_rate_title">Obnovovacia frekvencia gyroskopu</string>
     <string name="preference_gyro_sample_rate_description">Ak máte problémy s výkonom pri používaní ovládania gyroskopom, zvýšte toto.</string>
     <string name="microsoft_login_retry_later">Príliš veľa žiadostí. Skúste to neskôr, prosím.</string>
-    <string name="storage_required">MojoLauncher vyžaduje pripojené externé úložisko. Pripojte ho a reštartujte aplikáciu.</string>
+    <string name="storage_required">PojavLauncher vyžaduje pripojené externé úložisko. Pripojte ho a reštartujte aplikáciu.</string>
     <string name="mcl_setting_title_buttonallcaps">V označeniach tlačidiel používať len veľké písmená</string>
     <string name="mcl_setting_subtitle_buttonallcaps">Ak chcete v ovládacích prvkoch používať malé písmená, vypnite toto.</string>
     <string name="preference_shader_dump_title">Povolenie shader dumpingu</string>
@@ -276,7 +276,7 @@
     <string name="modpack_download_downloading_mods">Sťahujú sa módy (%.2f MB / %.2f MB)</string>
     <string name="modpack_download_downloading_mods_fc">Sťahujú sa módy (Súbor %d z %d)</string>
     <string name="modpack_download_applying_overrides">Aplikovanie overridov (%d/%d)</string>
-    <string name="modpack_install_notification_title">Mojo inštalátor modpackov</string>
+    <string name="modpack_install_notification_title">Pojav inštalátor modpackov</string>
     <string name="modpack_install_notification_success">Ťuknite sem na dokončenie inštalácie modpacku</string>
     <string name="modpack_install_notification_data_not_available">Nebolo možné stiahnuť informácie o mod loaderi</string>
     <string name="modpack_install_modloader_download_failed">Nebolo možné stiahnuť súbory mod loaderu</string>
@@ -305,7 +305,7 @@
     <string name="preference_category_miscellaneous">Iné nastavenia</string>
     <string name="preference_category_video">Video a vykresľovač</string>
     <string name="notification_permission_dialog_title">Vyžaduje sa povolenie</string>
-    <string name="notification_permission_dialog_text">MojoLauncher vyžaduje povolenie na ukazovanie upozornení, aby sa zabránilo zastaveniu sťahovania hry/modpackov, keď opustíte aplikáciu. Bez tohto povolenia môže Android zastaviť sťahovanie, keď pošlete MojoLauncher do pozadia.</string>
+    <string name="notification_permission_dialog_text">PojavLauncher vyžaduje povolenie na ukazovanie upozornení, aby sa zabránilo zastaveniu sťahovania hry/modpackov, keď opustíte aplikáciu. Bez tohto povolenia môže Android zastaviť sťahovanie, keď pošlete PojavLauncher do pozadia.</string>
     <string name="notification_permission_toast">Toto povolenie môžete kedykoľvek zmeniť v nastaveniach</string>
     <string name="preference_ask_for_notification_title">Povoliť upozornenia</string>
     <string name="preference_ask_for_notification_description">Kliknutím znova požiadate o povolenie upozornení, ktoré je potrebné na správne fungovanie sťahovania hier/modpackov na pozadí.</string>

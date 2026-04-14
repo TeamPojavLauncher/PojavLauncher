@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- App name part -->
-    <string name="app_name">MojoLauncher (Minecraft: Java Edition для Android)</string>
-    <string name="app_short_name">MojoLauncher</string>
+    <string name="app_name">PojavLauncher (Minecraft: Java Edition для Android)</string>
+    <string name="app_short_name">PojavLauncher</string>
     <!-- Action bar part -->
     <!-- Languages list part -->
     <!-- Login strings -->
@@ -14,7 +14,7 @@
     <!-- AlertDialog title -->
     <string name="alerttitle_installmod">Вибрати інсталятор моду</string>
     <!-- Error messages -->
-    <string name="error_fatal">MojoLauncher був зупинений у результаті збою</string>
+    <string name="error_fatal">PojavLauncher був зупинений у результаті збою</string>
     <string name="error_no_version">Немає версії!</string>
     <string name="error_show_more">Розвернути</string>
     <string name="error_show_less">Звернути</string>
@@ -199,7 +199,7 @@
     <string name="pedit_java_runtime">Java Runtime</string>
     <string name="pedit_renderer">Візуалізатор</string>
     <string name="notif_channel_name">Загальне</string>
-    <string name="lazy_service_default_title">Служба Mojo</string>
+    <string name="lazy_service_default_title">Служба Pojav</string>
     <string name="mcl_setting_veroption_installed">Встановлено</string>
     <string name="use_global_default">(Використовувати за стандартом)</string>
     <string name="default_control">Стандартне керування</string>
@@ -229,7 +229,7 @@
     <string name="preference_gyro_sample_rate_title">Частота дискретизації гіроскопа</string>
     <string name="preference_gyro_sample_rate_description">Якщо у вас виникають проблеми з керуванням гіроскопом, збільште цей параметр.</string>
     <string name="microsoft_login_retry_later">Занадто багато запитів, спробуйте пізніше.</string>
-    <string name="storage_required">MojoLauncher потребує під’єднання до сховища. Будь ласка, під’єднайте його ще раз і перезапустіть додаток.</string>
+    <string name="storage_required">PojavLauncher потребує під’єднання до сховища. Будь ласка, під’єднайте його ще раз і перезапустіть додаток.</string>
     <string name="mcl_setting_title_buttonallcaps">Використовувати лише великі літери в назвах кнопок</string>
     <string name="mcl_setting_subtitle_buttonallcaps">Вимкніть, якщо бажаєте використовувати малі літери в елементах керування.</string>
     <string name="preference_shader_dump_title">Увімкнути вивантажування шейдерів</string>
@@ -279,7 +279,7 @@
     <string name="modpack_download_downloading_mods">Завантаження модів (%.2f Мб / %.2f Мб)</string>
     <string name="modpack_download_downloading_mods_fc">Завантаження модів (Файл %d з %d)</string>
     <string name="modpack_download_applying_overrides">Застосування перевизначень (%d/%d)</string>
-    <string name="modpack_install_notification_title">Інсталятор модпаку Mojo</string>
+    <string name="modpack_install_notification_title">Інсталятор модпаку Pojav</string>
     <string name="modpack_install_notification_success">Натисніть тут, щоб завершити встановлення модпаку</string>
     <string name="modpack_install_notification_data_not_available">Не вдалося завантажити інформацію про завантажувач модів</string>
     <string name="modpack_install_modloader_download_failed">Не вдалося завантажити файли завантажувача мода</string>
@@ -308,7 +308,7 @@
     <string name="preference_category_miscellaneous">Інші параметри</string>
     <string name="preference_category_video">Налаштування відео</string>
     <string name="notification_permission_dialog_title">Запит на дозвіл</string>
-    <string name="notification_permission_dialog_text">MojoLauncher потребує дозволу на надсилання сповіщень, щоб запобігти припиненню завантаження гри/модпаку, коли ви виходите з додатка. Без цього дозволу Android може припинити завантаження, коли ви переведете MojoLauncher у фоновий режим.</string>
+    <string name="notification_permission_dialog_text">PojavLauncher потребує дозволу на надсилання сповіщень, щоб запобігти припиненню завантаження гри/модпаку, коли ви виходите з додатка. Без цього дозволу Android може припинити завантаження, коли ви переведете PojavLauncher у фоновий режим.</string>
     <string name="notification_permission_toast">Ви завжди можете змінити пізніше, перейшовши до налаштувань</string>
     <string name="preference_ask_for_notification_title">Дозволити сповіщення</string>
     <string name="preference_ask_for_notification_description">Натисніть, щоб повторно запитати дозвіл на сповіщення, необхідний для коректної роботи фонових завантажень гри/модпаку.</string>
