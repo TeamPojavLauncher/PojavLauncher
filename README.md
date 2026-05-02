@@ -1,21 +1,23 @@
 <h1 align="center">PojavLauncher</h1>
 
+<a href="https://github.com/TeamPojavLauncher/PojavLauncher/blob/v3_openjdk/README_BN.md">Readme বাংলা ভাষায়</a>
+
 <img src="https://github.com/PojavLauncherTeam/PojavLauncher/blob/v3_openjdk/app_pojavlauncher/src/main/assets/pojavlauncher.png" align="left" width="130" height="150" alt="PojavLauncher logo">
 
 [![Android CI](https://github.com/TeamPojavLauncher/PojavLauncher/workflows/Android%20CI/badge.svg)](https://github.com/TeamPojavLauncher/PojavLauncher/actions)
 <img src="https://img.shields.io/badge/platform-Android-green" alt="Platform"/>
 <img src="https://img.shields.io/badge/minSdk-26-blue" alt="Min SDK"/>
-[![Watch on GitHub](https://img.shields.io/github/watchers/TeamPojavLauncher/PojavLauncher.svg?style=social)](https://github.com/TeamPojavLauncher/PojavLauncher/watchers) 
-[![Star on GitHub](https://img.shields.io/github/stars/TeamPojavLauncher/PojavLauncher.svg?style=social)](https://github.com/TeamPojavLauncher/PojavLauncher/stargazers)
-[![Fork on GitHub](https://img.shields.io/github/forks/TeamPojavLauncher/PojavLauncher.svg?style=social)](https://github.com/TeamPojavLauncher/PojavLauncher/network/members)
-[![GitHub commit activity](https://img.shields.io/github/commit-activity/m/TeamPojavLauncher/PojavLauncher)](https://github.com/TeamPojavLauncher/PojavLauncher/actions)
-[![Issues](https://img.shields.io/github/issues/TeamPojavLauncher/PojavLauncher?color=orange)](https://github.com/TeamPojavLauncher/PojavLauncher/issues)
+[![Project Status](https://img.shields.io/badge/status-active-brightgreen.svg?style=flat)](https://github.com/TeamPojavLauncher/PojavLauncher/commits)
+[![GitHub commit activity the past week, 4 weeks](https://img.shields.io/github/commit-activity/y/TeamPojavLauncher/PojavLauncher.svg?style=flat)](https://github.com/TeamPojavLauncher/PojavLauncher/graphs/commit-activity)
+[![GitHub commits since branch tip](https://img.shields.io/github/commits-since/TeamPojavLauncher/PojavLauncher/v3_openjdk.svg?style=flat)](https://github.com/TeamPojavLauncher/PojavLauncher/commits/v3_openjdk)
+[![GitHub issues](https://img.shields.io/github/issues/TeamPojavLauncher/PojavLauncher.svg?style=flat&color=%23FFA500)](https://github.com/TeamPojavLauncher/PojavLauncher/issues)
 [![Crowdin](https://badges.crowdin.net/pojavlauncher/localized.svg)](https://crowdin.com/project/pojavlauncher)
+[![GitHub contributors](https://img.shields.io/github/contributors/TeamPojavLauncher/PojavLauncher.svg?style=flat)](https://github.com/TeamPojavLauncher/PojavLauncher/graphs/contributors)
 <a href="https://discord.gg/2HYpzs4gZT"><img src="https://img.shields.io/discord/1355213558631366897?color=5865F2&logo=discord&logoColor=white&label=&style=flat" alt="Discord"></a>
-<a href="https://github.com/TeamPojavLauncher/PojavLauncher"><img src="https://img.shields.io/badge/github-PojavLauncher-green?logo=github" alt="GitHub"></a>
-[![Latest Release](https://img.shields.io/github/v/tag/TeamPojavLauncher/PojavLauncher?sort=semver)](https://github.com/TeamPojavLauncher/PojavLauncher/releases "View latest release")
-[![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue)](https://github.com/TeamPojavLauncher/PojavLauncher/blob/v3_openjdk/LICENSE)
-[![X (Twitter) Follow](https://img.shields.io/twitter/follow/plaunchteam?color=blue&style=flat-square)](https://x.com/PLaunchTeam)
+<a href="https://github.com/TeamPojavLauncher"><img src="https://img.shields.io/badge/github-PojavLauncher-green?logo=github" alt="GitHub"></a>
+[![Latest Release](https://img.shields.io/github/v/tag/TeamPojavLauncher/PojavLauncher?sort=semver)](https://github.com/PojavLauncherTeam/PojavLauncher/releases "View latest release")
+[![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue)](https://github.com/PojavLauncherTeam/PojavLauncher/blob/v3_openjdk/LICENSE)
+[![Twitter Follow](https://img.shields.io/twitter/follow/PLaunchTeam.svg?style=social)](https://x.com/PLaunchTeam)
 
 *From [Boardwalk](https://github.com/zhuowei/Boardwalk)'s ashes here comes PojavLauncher!*
 
@@ -50,7 +52,7 @@ For more details, check out our [wiki](https://pojavlauncher.app/)!
 
 You can get PojavLauncher via three methods:
 
-1. **Releases:** Download the latest prebuilt app from [nightly.link](https://nightly.link/TeamPojavLauncher/PojavLauncher/actions/runs/24409371694) or select from our [stable releases](https://github.com/TeamPojavLauncher/PojavLauncher/releases) or [automatic builds](https://github.com/TeamPojavLauncher/PojavLauncher/actions).
+1. **Releases:** Download the latest prebuilt app from [nightly.link](https://nightly.link/TeamPojavLauncher/PojavLauncher/actions/runs/25255993596) or select from our [stable releases](https://github.com/TeamPojavLauncher/PojavLauncher/releases) or [automatic builds](https://github.com/TeamPojavLauncher/PojavLauncher/actions).
 2. **Google Play:** Get it from Google Play by clicking on this badge: [![Google Play](https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=net.kdt.pojavlaunch)
 3. **Build from Source:** Follow the [building instructions](#building) below.
 
@@ -88,24 +90,32 @@ If you need more control over the build process, follow these steps:
 
 5. **Build the launcher:** `./gradlew :app_pojavlauncher:assembleDebug` (Replace `gradlew` with `gradlew.bat` on Windows).
 
-## Current Status
-
-* [x] OpenJDK 8 Mobile port: ARM32, ARM64, x86, x86_64
-* [x] OpenJDK 17 Mobile port: ARM32, ARM64, x86, x86_64
-* [x] OpenJDK 21 Mobile port: ARM32, ARM64, x86, x86_64
-* [x] Headless mod installer
-* [x] Mod installer with GUI
-* [x] OpenGL in OpenJDK environment
-* [x] OpenAL (works on most devices)
-* [x] Support for Minecraft 1.12.2 and below
-* [x] Support for Minecraft 1.13 and above
-* [x] Support for Minecraft 1.17 (22w13a) and above
-* [x] Game surface zooming
-* [x] New input pipe rewritten to native code
-* [x] Rewritten entire controls system
-* [x] Added LTW Renderer
-* [x] Updated MobileGlues
-* [ ] More to come!
+## Current Roadmap
+- [x] OpenJDK 8 Mobile port: ARM32, ARM64, x86, x86_64
+- [x] OpenJDK 17 Mobile port: ARM32, ARM64, x86, x86_64
+- [x] OpenJDK 21 Mobile port: ARM32, ARM64, x86, x86_64
+- [x] Headless mod installer
+- [x] Mod installer with GUI
+- [x] OpenGL in OpenJDK environment
+- [x] OpenAL (works on most devices)
+- [x] Support for Minecraft 1.12.2 and below
+- [x] Support for Minecraft 1.13 and above
+- [x] Support for Minecraft 1.17 (22w13a) and above
+- [x] Game surface zooming
+- [x] New input pipe rewritten to native code
+- [x] Rewritten entire controls system
+- [x] Added MobileGlues Renderer
+- [x] Added NG_GL4ES (Krypton Wrapper) Renderer
+- [x] Instance system in favor of profiles
+- [x] Out-of-the-box 1.21.5 support
+- [ ] LTW: resolve issues with Create
+- [ ] LTW: enable compute shader/image extensions
+- [ ] LTW: switch to a color-renderable format for framebuffers
+- [ ] Modpack/mod management tool
+- [ ] mrpack/CurseForge zip import
+- [ ] MMC-compatible instance import
+- [ ] Patch-on-dlopen for mod native libraries
+- [ ] More to come!
 
 ## Known Issues
 
