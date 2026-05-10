@@ -1040,6 +1040,7 @@ public class GLFW
         GLFWWindowProperties win = new GLFWWindowProperties();
         // win.width = width;
         // win.height = height;
+        glfwMakeContextCurrent(ptr)
 
         win.width = mGLFWWindowWidth;
         win.height = mGLFWWindowHeight;

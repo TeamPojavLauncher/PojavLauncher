@@ -154,7 +154,7 @@ public class JREUtils {
         if(renderer.equals("opengles3_nggl4es")) {
            envMap.put("LIBGL_USE_MC_COLOR", "1");
            envMap.put("DLOPEN", "libspirv-cross-c-shared.so");
-           envMap.put("LIBGL_GL", "32");
+           envMap.put("LIBGL_GL", "31");
            envMap.put("LIBGL_ES", "3");
            envMap.put("LIBGL_NORMALIZE", "1");
            envMap.put("LIBGL_NOINTOVLHACK", "1");
