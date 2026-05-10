@@ -151,6 +151,17 @@ public class JREUtils {
            envMap.put("POJAVEXEC_EGL","libmobileglues.so");
         }
 
+        if(renderer.equals("opengles3_nggl4es")) {
+//           envMap.put("POJAVEXEC_EGL","libng_gl4es.so");
+           envMap.put("LIBGL_USE_MC_COLOR", "1");
+           envMap.put("DLOPEN", "libspirv-cross-c-shared.so");
+           envMap.put("LIBGL_GL", "31");
+           envMap.put("LIBGL_ES", "3");
+           envMap.put("LIBGL_NORMALIZE", "1");
+           envMap.put("LIBGL_NOINTOVLHACK", "1");
+           envMap.put("LIBGL_NOERROR", "1");
+        }
+
         if(LauncherPreferences.PREF_BIG_CORE_AFFINITY) envMap.put("POJAV_BIG_CORE_AFFINITY", "1");
 
         if(GLInfoUtils.getGlInfo().isAdreno() && !PREF_ZINK_PREFER_SYSTEM_DRIVER) {
