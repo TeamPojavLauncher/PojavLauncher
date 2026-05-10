@@ -152,7 +152,7 @@ public class JREUtils {
         }
 
         if(renderer.equals("opengles3_nggl4es")) {
-//           envMap.put("POJAVEXEC_EGL","libng_gl4es.so");
+           envMap.put("POJAVEXEC_EGL","libng_gl4es.so");
            envMap.put("LIBGL_USE_MC_COLOR", "1");
            envMap.put("DLOPEN", "libspirv-cross-c-shared.so");
            envMap.put("LIBGL_GL", "31");
