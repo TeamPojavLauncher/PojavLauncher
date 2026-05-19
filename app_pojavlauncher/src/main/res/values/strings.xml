@@ -509,4 +509,6 @@
     <string name="mcl_setting_title_renderer_settings">Extra Renderer Settings</string>
     <string name="mcl_setting_title_renderer_subtitle">Renderer specific settings</string>
     <string name="import_local_modpack">Import local modpack</string>
+    <string name="local_login_buy_game_title">Buy Minecraft</string>
+    <string name="local_login_buy_game">While local account is free, Minecraft is a paid game. We believe everyone should have a chance to try it, and hope that one day you will purchase it</string>
 </resources>
