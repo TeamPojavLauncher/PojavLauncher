@@ -45,6 +45,7 @@ import net.kdt.pojavlaunch.tasks.AsyncMinecraftDownloader;
 import net.kdt.pojavlaunch.tasks.AsyncVersionList;
 import net.kdt.pojavlaunch.tasks.MinecraftDownloader;
 import net.kdt.pojavlaunch.utils.NotificationUtils;
+import net.kdt.pojavlaunch.utils.PermissionUtils;
 
 import java.lang.ref.WeakReference;
 
@@ -150,8 +151,7 @@ public class LauncherActivity extends BaseActivity {
         return false;
     };
 
-    private ActivityResultLauncher<String> mRequestNotificationPermissionLauncher;
-    private WeakReference<Runnable> mRequestNotificationPermissionRunnable;
+    private ActivityResultLauncher<String> mRequestPermissionLauncher;
 
     @Override
     protected boolean shouldIgnoreNotch() {
@@ -169,16 +169,9 @@ public class LauncherActivity extends BaseActivity {
         setContentView(R.layout.activity_pojav_launcher);
 
         IconCacheJanitor.runJanitor();
-        mRequestNotificationPermissionLauncher = registerForActivityResult(
-                new ActivityResultContracts.RequestPermission(),
-                isAllowed -> {
-                    if(!isAllowed) handleNoNotificationPermission();
-                    else {
-                        Runnable runnable = Tools.getWeakReference(mRequestNotificationPermissionRunnable);
-                        if(runnable != null) runnable.run();
-                    }
-                }
-        );
+
+        PermissionUtils.init(this);
+
         getWindow().setBackgroundDrawable(null);
         bindViews();
         checkNotificationPermission();
@@ -269,24 +262,26 @@ public class LauncherActivity extends BaseActivity {
 
     private void checkNotificationPermission() {
         if(LauncherPreferences.PREF_SKIP_NOTIFICATION_PERMISSION_CHECK ||
-            checkForNotificationPermission()) {
+            PermissionUtils.checkForPermission(this,33, Manifest.permission.POST_NOTIFICATIONS)) {
             return;
         }
-
         if(ActivityCompat.shouldShowRequestPermissionRationale(
                 this,
                 Manifest.permission.POST_NOTIFICATIONS)) {
             showNotificationPermissionReasoning();
             return;
         }
-        askForNotificationPermission(null);
+        PermissionUtils.askForPermission(33, res -> { if (!res) this.handleNoNotificationPermission(); },
+                Manifest.permission.POST_NOTIFICATIONS);
     }
 
     private void showNotificationPermissionReasoning() {
         new AlertDialog.Builder(this)
                 .setTitle(R.string.notification_permission_dialog_title)
                 .setMessage(R.string.notification_permission_dialog_text)
-                .setPositiveButton(android.R.string.ok, (d, w) -> askForNotificationPermission(null))
+                .setPositiveButton(android.R.string.ok, (d, w) ->
+                        PermissionUtils.askForPermission(33, res -> { if (!res) this.handleNoNotificationPermission(); },
+                                Manifest.permission.POST_NOTIFICATIONS))
                 .setNegativeButton(android.R.string.cancel, (d, w)-> handleNoNotificationPermission())
                 .show();
     }
@@ -297,20 +292,6 @@ public class LauncherActivity extends BaseActivity {
                 .putBoolean(LauncherPreferences.PREF_KEY_SKIP_NOTIFICATION_CHECK, true)
                 .apply();
         Toast.makeText(this, R.string.notification_permission_toast, Toast.LENGTH_LONG).show();
-    }
-
-    public boolean checkForNotificationPermission() {
-        return Build.VERSION.SDK_INT < 33 || ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_DENIED;
-    }
-
-    public void askForNotificationPermission(Runnable onSuccessRunnable) {
-        if(Build.VERSION.SDK_INT < 33) return;
-        if(onSuccessRunnable != null) {
-            mRequestNotificationPermissionRunnable = new WeakReference<>(onSuccessRunnable);
-        }
-        mRequestNotificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
     }
 
     /** Stuff all the view boilerplate here */
