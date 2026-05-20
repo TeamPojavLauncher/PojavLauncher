@@ -298,6 +298,8 @@
     <string name="preference_deadzone_scale_title">Joystick deadzone scale</string>
     <string name="preference_deadzone_scale_description">Increase it if the joystick drifts.</string>
 
+    <string name="preference_microphone_access_title">Request microphone access permission</string>
+    <string name="preference_microphone_access_description">Requests system to give access to device microphone for the game</string>
 
     <string name="preference_force_big_core_title">Force the renderer to run on the big core</string>
     <string name="preference_force_big_core_desc">Forces the Minecraft render thread to run on the core with the highest maximum frequency.</string>
@@ -507,4 +509,6 @@
     <string name="mcl_setting_title_renderer_settings">Extra Renderer Settings</string>
     <string name="mcl_setting_title_renderer_subtitle">Renderer specific settings</string>
     <string name="import_local_modpack">Import local modpack</string>
+    <string name="local_login_buy_game_title">Buy Minecraft</string>
+    <string name="local_login_buy_game">While local account is free, Minecraft is a paid game. We believe everyone should have a chance to try it, and hope that one day you will purchase it</string>
 </resources>
