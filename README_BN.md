@@ -50,7 +50,7 @@ PojavLauncher হল একটি লঞ্চার যা আপনাকে �
 
 PojavLauncher তিনটি উপায়ে পেতে পারেন:
 
-1. **রিলিজেস:** সর্বশেষ প্রি-বিল্ট অ্যাপ [nightly.link](https://nightly.link/TeamPojavLauncher/PojavLauncher/actions/runs/25255993596) থেকে ডাউনলোড করুন অথবা আমাদের [স্থিতিশীল রিলিজেস](https://github.com/TeamPojavLauncher/PojavLauncher/releases) বা [স্বয়ংক্রিয় বিল্ডস](https://github.com/TeamPojavLauncher/PojavLauncher/actions) থেকে নির্বাচন করুন।
+1. **রিলিজেস:** সর্বশেষ প্রি-বিল্ট অ্যাপ [nightly.link](https://nightly.link/TeamPojavLauncher/PojavLauncher/workflows/android/v3_openjdk?preview) থেকে ডাউনলোড করুন অথবা আমাদের [স্থিতিশীল রিলিজেস](https://github.com/TeamPojavLauncher/PojavLauncher/releases) বা [স্বয়ংক্রিয় বিল্ডস](https://github.com/TeamPojavLauncher/PojavLauncher/actions) থেকে নির্বাচন করুন।
 2. **Google Play:** এই ব্যাজে ক্লিক করে Google Play থেকে পান: [![Google Play](https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=net.kdt.pojavlaunch)
 3. **সোর্স থেকে বিল্ড করুন:** নীচের [বিল্ড নির্দেশিকা](#বিল্ড-করা) অনুসরণ করুন।
 
