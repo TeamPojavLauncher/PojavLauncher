@@ -76,6 +76,17 @@ public class GameRunner {
         return false;
     }
 
+    public static boolean hasVkMod(File gameDir) {
+        File modsDir = new File(gameDir, "mods");
+        File[] mods = modsDir.listFiles(file -> file.isFile() && file.getName().endsWith(".jar"));
+        if(mods == null) return false;
+        for(File file : mods) {
+            String name = file.getName().toLowerCase(); //bhai kids protector
+            if(name.contains("vulkan")) return true;
+        }
+        return false;
+    }
+
     /**
      * Initialize OpenGL and do checks to see if the GPU of the device is affected by the render
      * distance issue.
