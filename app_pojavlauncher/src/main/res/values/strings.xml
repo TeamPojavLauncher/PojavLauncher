@@ -511,4 +511,7 @@
     <string name="import_local_modpack">Import local modpack</string>
     <string name="local_login_buy_game_title">Buy Minecraft</string>
     <string name="local_login_buy_game">While local account is free, Minecraft is a paid game. We believe everyone should have a chance to try it, and hope that one day you will purchase it</string>
+    <string name="vk_mod_title">Vulkan Mod Detected</string>
+    <string name="vk_mod_message">Ande mande shande jisne vulkan mod lagaya uski ma Randi, do you want to continue?</string>
+    <string name="continue_button">Continue</string>
 </resources>
