@@ -18,14 +18,15 @@ import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.core.math.MathUtils;
 
-import net.kdt.pojavlaunch.GrabListener;
 import net.kdt.pojavlaunch.Tools;
 import net.kdt.pojavlaunch.customcontrols.ControlData;
 import net.kdt.pojavlaunch.customcontrols.ControlLayout;
 import net.kdt.pojavlaunch.customcontrols.LayoutBitmaps;
 import net.kdt.pojavlaunch.customcontrols.handleview.EditControlSideDialog;
 
-import org.lwjgl.glfw.CallbackBridge;
+import git.artdeell.dnbootstrap.glfw.GLFW;
+import git.artdeell.dnbootstrap.glfw.GrabListener;
+
 
 /**
  * Interface injecting custom behavior to a View.
@@ -325,14 +326,12 @@ public interface ControlInterface extends View.OnLongClickListener, GrabListener
         getControlView().addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
             @Override
             public void onViewAttachedToWindow(@NonNull View v) {
-                CallbackBridge.addGrabListener(ControlInterface.this);
+                GLFW.addGrabListener(ControlInterface.this);
+                getControlView().removeOnAttachStateChangeListener(this);
             }
 
             @Override
-            public void onViewDetachedFromWindow(@NonNull View v) {
-                getControlView().removeOnAttachStateChangeListener(this);
-                CallbackBridge.removeGrabListener(ControlInterface.this);
-            }
+            public void onViewDetachedFromWindow(@NonNull View v) {}
         });
 
 

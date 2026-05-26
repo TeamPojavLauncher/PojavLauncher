@@ -75,7 +75,7 @@ public class GamepadMapperFragment extends Fragment implements
     }
 
     private void createGamepad(View mainView, InputDevice inputDevice) {
-        mGamepad = new Gamepad(mainView, inputDevice, mMapperAdapter, false) {
+        mGamepad = new Gamepad(inputDevice, mMapperAdapter) {
             @Override
             public void handleGamepadInput(int keycode, float value) {
                 if(keycode == KeyEvent.KEYCODE_BUTTON_SELECT) {

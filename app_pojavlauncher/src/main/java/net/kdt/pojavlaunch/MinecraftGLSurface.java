@@ -2,9 +2,9 @@ package net.kdt.pojavlaunch;
 
 import static net.kdt.pojavlaunch.MainActivity.touchCharInput;
 import static net.kdt.pojavlaunch.utils.MCOptionUtils.getMcScale;
-import static org.lwjgl.glfw.CallbackBridge.sendMouseButton;
-import static org.lwjgl.glfw.CallbackBridge.windowHeight;
-import static org.lwjgl.glfw.CallbackBridge.windowWidth;
+import static net.kdt.pojavlaunch.CallbackBridge.sendMouseButton;
+import static net.kdt.pojavlaunch.CallbackBridge.windowHeight;
+import static net.kdt.pojavlaunch.CallbackBridge.windowWidth;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -24,9 +24,7 @@ import androidx.annotation.RequiresApi;
 import net.kdt.pojavlaunch.customcontrols.ControlLayout;
 import net.kdt.pojavlaunch.customcontrols.gamepad.DefaultDataProvider;
 import net.kdt.pojavlaunch.customcontrols.gamepad.Gamepad;
-import net.kdt.pojavlaunch.customcontrols.gamepad.direct.DirectGamepad;
-import net.kdt.pojavlaunch.customcontrols.gamepad.direct.DirectGamepadEnableHandler;
-import net.kdt.pojavlaunch.customcontrols.mouse.AbstractTouchpad;
+import net.kdt.pojavlaunch.customcontrols.gamepad.DirectGamepad;
 import net.kdt.pojavlaunch.customcontrols.mouse.AndroidPointerCapture;
 import net.kdt.pojavlaunch.customcontrols.mouse.InGUIEventProcessor;
 import net.kdt.pojavlaunch.customcontrols.mouse.InGameEventProcessor;
@@ -35,19 +33,19 @@ import net.kdt.pojavlaunch.prefs.LauncherPreferences;
 import net.kdt.pojavlaunch.render.SurfaceProvider;
 import net.kdt.pojavlaunch.render.SurfaceViewSurfaceProvider;
 import net.kdt.pojavlaunch.render.TextureViewSurfaceProvider;
-import net.kdt.pojavlaunch.utils.JREUtils;
 import net.kdt.pojavlaunch.utils.MCOptionUtils;
-
-import org.lwjgl.glfw.CallbackBridge;
 
 import fr.spse.gamepad_remapper.GamepadHandler;
 import fr.spse.gamepad_remapper.RemapperManager;
 import fr.spse.gamepad_remapper.RemapperView;
+import git.artdeell.dnbootstrap.glfw.GLFW;
+import git.artdeell.dnbootstrap.glfw.GamepadEnableHandler;
+import git.artdeell.dnbootstrap.glfw.GrabListener;
 
 /**
  * Class dealing with showing minecraft surface and taking inputs to dispatch them to minecraft
  */
-public class MinecraftGLSurface extends View implements GrabListener, DirectGamepadEnableHandler, SurfaceProvider.SurfaceCallback {
+public class MinecraftGLSurface extends View implements GrabListener, GamepadEnableHandler, SurfaceProvider.SurfaceCallback {
     /* Gamepad object for gamepad inputs, instantiated on need */
     private GamepadHandler mGamepadHandler;
     /* The RemapperView.Builder object allows you to set which buttons to remap */
@@ -70,7 +68,7 @@ public class MinecraftGLSurface extends View implements GrabListener, DirectGame
     /* Sensitivity, adjusted according to screen size */
     private final double mSensitivityFactor = (1.4 * (1080f/ Tools.getDisplayMetrics((Activity) getContext()).heightPixels));
 
-    private final SurfaceProvider<?> mSurfaceProvider = LauncherPreferences.PREF_USE_ALTERNATE_SURFACE ? new SurfaceViewSurfaceProvider() : new TextureViewSurfaceProvider();
+    private final SurfaceProvider mSurfaceProvider = LauncherPreferences.PREF_USE_ALTERNATE_SURFACE ? new SurfaceViewSurfaceProvider() : new TextureViewSurfaceProvider();
     private boolean mRefreshOnly = true;
     /* Surface ready listener, used by the activity to launch minecraft */
     SurfaceReadyListener mSurfaceReadyListener = null;
@@ -78,8 +76,8 @@ public class MinecraftGLSurface extends View implements GrabListener, DirectGame
     /* View holding the surface, either a SurfaceView or a TextureView */
     View mSurface;
 
-    private final InGameEventProcessor mIngameProcessor = new InGameEventProcessor(mSensitivityFactor);
-    private final InGUIEventProcessor mInGUIProcessor = new InGUIEventProcessor();
+    private final InGameEventProcessor mIngameProcessor = new InGameEventProcessor(this, mSensitivityFactor);
+    private final InGUIEventProcessor mInGUIProcessor = new InGUIEventProcessor(this);
     private TouchEventProcessor mCurrentTouchProcessor = mInGUIProcessor;
     private AndroidPointerCapture mPointerCapture;
     private boolean mLastGrabState = false;
@@ -91,11 +89,11 @@ public class MinecraftGLSurface extends View implements GrabListener, DirectGame
     public MinecraftGLSurface(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
         setFocusable(true);
-        CallbackBridge.setDirectGamepadEnableHandler(this);
+        GLFW.setGamepadEnableHandler(this);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void setUpPointerCapture(AbstractTouchpad touchpad) {
+    private void setUpPointerCapture(View touchpad) {
         if(mPointerCapture != null) mPointerCapture.detach();
         mPointerCapture = new AndroidPointerCapture(touchpad, this);
     }
@@ -106,7 +104,7 @@ public class MinecraftGLSurface extends View implements GrabListener, DirectGame
      * @param touchpad the optional cursor-emulating touchpad, used for touch event processing
      *                 when the cursor is not grabbed
      */
-    public void start(boolean isAlreadyRunning, AbstractTouchpad touchpad) {
+    public void start(boolean isAlreadyRunning, View touchpad) {
         if (Tools.isAndroid8OrHigher()) setUpPointerCapture(touchpad);
         mInGUIProcessor.setAbstractTouchpad(touchpad);
         mRefreshOnly = isAlreadyRunning;
@@ -136,19 +134,25 @@ public class MinecraftGLSurface extends View implements GrabListener, DirectGame
             }else if(toolType != MotionEvent.TOOL_TYPE_STYLUS) continue;
 
             // Mouse found
-            if(CallbackBridge.isGrabbing()) return false;
-            CallbackBridge.sendCursorPos(   e.getX(i) * LauncherPreferences.PREF_SCALE_FACTOR, e.getY(i) * LauncherPreferences.PREF_SCALE_FACTOR);
+            // Avoid going through the JNI each time.
+            if(GLFW.isGrabbing()) return false;
+            GLFW.cursorX = e.getX(i) / getWidth();
+            GLFW.cursorY = e.getY(i) / getHeight();
+            GLFW.sendMousePos();
             return true; //mouse event handled successfully
         }
         if (mIngameProcessor == null || mInGUIProcessor == null) return true;
         return mCurrentTouchProcessor.processTouchEvent(e);
     }
 
-    private void createGamepad(View contextView, InputDevice inputDevice) {
-        if(CallbackBridge.sGamepadDirectInput) {
+    private void createGamepad(InputDevice inputDevice) {
+        if(GLFW.gamepadButtonBuffer != null) {
             mGamepadHandler = new DirectGamepad();
+            // Only send this if there was a gamepad event, to avoid forcing users without gamepads through
+            // Controlify calibration
+            GLFW.nativeNotifyGamepadConnected();
         }else {
-            mGamepadHandler = new Gamepad(contextView, inputDevice, DefaultDataProvider.INSTANCE, true);
+            mGamepadHandler = new Gamepad(inputDevice, DefaultDataProvider.INSTANCE);
         }
     }
 
@@ -161,7 +165,7 @@ public class MinecraftGLSurface extends View implements GrabListener, DirectGame
         int mouseCursorIndex = -1;
 
         if(Gamepad.isGamepadEvent(event)){
-            if(mGamepadHandler == null) createGamepad(this, event.getDevice());
+            if(mGamepadHandler == null) createGamepad(event.getDevice());
 
             mInputManager.handleMotionEventInput(getContext(), event, mGamepadHandler);
             return true;
@@ -176,13 +180,14 @@ public class MinecraftGLSurface extends View implements GrabListener, DirectGame
         if(mouseCursorIndex == -1) return false; // we cant consoom that, theres no mice!
 
         // Make sure we grabbed the mouse if necessary
-        updateGrabState(CallbackBridge.isGrabbing());
+        // Avoid going through the JNI each time.
+        updateGrabState(GLFW.isGrabbing());
 
         switch(event.getActionMasked()) {
             case MotionEvent.ACTION_HOVER_MOVE:
-                CallbackBridge.mouseX = (event.getX(mouseCursorIndex) * LauncherPreferences.PREF_SCALE_FACTOR);
-                CallbackBridge.mouseY = (event.getY(mouseCursorIndex) * LauncherPreferences.PREF_SCALE_FACTOR);
-                CallbackBridge.sendCursorPos(CallbackBridge.mouseX, CallbackBridge.mouseY);
+                GLFW.cursorX = (event.getX(mouseCursorIndex) / getWidth());
+                GLFW.cursorY = (event.getY(mouseCursorIndex) / getHeight());
+                GLFW.sendMousePos();
                 return true;
             case MotionEvent.ACTION_SCROLL:
                 CallbackBridge.sendScroll(event.getAxisValue(MotionEvent.AXIS_HSCROLL), event.getAxisValue(MotionEvent.AXIS_VSCROLL));
@@ -233,17 +238,15 @@ public class MinecraftGLSurface extends View implements GrabListener, DirectGame
         }
 
         if(Gamepad.isGamepadEvent(event)){
-            if(mGamepadHandler == null) createGamepad(this, event.getDevice());
+            if(mGamepadHandler == null) createGamepad(event.getDevice());
 
             mInputManager.handleKeyEventInput(getContext(), event, mGamepadHandler);
             return true;
         }
 
-        int index = EfficientAndroidLWJGLKeycode.getIndexByKey(eventKeycode);
-        if(EfficientAndroidLWJGLKeycode.containsIndex(index)) {
-            EfficientAndroidLWJGLKeycode.execKey(event, index);
-            return true;
-        }
+        CallbackBridge.setModifiers(event);
+        char codepoint = action == KeyEvent.ACTION_DOWN ? (char) event.getUnicodeChar(event.getMetaState()) : 0;
+        GLFW.sendRawKeyEvent(eventKeycode, action == KeyEvent.ACTION_DOWN ? 1 : 0, CallbackBridge.getCurrentMods(), codepoint);
 
         // Some events will be generated an infinite number of times when no consumed
         return (event.getFlags() & KeyEvent.FLAG_FALLBACK) == KeyEvent.FLAG_FALLBACK;
@@ -296,8 +299,7 @@ public class MinecraftGLSurface extends View implements GrabListener, DirectGame
             Log.w("MGLSurface", "Attempt to refresh size on null surface");
             return;
         }
-        CallbackBridge.sendUpdateWindowSize(windowWidth, windowHeight);
-        JREUtils.applyWindowSize();
+        mSurfaceProvider.updateSize();
     }
 
     private void realStart(){
@@ -344,19 +346,8 @@ public class MinecraftGLSurface extends View implements GrabListener, DirectGame
     }
 
     @Override
-    public void onDirectGamepadEnabled() {
-        post(()->{
-            if(mGamepadHandler != null && mGamepadHandler instanceof Gamepad) {
-                ((Gamepad)mGamepadHandler).removeSelf();
-            }
-            // Force gamepad recreation on next event
-            mGamepadHandler = null;
-        });
-    }
-
-    @Override
     public void onSurfaceAvailable(Surface surface) {
-        JREUtils.setupBridgeWindow(surface);
+        GLFW.nativeSurfaceCreated(surface);
         if(mRefreshOnly) return;
         realStart();
         mRefreshOnly = true;
@@ -364,12 +355,23 @@ public class MinecraftGLSurface extends View implements GrabListener, DirectGame
 
     @Override
     public void onSurfaceResized() {
-
+        GLFW.nativeSurfaceUpdated();
     }
 
     @Override
     public void onSurfaceDestroyed() {
-        JREUtils.releaseBridgeWindow();
+        GLFW.nativeSurfaceDestroyed();
+    }
+
+    @Override
+    public void onEnableGamepad() {
+        post(()->{
+            if(mGamepadHandler != null && mGamepadHandler instanceof Gamepad) {
+                ((Gamepad)mGamepadHandler).removeSelf();
+            }
+            // Force gamepad recreation on next event
+            mGamepadHandler = null;
+        });
     }
 
     /** A small interface called when the listener is ready for the first time */

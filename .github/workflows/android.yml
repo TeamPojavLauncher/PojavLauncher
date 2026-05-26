@@ -15,6 +15,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          submodules: true
 
       - name: Get LTW
         uses: dawidd6/action-download-artifact@v6

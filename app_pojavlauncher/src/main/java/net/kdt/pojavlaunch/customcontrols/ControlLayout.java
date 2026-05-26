@@ -2,8 +2,6 @@ package net.kdt.pojavlaunch.customcontrols;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
-import static org.lwjgl.glfw.CallbackBridge.isGrabbing;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Insets;
@@ -28,6 +26,8 @@ import com.kdt.pickafile.FileListView;
 import com.kdt.pickafile.FileSelectedListener;
 
 import net.kdt.pojavlaunch.MinecraftGLSurface;
+
+import git.artdeell.dnbootstrap.glfw.GLFW;
 import git.artdeell.mojo.R;
 import net.kdt.pojavlaunch.Tools;
 import net.kdt.pojavlaunch.customcontrols.buttons.ControlButton;
@@ -260,7 +260,9 @@ public class ControlLayout extends FrameLayout {
 
 		mControlVisible = isVisible;
 		for(ControlInterface button : getButtonChildren()){
-			button.setVisible(((button.getProperties().displayInGame && isGrabbing()) || (button.getProperties().displayInMenu && !isGrabbing())) && isVisible);
+            // Avoid going through the JNI each time.
+            // Avoid going through the JNI each time.
+            button.setVisible(((button.getProperties().displayInGame && GLFW.isGrabbing()) || (button.getProperties().displayInMenu && !GLFW.isGrabbing())) && isVisible);
 		}
 	}
 

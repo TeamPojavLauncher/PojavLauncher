@@ -50,9 +50,10 @@
     <string name="mcl_setting_title_javaargs">Аргументы запуска JVM</string>
     <string name="mcl_setting_subtitle_javaargs">Осторожно, необдуманное изменение может привести к сбою игры.</string>
     <string name="mcl_setting_category_renderer">Визуализатор</string>
-    <string name="mcl_setting_renderer_gles2_4">Holy GL4ES (все версии, быстрый)</string>
-    <string name="mcl_setting_renderer_vulkan_zink">Zink (Vulkan; все версии, средний)</string>
-    <string name="mcl_setting_renderer_ltw">LTW (OpenGL ES 3; 1.17 и выше)</string>
+    <string name="mcl_setting_renderer_gles2_4">Holy GL4ES - все версии до 1.21.4, быстрый</string>
+    <string name="mcl_setting_renderer_vulkan_zink">Zink (Vulkan) - все версии, средний</string>
+    <string name="mcl_setting_renderer_freedreno_kgsl">Freedreno - все версии, быстрый, только Adreno</string>
+    <string name="mcl_setting_renderer_ltw">LTW (OpenGL ES 3) - 1.17 и выше, быстрый</string>
     <string name="mcl_setting_veroption_release">Релизы</string>
     <string name="mcl_setting_veroption_snapshot">Снапшоты</string>
     <string name="mcl_setting_veroption_oldalpha">Старые альфа</string>
@@ -435,6 +436,8 @@
     <string name="instance_delete">Удалить установку</string>
     <string name="instance_delete_confirmation">Вы уверены что хотите удалить установку? Ваши миры, моды, ресурсы и иные данные находящиеся в папке установки будут удалены. Данное действие не может быть отменено!</string>
     <string name="import_local_modpack">Импорт локальной сборки</string>
+    <string name="preference_sysmem_title">Включить принудительную отрисовку в системную память</string>
+    <string name="preference_sysmem_summary">Принуждает Turnip/Freedreno отрисовывать графику только в системную память. Включите, если игра работает медленно или вы наблюдаете проблемы отрисовки.</string>
     <string name="preference_microphone_access_title">Запросить доступ к микрофону</string>
     <string name="preference_microphone_access_description">Запрашивает у системы доступ к микрофону устройства в игре</string>
 </resources>
