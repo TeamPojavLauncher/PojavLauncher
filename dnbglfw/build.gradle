@@ -33,6 +33,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
+        pubRelease {
+            initWith release
+        }
+
         gplay {
             initWith release
         }
