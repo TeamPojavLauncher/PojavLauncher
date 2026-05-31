@@ -27,7 +27,7 @@ def getVersionName = {
     }else {
         def branchName = currentBranch.getName()
         def commitAbbreviation = latestCommit.abbreviatedId
-        return "bhai-bhai-${dateToday}-${commitAbbreviation}-${branchName}"
+        return "bhai-${dateToday}-${commitAbbreviation}-${branchName}"
     }
 }
 
@@ -70,6 +70,12 @@ android {
             storePassword System.getenv("UPLOAD_KEYSTORE_PASSWORD")
             keyAlias "key0"
             keyPassword System.getenv("UPLOAD_KEYSTORE_PASSWORD")
+        }
+        publicBuild {
+            storeFile file("mojo_pub.jks")
+            storePassword System.getenv("MOJOPUB_KEYSTORE_PASSWORD")
+            keyAlias "key0"
+            keyPassword System.getenv("MOJOPUB_KEYSTORE_PASSWORD")
         }
     }
 
@@ -130,13 +136,20 @@ android {
             initWith release
             signingConfig signingConfigs.googlePlayBuild
         }
+        pubRelease {
+            initWith release
+            signingConfig signingConfigs.customDebug // WIP, changeme
+            applicationIdSuffix '.pub'
+            resValue 'string', 'storageProviderAuthorities', 'git.artdeell.mojo.pub.scoped.gamefolder'
+            resValue 'string', 'application_package', 'git.artdeell.mojo.pub'
+        }
     }
 
-    ndkVersion = "28.2.13676358"
+    ndkVersion "29.0.14206865"
 
     externalNativeBuild {
-        ndkBuild {
-            path file('src/main/jni/Android.mk')
+        cmake {
+            path file('src/main/jni/CMakeLists.txt')
         }
     }
 
@@ -159,7 +172,6 @@ android {
     }
 
     buildFeatures {
-        prefab true
         buildConfig true
     }
 }
@@ -284,7 +296,6 @@ afterEvaluate {
         registrar.setVariant(variant)
 
         registrar.projectJarDependency project(":forge_installer"), "components/forge_installer"
-        registrar.projectJarDependency project(":jre_lwjgl3glfw"), "components/lwjgl3"
 
 		if (variant.getName().toLowerCase().contains("full")) {
             registrar.jreRuntimeDependency 8, "components/jre"
@@ -328,6 +339,8 @@ dependencies {
     implementation 'com.bytedance:bytehook:1.1.1'
 
     implementation 'com.github.MojoLauncher:alsoft-android-aar:f369161d5f'
+
+    implementation project(":dnbglfw")
 
     // implementation 'net.sourceforge.streamsupport:streamsupport-cfuture:1.7.0'
 

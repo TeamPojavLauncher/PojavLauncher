@@ -15,13 +15,13 @@ import androidx.preference.PreferenceFragmentCompat;
 import net.kdt.pojavlaunch.LauncherActivity;
 import git.artdeell.mojo.R;
 import net.kdt.pojavlaunch.prefs.LauncherPreferences;
-import net.kdt.pojavlaunch.utils.PermissionUtils;
 
 /**
  * Preference for the main screen, any sub-screen should inherit this class for consistent behavior,
  * overriding only onCreatePreferences
  */
 public class LauncherPreferenceFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
+    protected Runnable mVisibilityUpdater = () -> {};
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -31,24 +31,27 @@ public class LauncherPreferenceFragment extends PreferenceFragmentCompat impleme
 
     @Override
     public void onCreatePreferences(Bundle b, String str) {
+        mVisibilityUpdater = this::updateVisibility;
         addPreferencesFromResource(R.xml.pref_main);
         setupNotificationRequestPreference();
+    }
+
+    private void updateVisibility(){
+        requirePreference("notification_permission_request").setVisible(!getLauncherActivity().checkForPermission(33, Manifest.permission.POST_NOTIFICATIONS));
     }
 
     private void setupNotificationRequestPreference() {
         Preference mRequestNotificationPermissionPreference = requirePreference("notification_permission_request");
         Activity activity = getActivity();
         if(activity instanceof LauncherActivity) {
-            mRequestNotificationPermissionPreference.setVisible(!PermissionUtils.checkForPermission(activity,33, Manifest.permission.POST_NOTIFICATIONS));
             mRequestNotificationPermissionPreference.setOnPreferenceClickListener(preference -> {
-                PermissionUtils.askForPermission(33, res -> {
-                    if (res) mRequestNotificationPermissionPreference.setVisible(false);
-                }, Manifest.permission.POST_NOTIFICATIONS);
+                ((LauncherActivity) activity).askForPermission(33, Manifest.permission.POST_NOTIFICATIONS);
                 return true;
             });
         }else{
             mRequestNotificationPermissionPreference.setVisible(false);
         }
+        updateVisibility();
     }
 
     @Override
@@ -56,6 +59,7 @@ public class LauncherPreferenceFragment extends PreferenceFragmentCompat impleme
         super.onResume();
         SharedPreferences sharedPreferences = getPreferenceManager().getSharedPreferences();
         if(sharedPreferences != null) sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+        mVisibilityUpdater.run();
     }
 
     @Override
@@ -80,5 +84,8 @@ public class LauncherPreferenceFragment extends PreferenceFragmentCompat impleme
         Preference preference = requirePreference(key);
         if(preferenceClass.isInstance(preference)) return (T)preference;
         throw new IllegalStateException("Preference "+key+" is not an instance of "+preferenceClass.getSimpleName());
+    }
+    protected LauncherActivity getLauncherActivity(){
+        return ((LauncherActivity) getActivity());
     }
 }

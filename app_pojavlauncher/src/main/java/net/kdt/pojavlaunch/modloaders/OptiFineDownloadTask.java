@@ -4,6 +4,7 @@ import net.kdt.pojavlaunch.JMinecraftVersionList;
 import net.kdt.pojavlaunch.tasks.AsyncMinecraftDownloader;
 import net.kdt.pojavlaunch.tasks.MinecraftDownloader;
 
+import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -63,7 +64,7 @@ public class OptiFineDownloadTask implements AsyncMinecraftDownloader.DoneListen
     }
 
     @Override
-    public void onDownloadDone() {
+    public void onDownloadDone(File[] classpath) {
         synchronized (mMinecraftDownloadLock) {
             mDownloaderThrowable = null;
             mMinecraftDownloadLock.notifyAll();

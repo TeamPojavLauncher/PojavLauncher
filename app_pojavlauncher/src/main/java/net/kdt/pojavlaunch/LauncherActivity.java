@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.system.Os;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -44,10 +45,8 @@ import net.kdt.pojavlaunch.services.ProgressServiceKeeper;
 import net.kdt.pojavlaunch.tasks.AsyncMinecraftDownloader;
 import net.kdt.pojavlaunch.tasks.AsyncVersionList;
 import net.kdt.pojavlaunch.tasks.MinecraftDownloader;
+import net.kdt.pojavlaunch.utils.JREUtils;
 import net.kdt.pojavlaunch.utils.NotificationUtils;
-import net.kdt.pojavlaunch.utils.PermissionUtils;
-
-import java.lang.ref.WeakReference;
 
 import git.artdeell.mojo.R;
 
@@ -59,6 +58,7 @@ public class LauncherActivity extends BaseActivity {
     private ProgressLayout mProgressLayout;
     private ProgressServiceKeeper mProgressServiceKeeper;
     private NotificationManager mNotificationManager;
+    private static ActivityResultLauncher<String> mRequestPermissionLauncher;
 
     /* Allows to switch from one button "type" to another */
     private final FragmentManager.FragmentLifecycleCallbacks mFragmentCallbackListener = new FragmentManager.FragmentLifecycleCallbacks() {
@@ -150,9 +150,6 @@ public class LauncherActivity extends BaseActivity {
         }
         return false;
     };
-
-    private ActivityResultLauncher<String> mRequestPermissionLauncher;
-
     @Override
     protected boolean shouldIgnoreNotch() {
         return getResources().getConfiguration().orientation == ORIENTATION_PORTRAIT;
@@ -168,12 +165,24 @@ public class LauncherActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pojav_launcher);
 
-        IconCacheJanitor.runJanitor();
+        try {
+            Os.setenv("POJAV_NATIVEDIR", Tools.NATIVE_LIB_DIR, true);
+            Os.setenv("TMPDIR", Tools.DIR_CACHE.getAbsolutePath(), true);
+         }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
-        PermissionUtils.init(this);
+        IconCacheJanitor.runJanitor();
 
         getWindow().setBackgroundDrawable(null);
         bindViews();
+        mRequestPermissionLauncher = this.registerForActivityResult(
+                new ActivityResultContracts.RequestPermission(),
+                isAllowed -> {
+                    if(!isAllowed) Tools.runOnUiThread(() -> Toast.makeText(this, R.string.notification_permission_toast, Toast.LENGTH_LONG).show());
+                }
+        );
         checkNotificationPermission();
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         ProgressKeeper.addTaskCountListener(mDoubleLaunchPreventionListener);
@@ -260,19 +269,24 @@ public class LauncherActivity extends BaseActivity {
         return null;
     }
 
+    public void askForPermission(int minApi, final String permission) {
+        if(Build.VERSION.SDK_INT < minApi) return;
+        mRequestPermissionLauncher.launch(permission);
+    }
+    public boolean checkForPermission(int minApi, final String permission) {
+        return Build.VERSION.SDK_INT < minApi ||
+                ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_DENIED;
+    }
+    public boolean checkForPermissionRationale(int minApi, final String permission) {
+        return checkForPermission(minApi, permission) || ActivityCompat.shouldShowRequestPermissionRationale(this, permission);
+    }
+
     private void checkNotificationPermission() {
         if(LauncherPreferences.PREF_SKIP_NOTIFICATION_PERMISSION_CHECK ||
-            PermissionUtils.checkForPermission(this,33, Manifest.permission.POST_NOTIFICATIONS)) {
+            this.checkForPermission(33, Manifest.permission.POST_NOTIFICATIONS)) {
             return;
         }
-        if(ActivityCompat.shouldShowRequestPermissionRationale(
-                this,
-                Manifest.permission.POST_NOTIFICATIONS)) {
-            showNotificationPermissionReasoning();
-            return;
-        }
-        PermissionUtils.askForPermission(33, res -> { if (!res) this.handleNoNotificationPermission(); },
-                Manifest.permission.POST_NOTIFICATIONS);
+        showNotificationPermissionReasoning();
     }
 
     private void showNotificationPermissionReasoning() {
@@ -280,8 +294,7 @@ public class LauncherActivity extends BaseActivity {
                 .setTitle(R.string.notification_permission_dialog_title)
                 .setMessage(R.string.notification_permission_dialog_text)
                 .setPositiveButton(android.R.string.ok, (d, w) ->
-                        PermissionUtils.askForPermission(33, res -> { if (!res) this.handleNoNotificationPermission(); },
-                                Manifest.permission.POST_NOTIFICATIONS))
+                        askForPermission(33, Manifest.permission.POST_NOTIFICATIONS))
                 .setNegativeButton(android.R.string.cancel, (d, w)-> handleNoNotificationPermission())
                 .show();
     }
@@ -291,7 +304,6 @@ public class LauncherActivity extends BaseActivity {
         LauncherPreferences.DEFAULT_PREF.edit()
                 .putBoolean(LauncherPreferences.PREF_KEY_SKIP_NOTIFICATION_CHECK, true)
                 .apply();
-        Toast.makeText(this, R.string.notification_permission_toast, Toast.LENGTH_LONG).show();
     }
 
     /** Stuff all the view boilerplate here */

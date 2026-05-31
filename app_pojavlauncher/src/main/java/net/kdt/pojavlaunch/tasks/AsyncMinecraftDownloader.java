@@ -5,6 +5,8 @@ import net.kdt.pojavlaunch.extra.ExtraConstants;
 import net.kdt.pojavlaunch.extra.ExtraCore;
 import net.kdt.pojavlaunch.instances.Instance;
 
+import java.io.File;
+
 public class AsyncMinecraftDownloader {
     public static String normalizeVersionId(String versionString) {
         JMinecraftVersionList versionList = (JMinecraftVersionList) ExtraCore.getValue(ExtraConstants.RELEASE_TABLE);
@@ -24,7 +26,7 @@ public class AsyncMinecraftDownloader {
     }
 
     public interface DoneListener{
-        void onDownloadDone();
+        void onDownloadDone(File[] classpath);
         void onDownloadFailed(Throwable throwable);
     }
 }
