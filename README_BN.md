@@ -41,7 +41,7 @@ PojavLauncher হল একটি লঞ্চার যা আপনাকে �
 ## পরিচিতি
 
 * PojavLauncher হল Android এবং iOS-এর জন্য একটি Minecraft: Java Edition লঞ্চার যা [Boardwalk](https://github.com/zhuowei/Boardwalk)-এর উপর ভিত্তি করে তৈরি।
-* এই লঞ্চার প্রায় সব Minecraft সংস্করণ চালাতে পারে, rd-132211 থেকে শুরু করে 1.21 স্ন্যাপশট পর্যন্ত (Combat Test সংস্করণ সহ)।
+* এই লঞ্চার প্রায় সব Minecraft সংস্করণ চালাতে পারে, rd-132211 থেকে শুরু করে 26.x স্ন্যাপশট পর্যন্ত (Combat Test সংস্করণ সহ)।
 * Forge এবং Fabric ব্যবহার করে মডিং সমর্থিত।
 * এই রেপোজিটরিতে Android-এর সোর্স কোড রয়েছে। iOS/iPadOS-এর জন্য দেখুন [PojavLauncher_iOS](https://github.com/PojavLauncherTeam/PojavLauncher_iOS)।
 
