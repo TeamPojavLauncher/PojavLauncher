@@ -8,8 +8,7 @@
 <img src="https://img.shields.io/badge/platform-Android-green" alt="Platform"/>
 <img src="https://img.shields.io/badge/minSdk-26-blue" alt="Min SDK"/>
 [![Project Status](https://img.shields.io/badge/status-active-brightgreen.svg?style=flat)](https://github.com/TeamPojavLauncher/PojavLauncher/commits)
-[![GitHub commit activity the past week, 4 weeks](https://img.shields.io/github/commit-activity/y/TeamPojavLauncher/PojavLauncher.svg?style=flat)](https://github.com/TeamPojavLauncher/PojavLauncher/graphs/commit-activity)
-[![GitHub commits since branch tip](https://img.shields.io/github/commits-since/TeamPojavLauncher/PojavLauncher/v3_openjdk.svg?style=flat)](https://github.com/TeamPojavLauncher/PojavLauncher/commits/v3_openjdk)
+[![Monthly commit activity for PojavLauncher](https://img.shields.io/github/commit-activity/m/TeamPojavLauncher/PojavLauncher.svg?style=flat)](https://github.com/TeamPojavLauncher/PojavLauncher/graphs/commit-activity)
 [![GitHub issues](https://img.shields.io/github/issues/TeamPojavLauncher/PojavLauncher.svg?style=flat&color=%23FFA500)](https://github.com/TeamPojavLauncher/PojavLauncher/issues)
 [![Crowdin](https://badges.crowdin.net/pojavlauncher/localized.svg)](https://crowdin.com/project/pojavlauncher)
 [![GitHub contributors](https://img.shields.io/github/contributors/TeamPojavLauncher/PojavLauncher.svg?style=flat)](https://github.com/TeamPojavLauncher/PojavLauncher/graphs/contributors)
