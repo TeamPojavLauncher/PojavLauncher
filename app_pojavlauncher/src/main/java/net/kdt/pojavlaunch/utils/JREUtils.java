@@ -164,10 +164,11 @@ public class JREUtils {
           setupAngleEnv(context, envMap);
         }
 
-        if(renderer.equals("opengles3_nggl4es")) {
+        if(renderer.equals("opengles3_ng_gl4es")) {
            envMap.put("LIBGL_USE_MC_COLOR", "1");
            envMap.put("DLOPEN", "libspirv-cross-c-shared.so");
            envMap.put("LIBGL_GL", "31");
+           envMap.put("LIBGL_ES", "3");
            envMap.put("LIBGL_NORMALIZE", "1");
            envMap.put("LIBGL_NOINTOVLHACK", "1");
         }
@@ -271,6 +272,7 @@ public class JREUtils {
      */
     public static String loadGraphicsLibrary(String renderer){
         String renderLibrary;
+        String eglLibrary;
         boolean useGles;
         boolean bypassNamespace = false;
         boolean preloadVk = true;
@@ -280,6 +282,7 @@ public class JREUtils {
                 preloadVk = false;
             case "vulkan_zink":
                 renderLibrary = "libEGL_mesa.so";
+                eglLibrary = renderLibrary;
                 useGles = false;
                 bypassNamespace = true; // Mesa is linked to a bunch of libraries not available in the pojavexec namespace
                 glesVersion = 3;
@@ -287,26 +290,29 @@ public class JREUtils {
                 break;
            case "opengles3_ng_gl4es":
                 renderLibrary = "libng_gl4es.so";
+                eglLibrary = "libEGL.so";
                 useGles = true;
                 glesVersion = 3;
                  break;
             case "opengles3_ltw" :
                 renderLibrary = "libltw.so";
+                eglLibrary = renderLibrary;
                 useGles = true;
                 glesVersion = 3;
                 break;
-            case "opengles_mobileglues" :renderLibrary = "libmobileglues.so"; useGles = true; glesVersion = 3; break;
+            case "opengles_mobileglues" :renderLibrary = "libmobileglues.so"; eglLibrary = renderLibrary; useGles = true; glesVersion = 3; break;
             case "opengles2":
             case "opengles2_5":
             case "opengles3":
             default:
                 renderLibrary = "libgl4es_114.so";
+                eglLibrary = renderLibrary;
                 useGles = true;
                 glesVersion = Integer.parseInt((String) ExtraCore.getValue(ExtraConstants.OPEN_GL_VERSION));
                 break;
         }
 
-        if (!configureRenderspec(renderLibrary, bypassNamespace, useGles, glesVersion)) {
+        if (!configureRenderspec(renderLibrary, eglLibrary, bypassNamespace, useGles, glesVersion)) {
             Log.e("RENDER_LIBRARY","Failed to load renderer " + renderLibrary );
             return null;
         }
@@ -319,7 +325,7 @@ public class JREUtils {
     public static native int chdir(String path);
 
     public static native void setLdLibraryPath(String ldLibraryPath);
-    public static native boolean configureRenderspec(String eglPath, boolean useLoaderBypass, boolean useGles, int glesVersion);
+    public static native boolean configureRenderspec(String rendererPath, String eglPath, boolean useLoaderBypass, boolean useGles, int glesVersion);
     public static native void preloadVulkan();
     public static native void setUseTurnip(boolean enable);
     //public static native void initializeHooks();
