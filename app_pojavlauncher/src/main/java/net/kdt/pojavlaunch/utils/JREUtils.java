@@ -276,7 +276,8 @@ public class JREUtils {
            case "opengles3_ng_gl4es":
                 renderLibrary = "libng_gl4es.so";
                 useGles = false;
-                glesVersion = 2;
+                glesVersion = 3;
+                bypassNamespace = true;
                  break;
             case "opengles3_ltw" :
                 renderLibrary = "libltw.so";
