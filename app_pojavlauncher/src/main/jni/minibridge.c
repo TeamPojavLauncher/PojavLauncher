@@ -37,6 +37,7 @@ static void* egl_acquire_default(const char* name) {
     return dlopen(name, RTLD_NOW);
 }
 
+
 static char* duplicate_java_string(JNIEnv *env, jstring string) {
     if(string == NULL) return NULL;
     const char* chars = (*env)->GetStringUTFChars(env, string, NULL);
@@ -59,6 +60,7 @@ Java_net_kdt_pojavlaunch_utils_JREUtils_configureRenderspec(JNIEnv *env, jclass 
     if(eglPath != NULL) {
         free((void*) renderspec.egl_path);
         renderspec.egl_path = duplicate_java_string(env, eglPath);
+
         if(!renderspec.egl_path) return false;
         if(use_loader_bypass) {
             const char* native_dir = getenv("POJAV_NATIVEDIR");
@@ -72,6 +74,7 @@ Java_net_kdt_pojavlaunch_utils_JREUtils_configureRenderspec(JNIEnv *env, jclass 
             renderspec.egl_acquire = egl_acquire_default;
         }
 
+
         if(renderspec.renderer_path && strcmp(renderspec.renderer_path, renderspec.egl_path) != 0) {
             void* renderer_handle = renderspec.egl_acquire(renderspec.renderer_path);
             if(!renderer_handle) {
@@ -80,14 +83,17 @@ Java_net_kdt_pojavlaunch_utils_JREUtils_configureRenderspec(JNIEnv *env, jclass 
             }
             printf("Loaded renderer %s (in namespace: %i)\n", renderspec.renderer_path, use_loader_bypass);
         }
-
         void* egl_handle = renderspec.egl_acquire(renderspec.egl_path);
         if(!egl_handle) {
             printf("Failed to load EGL: %s\n", dlerror());
             return false;
         }
+
         printf("Loaded EGL %s (in namespace: %i) for renderer %s\n", renderspec.egl_path, use_loader_bypass,
                renderspec.renderer_path ? renderspec.renderer_path : renderspec.egl_path);
+
+       
+ 
     }
 
     renderspec.force_gles_context = use_gles;

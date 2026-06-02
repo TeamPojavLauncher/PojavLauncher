@@ -156,6 +156,7 @@ public class JREUtils {
         setupFfmpegEnv(context, envMap);
         setupRendererEnv(envMap, renderer);
 
+
         if(renderer.equals("opengles_mobileglues")) {
            envMap.put("MG_DIR_PATH", Tools.DIR_DATA + "/MobileGlues");
         }
@@ -172,6 +173,9 @@ public class JREUtils {
            envMap.put("LIBGL_NORMALIZE", "1");
            envMap.put("LIBGL_NOINTOVLHACK", "1");
         }
+        // HACK
+        envMap.put("POJAV_NATIVEDIR", Tools.NATIVE_LIB_DIR);
+        envMap.put("EGL_PLATFORM", "android");
 
         // HACK
         envMap.put("POJAV_NATIVEDIR", Tools.NATIVE_LIB_DIR);
@@ -272,7 +276,9 @@ public class JREUtils {
      */
     public static String loadGraphicsLibrary(String renderer){
         String renderLibrary;
+
         String eglLibrary;
+
         boolean useGles;
         boolean bypassNamespace = false;
         boolean preloadVk = true;
@@ -306,11 +312,22 @@ public class JREUtils {
             case "opengles3":
             default:
                 renderLibrary = "libgl4es_114.so";
+
                 eglLibrary = renderLibrary;
                 useGles = true;
                 glesVersion = Integer.parseInt((String) ExtraCore.getValue(ExtraConstants.OPEN_GL_VERSION));
+
                 break;
+            case "opengles3_ltw" :
+                renderLibrary = "libltw.so";
+                useGles = true;
+                glesVersion = 3;
+                break;
+            case "opengles_mobileglues" :renderLibrary = "libmobileglues.so"; break;
+            case "freedreno_kgsl":
+                preloadVk = false;
         }
+
 
         if (!configureRenderspec(renderLibrary, eglLibrary, bypassNamespace, useGles, glesVersion)) {
             Log.e("RENDER_LIBRARY","Failed to load renderer " + renderLibrary );
@@ -325,7 +342,9 @@ public class JREUtils {
     public static native int chdir(String path);
 
     public static native void setLdLibraryPath(String ldLibraryPath);
+
     public static native boolean configureRenderspec(String rendererPath, String eglPath, boolean useLoaderBypass, boolean useGles, int glesVersion);
+
     public static native void preloadVulkan();
     public static native void setUseTurnip(boolean enable);
     //public static native void initializeHooks();

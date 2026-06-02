@@ -6,7 +6,8 @@
         <item name="3">@string/mcl_setting_renderer_vulkan_zink</item>
         <item name="4">@string/mcl_setting_renderer_ltw</item>
         <item name="5">@string/mcl_setting_renderer_mobileglues</item>
-        <item name="3">@string/mcl_setting_renderer_freedreno_kgsl</item>
+        <item name="6">@string/mcl_setting_renderer_freedreno_kgsl</item>
+ 
     </string-array>
 
     <string-array name="menu_customcontrol">
@@ -38,6 +39,7 @@
     </string-array>
     
     <string-array name="renderer_values">
+
         <item>opengles2</item> <!-- gl4es_extra 1.1.4 with OpenGL ES 2/"3" -->
         <item>opengles3_ng_gl4es</item>
         <item>vulkan_zink</item> <!-- virglrenderer with OpenGL ES 3 -->

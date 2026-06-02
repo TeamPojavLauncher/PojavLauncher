@@ -514,8 +514,8 @@
     <string name="local_login_buy_game">While local account is free, Minecraft is a paid game. We believe everyone should have a chance to try it, and hope that one day you will purchase it</string>
     <string name="vk_mod_title">Vulkan Mod Detected</string>
     <string name="vk_mod_message">It appears you are using VulkanMod This is unsupported and may lead to crashes as most devices have poor Vulkan drivers You will be on your own. We will not provide any help if you encounter any crashes. Please do not report any bugs to the mods community</string>
-    <string name="continue_button">Continue</string>
+    <string name="continue_button">Continue</string>     
+    <string name="import_local_modpack">Import local modpack</string>
     <string name="preference_sysmem_title">Force rendering into the system memory</string>
-    <string name="preference_sysmem_summary">Forces Freedreno to render directly into the system memory. Enable if performance is low or you experience rendering issues</string>
->>>>>>> 21747bacb (Feat[launcher]: New GLFW implementation)
+    <string name="preference_sysmem_summary">Forces Freedreno to render directly into the system memory. Enable if performance is low or you experience rendering issues</string> 
 </resources>

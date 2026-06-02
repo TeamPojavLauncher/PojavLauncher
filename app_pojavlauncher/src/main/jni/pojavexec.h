@@ -12,7 +12,10 @@ typedef struct {
     const char* egl_path;
     int force_gles_context;
     int override_major_version;
+ 
     const char* renderer_path;
+
+ 
 } pojavexec_renderspec_t;
 
 void* pojavexec_loadVulkanDriver();

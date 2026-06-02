@@ -14,6 +14,7 @@
 #include <log.h>
 
 #include "../pojavexec.h"
+ 
 
 
 static const char* gles_symbol_fallbacks[] = {
@@ -49,6 +50,8 @@ static void* get_gles_symbol(const char* name) {
     return symbol;
 }
 
+ 
+
 /**
  * Basically a verbatim implementation of ndlopen(), found at
  * https://github.com/PojavLauncherTeam/lwjgl3/blob/3.3.1/modules/lwjgl/core/src/generated/c/linux/org_lwjgl_system_linux_DynamicLinkLoader.c#L11
@@ -68,8 +71,9 @@ static jlong ndlopen_bugfix(__attribute__((unused)) JNIEnv *env,
     // Load renderer using egl_acquire
     if(strstr(filename, "libGLMojo.so") == filename) {
         printf("LWJGL linkerhook: replacing OpenGL with renderspec driver\n");
-        const pojavexec_renderspec_t *rspec = pojavexec_getRenderSpec();
+        const pojavexec_renderspec_t *rspec = pojavexec_getRenderSpec(); 
         return (jlong) rspec->egl_acquire(rspec->renderer_path ? rspec->renderer_path : rspec->egl_path);
+
     }
 
     // This hook also serves the task of mitigating a bug: the idea is that since, on Android 10 and
