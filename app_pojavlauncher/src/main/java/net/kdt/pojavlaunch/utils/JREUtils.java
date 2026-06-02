@@ -164,6 +164,14 @@ public class JREUtils {
           setupAngleEnv(context, envMap);
         }
 
+        if(renderer.equals("opengles3_nggl4es")) {
+           envMap.put("LIBGL_USE_MC_COLOR", "1");
+           envMap.put("DLOPEN", "libspirv-cross-c-shared.so");
+           envMap.put("LIBGL_GL", "31");
+           envMap.put("LIBGL_NORMALIZE", "1");
+           envMap.put("LIBGL_NOINTOVLHACK", "1");
+        }
+
         // HACK
         envMap.put("POJAV_NATIVEDIR", Tools.NATIVE_LIB_DIR);
         envMap.put("EGL_PLATFORM", "android");
@@ -279,9 +287,8 @@ public class JREUtils {
                 break;
            case "opengles3_ng_gl4es":
                 renderLibrary = "libng_gl4es.so";
-                useGles = false;
+                useGles = true;
                 glesVersion = 3;
-                bypassNamespace = true;
                  break;
             case "opengles3_ltw" :
                 renderLibrary = "libltw.so";
