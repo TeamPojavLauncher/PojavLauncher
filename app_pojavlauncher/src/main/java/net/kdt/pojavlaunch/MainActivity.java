@@ -334,7 +334,11 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
     }
 
     private void runCraft(String versionId, File[] classpath) throws Throwable {
+      String currentRenderer = LauncherPreferences.DEFAULT_PREF.getString("renderer", "opengles2");
+      boolean isMobileGluesRenderer = "opengles_mobileglues".equals(currentRenderer);
+      if(isMobileGluesRenderer) {
         LauncherPreferences.writeMGRendererSettings();
+         }
         String renderer = instance.getLaunchRenderer();
         if(!RendererCompatUtil.checkRendererCompatible(this, renderer)) {
             RendererCompatUtil.RenderersList renderersList = RendererCompatUtil.getCompatibleRenderers(this);

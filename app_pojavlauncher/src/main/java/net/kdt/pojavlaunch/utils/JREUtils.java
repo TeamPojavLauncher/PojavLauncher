@@ -160,6 +160,10 @@ public class JREUtils {
            envMap.put("MG_DIR_PATH", Tools.DIR_DATA + "/MobileGlues");
         }
 
+        if (renderer.equals("opengles3_ltw")) {
+          setupAngleEnv(context, envMap);
+        }
+
         // HACK
         envMap.put("POJAV_NATIVEDIR", Tools.NATIVE_LIB_DIR);
         envMap.put("EGL_PLATFORM", "android");
