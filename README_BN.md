@@ -133,20 +133,37 @@ PojavLauncher বিল্ড করার সবচেয়ে সহজ উ�
 
 PojavLauncher [GNU LGPLv3](https://github.com/PojavLauncherTeam/PojavLauncher/blob/v3_openjdk/LICENSE) লাইসেন্সের অধীনে লাইসেন্সকৃত।
 
-## ক্রেডিট ও ডিপেনডেন্সি
+## ক্রেডিট এবং তৃতীয় পক্ষের উপাদান এবং তাদের লাইসেন্স
 
-* [Boardwalk](https://github.com/zhuowei/Boardwalk) (JVM লঞ্চার): অজানা লাইসেন্স/[Apache License 2.0](https://github.com/zhuowei/Boardwalk/blob/master/LICENSE) বা GNU GPLv2।
-* Android Support Libraries: [Apache License 2.0](https://android.googlesource.com/platform/prebuilts/maven_repo/android/+/master/NOTICE.txt)।
-* [GL4ES](https://github.com/PojavLauncherTeam/gl4es): [MIT License](https://github.com/ptitSeb/gl4es/blob/master/LICENSE)।
-* [OpenJDK](https://github.com/PojavLauncherTeam/openjdk-multiarch-jdk8u): [GNU GPLv2 License](https://openjdk.java.net/legal/gplv2+ce.html)।
-* [LWJGL3](https://github.com/PojavLauncherTeam/lwjgl3): [BSD-3 License](https://github.com/LWJGL/lwjgl3/blob/master/LICENSE.md)।
-* [LWJGLX](https://github.com/PojavLauncherTeam/lwjglx) (LWJGL2 API সামঞ্জস্য স্তর LWJGL3-এর জন্য): অজানা লাইসেন্স।
-* [Mesa 3D Graphics Library](https://gitlab.freedesktop.org/mesa/mesa): [MIT License](https://docs.mesa3d.org/license.html)।
-* [pro-grade](https://github.com/pro-grade/pro-grade) (Java স্যান্ডবক্সিং নিরাপত্তা ম্যানেজার): [Apache License 2.0](https://github.com/pro-grade/pro-grade/blob/master/LICENSE.txt)।
-* [bhook](https://github.com/bytedance/bhook) (Exit কোড ট্র্যাপের জন্য ব্যবহার করা হয়েছে): [MIT license](https://github.com/bytedance/bhook/blob/main/LICENSE)।
-* [libepoxy](https://github.com/anholt/libepoxy): [MIT License](https://github.com/anholt/libepoxy/blob/master/COPYING)।
-* [virglrenderer](https://github.com/PojavLauncherTeam/virglrenderer): [MIT License](https://gitlab.freedesktop.org/virgl/virglrenderer/-/blob/master/COPYING)।
-* Minecraft অ্যাভাটার সরবরাহের জন্য [MCHeads](https://mc-heads.net)-কে ধন্যবাদ।
+### মূল উপাদান
+- [PojavLauncher](https://github.com/PojavLauncherTeam/PojavLauncher): [GNU LGPLv3 লাইসেন্স](https://github.com/PojavLauncherTeam/PojavLauncher/blob/v3_openjdk/LICENSE)
+- [Boardwalk](https://github.com/zhuowei/Boardwalk) (JVM লঞ্চার): অজানা লাইসেন্স / [Apache লাইসেন্স 2.0](https://github.com/zhuowei/Boardwalk/blob/master/LICENSE) অথবা [GNU GPLv2](https://github.com/zhuowei/Boardwalk/blob/master/LICENSE)
+- [MojoLauncher](https://github.com/MojoLauncher/MojoLauncher): [GNU LGPLv3 লাইসেন্স](https://github.com/MojoLauncher/MojoLauncher/blob/v3_openjdk/LICENSE)
+
+### ফ্রেমওয়ার্ক এবং লাইব্রেরি সমর্থন
+- Android সাপোর্ট লাইব্রেরি: [Apache লাইসেন্স 2.0](https://android.googlesource.com/platform/prebuilts/maven_repo/android/+/master/NOTICE.txt)
+- [OpenJDK](https://github.com/PojavLauncherTeam/openjdk-multiarch-jdk8u): [GNU GPLv2 লাইসেন্স](https://openjdk.java.net/legal/gplv2+ce.html)
+
+### গ্রাফিক্স এবং রেন্ডারিং
+- [GL4ES](https://github.com/PojavLauncherTeam/gl4es): [MIT লাইসেন্স](https://github.com/ptitSeb/gl4es/blob/master/LICENSE)
+- [MobileGlues](https://github.com/MobileGL-Dev/MobileGlues): [LGPL-2.1 লাইসেন্স](https://github.com/MobileGL-Dev/MobileGlues/blob/dev-es/LICENSE)
+- [Krypton Wrapper](https://github.com/BZLZHH/NG-GL4ES): [MIT লাইসেন্স](https://github.com/BZLZHH/NG-GL4ES/blob/main/LICENSE)
+- [Mesa 3D গ্রাফিক্স লাইব্রেরি](https://gitlab.freedesktop.org/mesa/mesa): [MIT লাইসেন্স](https://docs.mesa3d.org/license.html)
+
+### Java এবং গেম লাইব্রেরি
+- [LWJGL3](https://github.com/MojoLauncher/lwjgl3): [BSD-3 লাইসেন্স](https://github.com/LWJGL/lwjgl3/blob/master/LICENSE.md)
+
+### নিরাপত্তা এবং সিস্টেম
+- [pro-grade](https://github.com/pro-grade/pro-grade) (Java স্যান্ডবক্সিং সিকিউরিটি ম্যানেজার): [Apache লাইসেন্স 2.0](https://github.com/pro-grade/pro-grade/blob/master/LICENSE.txt)
+- [bhook](https://github.com/bytedance/bhook) (এক্সিট কোড ট্র্যাপিং): [MIT লাইসেন্স](https://github.com/bytedance/bhook/blob/main/LICENSE)
+- [Authlib-Injector](https://github.com/yushijinhun/authlib-injector) (ely.by এর মাধ্যমে অনুমোদন): [AGPL-3.0](https://github.com/yushijinhun/authlib-injector/blob/develop/LICENSE)
+
+### অডিও
+- [OpenAL-Soft](https://github.com/kcat/openal-soft): [GNU GPLv2 লাইসেন্স](app_pojavlauncher/src/main/assets/licenses/OPENAL-SOFT_GPL2)
+- [oboe](https://github.com/google/oboe): [Apache লাইসেন্স 2.0](https://github.com/google/oboe/blob/main/LICENSE)
+
+### অন্যান্য সেবা
+- [Mineskin](https://mineskin.eu/) এবং [MCHeads](https://mc-heads.net) কে Minecraft অবতার প্রদান করার জন্য ধন্যবাদ
 
 ## রোডম্যাপ
 

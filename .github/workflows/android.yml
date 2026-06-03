@@ -10,11 +10,12 @@ jobs:
   build:
     runs-on: ubuntu-22.04
     env:
-      UPLOAD_KEYSTORE_PASSWORD: ${{ secrets.UPLOAD_KEYSTORE_PASSWORD }}
       CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          submodules: recursive
 
       - name: Get LTW
         uses: dawidd6/action-download-artifact@v6
@@ -37,13 +38,6 @@ jobs:
           java-version: '17'
       - name: Create out directory
         run: mkdir out
-
-      - name: Build Release .apk
-        if: env.UPLOAD_KEYSTORE_PASSWORD != ''
-        run: |
-          git submodule update --init --recursive
-          gradle :app_pojavlauncher:assembleFullGplay
-          mv app_pojavlauncher/build/outputs/apk/full/gplay/app_pojavlauncher-full-gplay.apk out/app-release-gplay.apk
 
       - name: Build Debug .apk
         run: |
@@ -72,10 +66,3 @@ jobs:
         with:
           name: app-debug-noruntime
           path: out/app-debug-noruntime.apk
-
-      - name: Upload Release APK
-        if: env.UPLOAD_KEYSTORE_PASSWORD != ''
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-release-gplay
-          path: out/app-release-gplay.apk

@@ -136,20 +136,37 @@ PojavLauncher — это лаунчер, позволяющий вам игра�
 
 PojavLauncher распространяется под лицензией [GNU LGPLv3](https://github.com/PojavLauncherTeam/PojavLauncher/blob/v3_openjdk/LICENSE).
 
-## Благодарности и зависимости
+## Кредиты и компоненты третьих сторон и их лицензии
 
-* [Boardwalk](https://github.com/zhuowei/Boardwalk) (Запускатель JVM): Неизвестная лицензия/[Apache License 2.0](https://github.com/zhuowei/Boardwalk/blob/master/LICENSE) или GNU GPLv2.
-* Android Support Libraries: [Apache License 2.0](https://android.googlesource.com/platform/prebuilts/maven_repo/android/+/master/NOTICE.txt).
-* [GL4ES](https://github.com/PojavLauncherTeam/gl4es): [MIT License](https://github.com/ptitSeb/gl4es/blob/master/LICENSE).
-* [OpenJDK](https://github.com/PojavLauncherTeam/openjdk-multiarch-jdk8u): [GNU GPLv2 License](https://openjdk.java.net/legal/gplv2+ce.html).
-* [LWJGL3](https://github.com/PojavLauncherTeam/lwjgl3): [BSD-3 License](https://github.com/LWJGL/lwjgl3/blob/master/LICENSE.md).
-* [LWJGLX](https://github.com/PojavLauncherTeam/lwjglx) (Уровень совместимости API LWJGL2 для LWJGL3): неизвестная лицензия.
-* [Mesa 3D Graphics Library](https://gitlab.freedesktop.org/mesa/mesa): [MIT License](https://docs.mesa3d.org/license.html).
-* [pro-grade](https://github.com/pro-grade/pro-grade) (Менеджер безопасности для изоляции Java): [Apache License 2.0](https://github.com/pro-grade/pro-grade/blob/master/LICENSE.txt).
-* [bhook](https://github.com/bytedance/bhook) (Используется для перехвата кода выхода): [MIT license](https://github.com/bytedance/bhook/blob/main/LICENSE).
-* [libepoxy](https://github.com/anholt/libepoxy): [MIT License](https://github.com/anholt/libepoxy/blob/master/COPYING).
-* [virglrenderer](https://github.com/PojavLauncherTeam/virglrenderer): [MIT License](https://gitlab.freedesktop.org/virgl/virglrenderer/-/blob/master/COPYING).
-* Спасибо [MCHeads](https://mc-heads.net) за предоставление аватаров Minecraft.
+### Основные компоненты
+- [PojavLauncher](https://github.com/PojavLauncherTeam/PojavLauncher): [Лицензия GNU LGPLv3](https://github.com/PojavLauncherTeam/PojavLauncher/blob/v3_openjdk/LICENSE)
+- [Boardwalk](https://github.com/zhuowei/Boardwalk) (JVM Launcher): Лицензия неизвестна / [Apache License 2.0](https://github.com/zhuowei/Boardwalk/blob/master/LICENSE) или [GNU GPLv2](https://github.com/zhuowei/Boardwalk/blob/master/LICENSE)
+- [MojoLauncher](https://github.com/MojoLauncher/MojoLauncher): [Лицензия GNU LGPLv3](https://github.com/MojoLauncher/MojoLauncher/blob/v3_openjdk/LICENSE)
+
+### Поддержка фреймворков и библиотек
+- Android Support Libraries: [Apache License 2.0](https://android.googlesource.com/platform/prebuilts/maven_repo/android/+/master/NOTICE.txt)
+- [OpenJDK](https://github.com/PojavLauncherTeam/openjdk-multiarch-jdk8u): [Лицензия GNU GPLv2](https://openjdk.java.net/legal/gplv2+ce.html)
+
+### Графика и рендеринг
+- [GL4ES](https://github.com/PojavLauncherTeam/gl4es): [Лицензия MIT](https://github.com/ptitSeb/gl4es/blob/master/LICENSE)
+- [MobileGlues](https://github.com/MobileGL-Dev/MobileGlues): [Лицензия LGPL-2.1](https://github.com/MobileGL-Dev/MobileGlues/blob/dev-es/LICENSE)
+- [Krypton Wrapper](https://github.com/BZLZHH/NG-GL4ES): [Лицензия MIT](https://github.com/BZLZHH/NG-GL4ES/blob/main/LICENSE)
+- [Mesa 3D Graphics Library](https://gitlab.freedesktop.org/mesa/mesa): [Лицензия MIT](https://docs.mesa3d.org/license.html)
+
+### Java и игровые библиотеки
+- [LWJGL3](https://github.com/MojoLauncher/lwjgl3): [Лицензия BSD-3](https://github.com/LWJGL/lwjgl3/blob/master/LICENSE.md)
+
+### Безопасность и система
+- [pro-grade](https://github.com/pro-grade/pro-grade) (менеджер безопасности Java sandboxing): [Apache License 2.0](https://github.com/pro-grade/pro-grade/blob/master/LICENSE.txt)
+- [bhook](https://github.com/bytedance/bhook) (перехват кода выхода): [Лицензия MIT](https://github.com/bytedance/bhook/blob/main/LICENSE)
+- [Authlib-Injector](https://github.com/yushijinhun/authlib-injector) (авторизация через ely.by): [AGPL-3.0](https://github.com/yushijinhun/authlib-injector/blob/develop/LICENSE)
+
+### Аудио
+- [OpenAL-Soft](https://github.com/kcat/openal-soft): [Лицензия GNU GPLv2](app_pojavlauncher/src/main/assets/licenses/OPENAL-SOFT_GPL2)
+- [oboe](https://github.com/google/oboe): [Apache License 2.0](https://github.com/google/oboe/blob/main/LICENSE)
+
+### Другие услуги
+- Спасибо [Mineskin](https://mineskin.eu/) и [MCHeads](https://mc-heads.net) за предоставление аватаров Minecraft
 
 ## Дорожная карта
 

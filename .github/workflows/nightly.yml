@@ -1,0 +1,62 @@
+name: Android Nightly CI
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    env:
+      UPLOAD_KEYSTORE_PASSWORD: ${{ secrets.UPLOAD_KEYSTORE_PASSWORD }}
+      POJAVPUB_KEYSTORE_PASSWORD: ${{ secrets.POJAVPUB_KEYSTORE_PASSWORD }}
+      CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: Get LTW
+        uses: dawidd6/action-download-artifact@v6
+        continue-on-error: true
+        with:
+          repo: MojoLauncher/LTW
+          workflow: android.yml
+          workflow_conclusion: success
+          name: output-aar
+          path: app_pojavlauncher/libs
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.14.3"
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Create out directory
+        run: mkdir out
+
+      - name: Build Nightly Release .apk
+        if: github.repository_owner == 'TeamPojavLauncher' && github.ref_name == 'v3_openjdk'
+        run: |
+          gradle :app_pojavlauncher:assembleFullPubRelease
+          mv app_pojavlauncher/build/outputs/apk/full/pubRelease/app_pojavlauncher-full-pubRelease.apk out/Pojavlauncher-nightly.apk
+
+      - name: Release Nightly APK
+        if: github.repository_owner == 'TeamPojavLauncher' && github.ref_name == 'v3_openjdk'
+        uses: softprops/action-gh-release@v3
+        with:
+          name: PojavLauncher Nightly Builds
+          prerelease: true
+          tag_name: nightly
+          body: |
+            PojavLauncher nightly build.
+            Commit hash: ${{ github.sha }}
+          files: |
+            out/Pojavlauncher-nightly.apk
