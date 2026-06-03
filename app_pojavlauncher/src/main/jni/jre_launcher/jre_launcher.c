@@ -208,8 +208,6 @@ Java_net_kdt_pojavlaunch_utils_jre_JavaRunner_nativeLoadJVM(JNIEnv *env, jclass 
 
     hookExec(vm_env);
 
-    hookExec(vm_env);
-
     jint numAppArgs = (*env)->GetArrayLength(env, appArgs);
     const char** appArgsChar = convert_to_char_array(env, appArgs);
     jobjectArray vm_appArgs = convert_from_char_array(vm_env, appArgsChar, numAppArgs);
