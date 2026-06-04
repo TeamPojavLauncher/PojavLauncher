@@ -12,7 +12,7 @@
 [![Контрибьютеры GitHub](https://img.shields.io/github/contributors/TeamPojavLauncher/PojavLauncher.svg?style=flat)](https://github.com/TeamPojavLauncher/PojavLauncher/graphs/contributors)
 <a href="https://discord.gg/2HYpzs4gZT"><img src="https://img.shields.io/discord/1355213558631366897?color=5865F2&logo=discord&logoColor=white&label=&style=flat" alt="Discord"></a>
 <a href="https://github.com/TeamPojavLauncher"><img src="https://img.shields.io/badge/github-PojavLauncher-green?logo=github" alt="GitHub"></a>
-[![Последний выпуск](https://img.shields.io/github/v/tag/TeamPojavLauncher/PojavLauncher?sort=semver)](https://github.com/PojavLauncherTeam/PojavLauncher/releases "Посмотреть последний выпуск")
+[![Последний выпуск](https://img.shields.io/github/v/tag/TeamPojavLauncher/PojavLauncher?sort=semver)](https://github.com/TeamPojavLauncher/PojavLauncher/releases "Посмотреть последний выпуск")
 [![Лицензия: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue)](https://github.com/PojavLauncherTeam/PojavLauncher/blob/v3_openjdk/LICENSE)
 [![Twitter Follow](https://img.shields.io/twitter/follow/PLaunchTeam.svg?style=social)](https://x.com/PLaunchTeam)
 
@@ -35,7 +35,14 @@ PojavLauncher — это лаунчер, позволяющий вам игра�
 * [Участие в разработке](#участие-в-разработке)
 * [Поддержка](#поддержка)
 * [Лицензия](#лицензия)
-* [Благодарности и зависимости](#благодарности-и-зависимости)
+* [Благодарности и зависимости](#благодарности-и-компоненты-от-третьих-сторон-с-их-лицензиями)
+    * [Основные компоненты](#основные-компоненты)
+    * [Фреймворк и библиотеки поддержки](#фреймворк-и-библиотеки-поддержки)
+    * [Графика и отрисовка](#графика-и-отрисовка)
+    * [Java и игровые библиотеки](#java-и-игровые-библиотеки)
+    * [Безопасность и система](#безопасность-и-система)
+    * [Звук](#звук)
+    * [Другие сервисы](#другие-сервисы)
 * [Дорожная карта](#дорожная-карта)
 
 ## Введение

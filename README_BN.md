@@ -12,7 +12,7 @@
 [![GitHub contributors](https://img.shields.io/github/contributors/TeamPojavLauncher/PojavLauncher.svg?style=flat)](https://github.com/TeamPojavLauncher/PojavLauncher/graphs/contributors)
 <a href="https://discord.gg/2HYpzs4gZT"><img src="https://img.shields.io/discord/1355213558631366897?color=5865F2&logo=discord&logoColor=white&label=&style=flat" alt="Discord"></a>
 <a href="https://github.com/TeamPojavLauncher"><img src="https://img.shields.io/badge/github-PojavLauncher-green?logo=github" alt="GitHub"></a>
-[![Latest Release](https://img.shields.io/github/v/tag/TeamPojavLauncher/PojavLauncher?sort=semver)](https://github.com/PojavLauncherTeam/PojavLauncher/releases "View latest release")
+[![Latest Release](https://img.shields.io/github/v/tag/TeamPojavLauncher/PojavLauncher?sort=semver)](https://github.com/TeamPojavLauncher/PojavLauncher/releases "View latest release")
 [![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue)](https://github.com/PojavLauncherTeam/PojavLauncher/blob/v3_openjdk/LICENSE)
 [![Twitter Follow](https://img.shields.io/twitter/follow/PLaunchTeam.svg?style=social)](https://x.com/PLaunchTeam)
 
@@ -35,7 +35,14 @@ PojavLauncher হল একটি লঞ্চার যা আপনাকে �
 * [অবদান](#অবদান)
 * [সহায়তা](#সহায়তা)
 * [লাইসেন্স](#লাইসেন্স)
-* [ক্রেডিট ও ডিপেনডেন্সি](#ক্রেডিট-ও-ডিপেনডেন্সি)
+* [ক্রেডিট এবং নির্ভরতা](#ক্রেডিট--তৃতীয়-পক্ষের-উপাদান-এবং-তাদের-লাইসেন্স)
+    * [মূল উপাদান](#মূল-উপাদান)
+    * [ফ্রেমওয়ার্ক এবং লাইব্রেরি সাপোর্ট](#ফ্রেমওয়ার্ক-এবং-লাইব্রেরি-সাপোর্ট)
+    * [গ্রাফিক্স এবং রেন্ডারিং](#গ্রাফিক্স-এবং-রেন্ডারিং)
+    * [Java এবং গেম লাইব্রেরি](#java-এবং-গেম-লাইব্রেরি)
+    * [নিরাপত্তা এবং সিস্টেম](#নিরাপত্তা-এবং-সিস্টেম)
+    * [অডিও](#অডিও)
+    * [অন্যান্য সেবা](#অন্যান্য-সেবা)
 * [রোডম্যাপ](#রোডম্যাপ)
 
 ## পরিচিতি

@@ -1,6 +1,8 @@
 <h1 align="center">PojavLauncher</h1>
 
-<a href="https://github.com/TeamPojavLauncher/PojavLauncher/blob/v3_openjdk/README_BN.md">Readme বাংলা ভাষায়</a>
+<a href="./README_RU.md">Readme на русском</a>
+
+<a href="./README_BN.md">Readme বাংলা ভাষায়</a>
 
 <img src="https://github.com/PojavLauncherTeam/PojavLauncher/blob/v3_openjdk/app_pojavlauncher/src/main/assets/pojavlauncher.png" align="left" width="130" height="150" alt="PojavLauncher logo">
 
@@ -14,7 +16,7 @@
 [![GitHub contributors](https://img.shields.io/github/contributors/TeamPojavLauncher/PojavLauncher.svg?style=flat)](https://github.com/TeamPojavLauncher/PojavLauncher/graphs/contributors)
 <a href="https://discord.gg/2HYpzs4gZT"><img src="https://img.shields.io/discord/1355213558631366897?color=5865F2&logo=discord&logoColor=white&label=&style=flat" alt="Discord"></a>
 <a href="https://github.com/TeamPojavLauncher"><img src="https://img.shields.io/badge/github-PojavLauncher-green?logo=github" alt="GitHub"></a>
-[![Latest Release](https://img.shields.io/github/v/tag/TeamPojavLauncher/PojavLauncher?sort=semver)](https://github.com/PojavLauncherTeam/PojavLauncher/releases "View latest release")
+[![Latest Release](https://img.shields.io/github/v/tag/TeamPojavLauncher/PojavLauncher?sort=semver)](https://github.com/TeamPojavLauncher/PojavLauncher/releases "View latest release")
 [![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue)](https://github.com/PojavLauncherTeam/PojavLauncher/blob/v3_openjdk/LICENSE)
 [![Twitter Follow](https://img.shields.io/twitter/follow/PLaunchTeam.svg?style=social)](https://x.com/PLaunchTeam)
 
@@ -37,7 +39,14 @@ For more details, check out our [wiki](https://pojavlauncher.app/)!
 * [Contributing](#contributing)
 * [Support](#support)
 * [License](#license)
-* [Credits & Dependencies](#credits--dependencies)
+* [Credits & Dependencies](#credits--third-party-components-and-their-licenses)
+    * [Core Components](#core-components)
+    * [Framework & Library Support](#framework--library-support)
+    * [Graphics & Rendering](#graphics--rendering)
+    * [Java & Game Libraries](#java--game-libraries)
+    * [Security & System](#security--system)
+    * [Audio](#audio)
+    * [Other Services](#other-services)
 * [Roadmap](#roadmap)
 
 ## Introduction
