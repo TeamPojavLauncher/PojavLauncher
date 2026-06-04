@@ -235,7 +235,9 @@ public class LauncherPreferences {
         MGConfigJson.put("angleDepthClearFixMode", angleDepthClearFixMode);
         MGConfigJson.put("enableExtTimerQuery", timerQueryExt);
         MGConfigJson.put("enableExtDirectStateAccess", dsaExt);
-        MGConfigJson.put("multidrawMode", Integer.parseInt(DEFAULT_PREF.getString("mg_renderer_setting_multidraw", "0")));
+        if (DEFAULT_PREF.getBoolean("mg_renderer_multidrawCompute", false)) {
+            MGConfigJson.put("multidrawMode", 5);
+        } else MGConfigJson.put("multidrawMode", Integer.parseInt(DEFAULT_PREF.getString("mg_renderer_setting_multidraw", "0")));
         MGConfigJson.put("maxGlslCacheSize", Integer.parseInt(DEFAULT_PREF.getString("mg_renderer_setting_glsl_cache_size", "128")));
         File configFile = new File(Tools.DIR_DATA + "/MobileGlues", "config.json");
         FileUtils.ensureParentDirectory(configFile);

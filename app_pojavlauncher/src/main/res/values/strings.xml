@@ -503,6 +503,7 @@
     <string name="mg_renderer_summary_gl43exts">May help with mod crashes. Disable if not needed, can cause crashes.</string>
     <string name="mg_renderer_title_computeShaderext">Advertise Experimental Compute Shader extension</string>
     <string name="mg_renderer_summary_computeShaderext">May help with shaderpack glitches. Disable if not needed, can cause crashes.</string>
+    <string name="mg_renderer_title_multidrawCompute">Use Compute Multidraw Emulation</string>
     <string name="mg_renderer_summary_multidrawCompute">Uses compute shaders for multidraw emulation</string>
     <string name="mg_renderer_title_dsaExt">Advertise Experimental Direct State Access extension</string>
     <string name="mg_renderer_summary_dsaExt">May help with Iris shaderpacks, required for AcceleratedRendering mod</string>
@@ -517,5 +518,4 @@
     <string name="continue_button">Continue</string>
     <string name="preference_sysmem_title">Force rendering into the system memory</string>
     <string name="preference_sysmem_summary">Forces Freedreno to render directly into the system memory. Enable if performance is low or you experience rendering issues</string>
->>>>>>> 21747bacb (Feat[launcher]: New GLFW implementation)
 </resources>
