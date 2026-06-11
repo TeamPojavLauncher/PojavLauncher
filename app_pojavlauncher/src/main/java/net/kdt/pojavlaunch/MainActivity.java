@@ -245,8 +245,6 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
 
             minecraftGLView.setSurfaceReadyListener(() -> {
                 try {
-                    if(!PREF_VIRTUAL_MOUSE_START) cursor.setVisibility(View.GONE);
-                    Tools.runOnUiThread(() -> { if(PREF_VIRTUAL_MOUSE_START) cursor.setVisibility(View.VISIBLE); });
                     if(PREF_VIRTUAL_MOUSE_START) cursor.setVisibility(View.VISIBLE);
                     runCraft(version, classpath);
                 }catch (Throwable e){
