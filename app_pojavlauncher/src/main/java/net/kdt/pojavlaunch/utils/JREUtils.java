@@ -153,12 +153,17 @@ public class JREUtils {
 		}
 		envMap.put("MOD_ANDROID_RUNTIME", modRuntimeDir.getAbsolutePath());
 
+        setupAngleEnv(context, envMap);
         setupFfmpegEnv(context, envMap);
         setupRendererEnv(envMap, renderer);
 
         if(renderer.equals("opengles_mobileglues")) {
            envMap.put("MG_DIR_PATH", Tools.DIR_DATA + "/MobileGlues");
         }
+
+        // HACK
+        envMap.put("POJAV_NATIVEDIR", Tools.NATIVE_LIB_DIR);
+        envMap.put("EGL_PLATFORM", "android");
 
         if (renderer.equals("opengles3_ltw")) {
           setupAngleEnv(context, envMap);

@@ -60,3 +60,5 @@ jobs:
             Commit hash: ${{ github.sha }}
           files: |
             out/Pojavlauncher-nightly.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

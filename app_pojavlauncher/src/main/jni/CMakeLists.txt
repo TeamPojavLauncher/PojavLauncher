@@ -1,7 +1,7 @@
 
 cmake_minimum_required(VERSION 3.22.1)
 
-project("MojoLauncher")
+project("PojavLauncher")
 
 add_library(pojavexec SHARED
         affinity.c
