@@ -12,7 +12,6 @@ typedef struct {
     const char* egl_path;
     int force_gles_context;
     int override_major_version;
-    const char* renderer_path;
     bool force_recreate_on_resize;
     int disp_width;
     int disp_height;
