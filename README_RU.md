@@ -22,6 +22,14 @@ PojavLauncher — это лаунчер, позволяющий вам игра�
 
 Для получения дополнительной информации посетите наш [вики](https://pojavlauncher.app/)!
 
+> [!NOTE]
+> Это не оригинальный PojavLauncher. Оригинальный проект был прекращён. Данный репозиторий является переписанной версией на основе коммитов [MojoLauncher](https://github.com/MojoLauncher/MojoLauncher). Мы не связаны с командой PojavLauncherTeam в какой-либо форме.
+>
+> Мы не ведём никаких социальных сетей, кроме Discord. Все официальные социальные каналы PojavLauncherTeam были архивированы.
+>
+> - Присоединяйтесь к [Discord](https://discord.gg/2HYpzs4gZT) для получения последних обновлений и новостей.
+> - Исходный код оригинального PojavLauncher доступен [здесь](https://github.com/PojavLauncherTeam/PojavLauncher).
+
 ## Оглавление
 
 * [Введение](#введение)
