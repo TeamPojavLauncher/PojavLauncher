@@ -1,0 +1,6 @@
+# Disclaimer! 
+
+I do not have knowledge of the C programming language. In In this fork, most changes in C files were generated using AI.
+Sorry for any mistakes or poor implementations and please forgive me.
+
+- ~BHAI6563/WOOD6563~
