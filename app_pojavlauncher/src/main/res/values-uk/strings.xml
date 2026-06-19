@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- App name part -->
-    <string name="app_name">PojavLauncher (Minecraft: Java Edition для Android)</string>
-    <string name="app_short_name">PojavLauncher</string>
+    <string name="app_short_name">MojoLauncher</string>
     <!-- Action bar part -->
     <!-- Languages list part -->
     <!-- Login strings -->
@@ -230,7 +229,7 @@
     <string name="preference_gyro_sample_rate_title">Частота оновлення гіроскопа</string>
     <string name="preference_gyro_sample_rate_description">Якщо у вас виникають проблеми з гіроскопом, збільште цей параметр.</string>
     <string name="microsoft_login_retry_later">Занадто багато запитів, спробуйте пізніше.</string>
-    <string name="storage_required">PojavLauncher потрібен дозвіл для доступу в сховище, дайте цей доступ та перезапустіть лаунчер</string>
+    <string name="storage_required">MojoLauncher потрібен дозвіл для доступу в сховище, дайте цей доступ та перезапустіть лаунчер</string>
     <string name="mcl_setting_title_buttonallcaps">Використовувати лише великі літери в назвах кнопок</string>
     <string name="mcl_setting_subtitle_buttonallcaps">Вимкніть, якщо бажаєте використовувати малі літери в елементах керування.</string>
     <string name="create_instance">Створити нову версію</string>
