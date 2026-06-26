@@ -56,7 +56,7 @@ PojavLauncher হল একটি লঞ্চার যা আপনাকে �
 ## পরিচিতি
 
 * PojavLauncher হল Android এবং iOS-এর জন্য একটি Minecraft: Java Edition লঞ্চার যা [Boardwalk](https://github.com/zhuowei/Boardwalk)-এর উপর ভিত্তি করে তৈরি।
-* এই লঞ্চার প্রায় সব Minecraft সংস্করণ চালাতে পারে, rd-132211 থেকে শুরু করে 1.21 স্ন্যাপশট পর্যন্ত (Combat Test সংস্করণ সহ)।
+* এই লঞ্চার প্রায় সব Minecraft সংস্করণ চালাতে পারে, rd-132211 থেকে শুরু করে 26.x স্ন্যাপশট পর্যন্ত (Combat Test সংস্করণ সহ)।
 * Forge এবং Fabric ব্যবহার করে মডিং সমর্থিত।
 * এই রেপোজিটরিতে Android-এর সোর্স কোড রয়েছে। iOS/iPadOS-এর জন্য দেখুন [PojavLauncher_iOS](https://github.com/PojavLauncherTeam/PojavLauncher_iOS)।
 
@@ -121,7 +121,7 @@ PojavLauncher বিল্ড করার সবচেয়ে সহজ উ�
 * [ ] LTW: Compute Shader/ইমেজ এক্সটেনশন সক্রিয় করা
 * [ ] LTW: ফ্রেমবাফারের জন্য কালার-রেন্ডারেবল ফরম্যাটে পরিবর্তন
 * [ ] Modpack/Mod ম্যানেজমেন্ট টুল
-* [ ] mrpack/CurseForge zip ইমপোর্ট
+* [x] mrpack/CurseForge zip ইমপোর্ট
 * [ ] MMC-সামঞ্জস্যপূর্ণ ইনস্ট্যান্স ইমপোর্ট
 * [ ] মড নেটিভ লাইব্রেরির জন্য Patch-on-dlopen
 * [ ] আরও আসছে!
@@ -167,6 +167,8 @@ PojavLauncher [GNU LGPLv3](https://github.com/PojavLauncherTeam/PojavLauncher/bl
 
 ### Java এবং গেম লাইব্রেরি
 - [LWJGL3](https://github.com/MojoLauncher/lwjgl3): [BSD-3 লাইসেন্স](https://github.com/LWJGL/lwjgl3/blob/master/LICENSE.md)
+- [GLFW](https://github.com/MojoLauncher/glfw): [জেডলিব (zlib) লাইসেন্স](https://github.com/MojoLauncher/glfw/blob/glfw34/LICENSE.md)
+- [LWJGL2-GLFW](https://github.com/MojoLauncher/lwjgl2-glfw): ৩-ক্লজ BSD লাইসেন্স
 
 ### নিরাপত্তা এবং সিস্টেম
 - [pro-grade](https://github.com/pro-grade/pro-grade) (Java স্যান্ডবক্সিং সিকিউরিটি ম্যানেজার): [Apache লাইসেন্স 2.0](https://github.com/pro-grade/pro-grade/blob/master/LICENSE.txt)

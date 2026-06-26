@@ -60,7 +60,7 @@ For more details, check out our [wiki](https://pojavlauncher.app/)!
 ## Introduction
 
 * PojavLauncher is a Minecraft: Java Edition launcher for Android and iOS based on [Boardwalk](https://github.com/zhuowei/Boardwalk)
-* This launcher can launch almost all available Minecraft versions ranging from rd-132211 to 1.21 snapshots (including Combat Test versions)
+* This launcher can launch almost all available Minecraft versions ranging from rd-132211 to 26.x snapshots (including Combat Test versions)
 * Modding via Forge and Fabric are also supported.
 * This repository contains source code for Android. For iOS/iPadOS, check out [PojavLauncher_iOS](https://github.com/PojavLauncherTeam/PojavLauncher_iOS).
 
@@ -128,7 +128,7 @@ If you need more control over the build process, follow these steps:
 - [ ] LTW: enable compute shader/image extensions
 - [ ] LTW: switch to a color-renderable format for framebuffers
 - [ ] Modpack/mod management tool
-- [ ] mrpack/CurseForge zip import
+- [x] mrpack/CurseForge zip import
 - [ ] MMC-compatible instance import
 - [ ] Patch-on-dlopen for mod native libraries
 - [ ] More to come!
@@ -174,6 +174,8 @@ PojavLauncher is licensed under [GNU LGPLv3](https://github.com/PojavLauncherTea
 
 ### Java & Game Libraries
 - [LWJGL3](https://github.com/MojoLauncher/lwjgl3): [BSD-3 License](https://github.com/LWJGL/lwjgl3/blob/master/LICENSE.md)
+- [GLFW](https://github.com/MojoLauncher/glfw): [zlib license](https://github.com/MojoLauncher/glfw/blob/glfw34/LICENSE.md)
+- [LWJGL2-GLFW](https://github.com/MojoLauncher/lwjgl2-glfw): 3-Clause BSD license
 
 ### Security & System
 - [pro-grade](https://github.com/pro-grade/pro-grade) (Java sandboxing security manager): [Apache License 2.0](https://github.com/pro-grade/pro-grade/blob/master/LICENSE.txt)

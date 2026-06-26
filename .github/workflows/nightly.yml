@@ -1,4 +1,4 @@
-name: Android Nightly CI
+name: Nightly CI
 
 on:
   workflow_dispatch:
@@ -10,7 +10,6 @@ jobs:
   build:
     runs-on: ubuntu-22.04
     env:
-      UPLOAD_KEYSTORE_PASSWORD: ${{ secrets.UPLOAD_KEYSTORE_PASSWORD }}
       POJAVPUB_KEYSTORE_PASSWORD: ${{ secrets.POJAVPUB_KEYSTORE_PASSWORD }}
       CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
     steps:
@@ -42,6 +41,12 @@ jobs:
       - name: Create out directory
         run: mkdir out
 
+      - name: Generate build times
+        id: time
+        run: |
+          echo "timestamp=$(date -u '+%Y%m%d_%H%M%S')" >> $GITHUB_OUTPUT
+          echo "date=$(date -u '+%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
+
       - name: Build Nightly Release .apk
         if: github.repository_owner == 'TeamPojavLauncher' && github.ref_name == 'v3_openjdk'
         run: |
@@ -52,13 +57,26 @@ jobs:
         if: github.repository_owner == 'TeamPojavLauncher' && github.ref_name == 'v3_openjdk'
         uses: softprops/action-gh-release@v3
         with:
-          name: PojavLauncher Nightly Builds
+          name: "Nightly Release #${{ github.run_number }}"
           prerelease: true
-          tag_name: nightly
+          tag_name: nightly-${{ steps.time.outputs.timestamp }}
           body: |
-            PojavLauncher nightly build.
-            Commit hash: ${{ github.sha }}
+            # PojavLauncher Nightly Build
+
+            > **Build #${{ github.run_number }}** · ${{ steps.time.outputs.timestamp }}
+
+            **Commit hash:** `${{ github.sha }}`
+            **Branch:** `${{ github.ref_name }}`
+            **Workflow:** [Run #${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            **Build on (UTC):** ${{ steps.time.outputs.date }}
+
+            ## Changes
+            For detailed changes, check the commit history.
+
           files: |
             out/Pojavlauncher-nightly.apk
+          fail_on_unmatched_files: false
+          draft: false
+
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

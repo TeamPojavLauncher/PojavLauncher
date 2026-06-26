@@ -124,7 +124,7 @@ PojavLauncher — это лаунчер, позволяющий вам игра�
 - [ ] LTW: включение расширений compute shader/image
 - [ ] LTW: переход на формат с возможностью визуализации цвета для буферов кадров
 - [ ] Инструмент управления модпаками/модами
-- [ ] Импорт mrpack/CurseForge zip
+- [x] Импорт mrpack/CurseForge zip
 - [ ] Импорт инстансов совместимых с MMC
 - [ ] Patch-on-dlopen для нативных библиотек модов
 - [ ] Ещё много чего в разработке!
@@ -170,6 +170,8 @@ PojavLauncher распространяется под лицензией [GNU LG
 
 ### Java и игровые библиотеки
 - [LWJGL3](https://github.com/MojoLauncher/lwjgl3): [Лицензия BSD-3](https://github.com/LWJGL/lwjgl3/blob/master/LICENSE.md)
+- [GLFW](https://github.com/MojoLauncher/glfw): [zlib license](https://github.com/MojoLauncher/glfw/blob/glfw34/LICENSE.md)
+- [LWJGL2-GLFW](https://github.com/MojoLauncher/lwjgl2-glfw): 3-Clause BSD license
 
 ### Безопасность и система
 - [pro-grade](https://github.com/pro-grade/pro-grade) (менеджер безопасности Java sandboxing): [Apache License 2.0](https://github.com/pro-grade/pro-grade/blob/master/LICENSE.txt)

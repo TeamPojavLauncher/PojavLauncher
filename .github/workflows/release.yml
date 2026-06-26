@@ -7,7 +7,7 @@ jobs:
   build:
     runs-on: ubuntu-22.04
     env:
-      UPLOAD_KEYSTORE_PASSWORD: ${{ secrets.UPLOAD_KEYSTORE_PASSWORD }}
+      POJAV_KEYSTORE_PASSWORD: ${{ secrets.POJAV_KEYSTORE_PASSWORD }}
       CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
     steps:
       - name: Checkout
@@ -37,15 +37,14 @@ jobs:
         run: mkdir out
 
       - name: Build Release .apk
-        if: env.UPLOAD_KEYSTORE_PASSWORD != ''
         run: |
+          # Build the launcher
           git submodule update --init --recursive
-          gradle :app_pojavlauncher:assembleFullGplay
-          mv app_pojavlauncher/build/outputs/apk/full/gplay/app_pojavlauncher-full-gplay.apk out/app-release-gplay.apk
+          gradle :app_pojavlauncher:assembleFullRelease
+          mv app_pojavlauncher/build/outputs/apk/full/release/app_pojavlauncher-full-release.apk out/app-release.apk
 
       - name: Upload Release APK
-        if: env.UPLOAD_KEYSTORE_PASSWORD != ''
         uses: actions/upload-artifact@v4
         with:
-          name: app-release-gplay
-          path: out/app-release-gplay.apk
+          name: app-release
+          path: out/app-release.apk

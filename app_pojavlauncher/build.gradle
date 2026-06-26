@@ -65,10 +65,22 @@ android {
             keyAlias "androiddebugkey"
             keyPassword "android"
         }
+        customRelease {
+            storeFile file("pojav_release.jks")
+            storePassword System.getenv("POJAV_KEYSTORE_PASSWORD")
+            keyAlias "android_github_release"
+            keyPassword System.getenv("POJAV_KEYSTORE_PASSWORD")
+        }
         googlePlayBuild {
-            storeFile file("mojo_upload.jks")
-            storePassword System.getenv("UPLOAD_KEYSTORE_PASSWORD")
+            storeFile file("pojav_gplay.jks")
+            storePassword System.getenv("POJAV_GPLAY_KEYSTORE_PASSWORD")
             keyAlias "key0"
+            keyPassword System.getenv("POJAV_GPLAY_KEYSTORE_PASSWORD")
+        }
+        upload {
+            storeFile file("pojav_upload.jks")
+            storePassword System.getenv("UPLOAD_KEYSTORE_PASSWORD")
+            keyAlias "upload"
             keyPassword System.getenv("UPLOAD_KEYSTORE_PASSWORD")
         }
         publicBuild {
@@ -109,6 +121,8 @@ android {
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.customDebug
+            resValue "string", "app_name", "PojavLauncher (Debug)"
+            resValue "string", "app_short_name", "PojavLauncher (Debug)"
             resValue 'string', 'application_package', 'net.kdt.pojavlaunch.debug'
             resValue 'string', 'storageProviderAuthorities', 'net.kdt.pojavlaunch.scoped.gamefolder.debug'
         }
@@ -126,11 +140,11 @@ android {
             // Don't set to true or java.awt will be a.a or something similar.
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            // defaultConfig already set
-            // multiDexEnabled = true
-            // debuggable = true
-            resValue 'string', 'storageProviderAuthorities', 'net.kdt.pojavlaunch.scoped.gamefolder'
+            signingConfig signingConfigs.customRelease
+            resValue "string", "app_name", "PojavLauncher (Minecraft: Java Edition for Android)"
+            resValue "string", "app_short_name", "PojavLauncher"
             resValue 'string', 'application_package', 'net.kdt.pojavlaunch'
+            resValue 'string', 'storageProviderAuthorities', 'net.kdt.pojavlaunch.scoped.gamefolder'
         }
         gplay {
             initWith release
@@ -140,8 +154,10 @@ android {
             initWith release
             signingConfig signingConfigs.customDebug // WIP, changeme
             applicationIdSuffix '.pub'
-            resValue 'string', 'storageProviderAuthorities', 'net.kdt.pojavlaunch.pub.scoped.gamefolder'
+            resValue "string", "app_name", "PojavLauncher (Minecraft: Java Edition for Android)"
+            resValue "string", "app_short_name", "PojavLauncher (Nightly)"
             resValue 'string', 'application_package', 'net.kdt.pojavlaunch.pub'
+            resValue 'string', 'storageProviderAuthorities', 'net.kdt.pojavlaunch.pub.scoped.gamefolder'
         }
     }
 
