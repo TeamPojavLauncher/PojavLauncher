@@ -16,7 +16,6 @@ typedef struct {
     int disp_width;
     int disp_height;
     int disp_hz;
-    const char* renderer_path;
 } pojavexec_renderspec_t;
 
 void* pojavexec_loadVulkanDriver();

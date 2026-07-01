@@ -38,28 +38,15 @@ static void* egl_acquire_default(const char* name) {
     return dlopen(name, RTLD_NOW);
 }
 
-static char* duplicate_java_string(JNIEnv *env, jstring string) {
-    if(string == NULL) return NULL;
-    const char* chars = (*env)->GetStringUTFChars(env, string, NULL);
-    if(chars == NULL) return NULL;
-    char* copy = strdup(chars);
-    (*env)->ReleaseStringUTFChars(env, string, chars);
-    return copy;
-}
-
 JNIEXPORT jboolean JNICALL
 Java_net_kdt_pojavlaunch_utils_JREUtils_configureRenderspec(JNIEnv *env, jclass clazz,
-                                                            jstring rendererPath, jstring eglPath,
-                                                            jboolean use_loader_bypass,
+                                                            jstring eglPath, jboolean use_loader_bypass,
                                                             jboolean use_gles,
                                                             jint gles_version) {
-    free((void*) renderspec.renderer_path);
-    renderspec.renderer_path = duplicate_java_string(env, rendererPath);
-    if(rendererPath != NULL && renderspec.renderer_path == NULL) return false;
-
     if(eglPath != NULL) {
-        free((void*) renderspec.egl_path);
-        renderspec.egl_path = duplicate_java_string(env, eglPath);
+        const char* egl_path = (*env)->GetStringUTFChars(env, eglPath, NULL);
+        renderspec.egl_path = strdup(egl_path);
+        (*env)->ReleaseStringUTFChars(env, eglPath, egl_path);
         if(!renderspec.egl_path) return false;
         if(use_loader_bypass) {
             if(!linker_ns_load(native_dir)) {
@@ -71,22 +58,12 @@ Java_net_kdt_pojavlaunch_utils_JREUtils_configureRenderspec(JNIEnv *env, jclass 
             renderspec.egl_acquire = egl_acquire_default;
         }
 
-        if(renderspec.renderer_path && strcmp(renderspec.renderer_path, renderspec.egl_path) != 0) {
-            void* renderer_handle = renderspec.egl_acquire(renderspec.renderer_path);
-            if(!renderer_handle) {
-                printf("Failed to load renderer %s: %s\n", renderspec.renderer_path, dlerror());
-                return false;
-            }
-            printf("Loaded renderer %s (in namespace: %i)\n", renderspec.renderer_path, use_loader_bypass);
-        }
-
         void* egl_handle = renderspec.egl_acquire(renderspec.egl_path);
         if(!egl_handle) {
             printf("Failed to load EGL: %s\n", dlerror());
             return false;
         }
-        printf("Loaded EGL %s (in namespace: %i) for renderer %s\n", renderspec.egl_path, use_loader_bypass,
-               renderspec.renderer_path ? renderspec.renderer_path : renderspec.egl_path);
+        printf("Loaded EGL %s (in namespace: %i)\n", renderspec.egl_path, use_loader_bypass);
     }
 
     renderspec.force_gles_context = use_gles;
