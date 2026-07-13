@@ -79,6 +79,17 @@ public class MainMenuFragment extends Fragment {
                 ExtraCore.setValue(ExtraConstants.LAUNCH_GAME, true);
             })
             .show();
+        } else if (GameRunner.hasReplay(gamedir) && !GameRunner.hasFfmpeg(requireContext())) {
+          new AlertDialog.Builder(requireContext())
+            .setTitle(R.string.no_ffmpeg_title)
+            .setMessage(R.string.no_ffmpeg_message)
+            .setPositiveButton(R.string.install_button, (d, w) -> {
+             Tools.openURL(requireActivity(), "https://github.com/MojoLauncher/FFmpegPlugin/releases");
+    })
+    .setNegativeButton(R.string.continue_button, (d, w) -> {
+        ExtraCore.setValue(ExtraConstants.LAUNCH_GAME, true);
+    })
+    .show();
         } else {
         ExtraCore.setValue(ExtraConstants.LAUNCH_GAME, true);
         }

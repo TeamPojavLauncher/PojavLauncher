@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.util.Log;
+import net.kdt.pojavlaunch.plugins.LibraryPlugin;
 
 import java.io.File;
 import java.util.HashMap;

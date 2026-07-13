@@ -551,4 +551,7 @@
     <string name="mg_renderer_title_dsaExt">Enable Advanced direct_state_access Extension</string>
     <string name="mg_renderer_title_customGLVersion">Custom target OpenGL Version</string>
     <string name="option_custom_gl_version_default">Disable</string>
+    <string name="install_button">Install</string>
+    <string name="no_ffmpeg_title">No FFmpeg</string>
+    <string name="no_ffmpeg_message">Replay Mod needs the FFmpeg plugin to export videos. Please Install it.</string>
 </resources>
