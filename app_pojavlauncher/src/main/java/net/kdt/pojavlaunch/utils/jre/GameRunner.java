@@ -1,6 +1,7 @@
 package net.kdt.pojavlaunch.utils.jre;
 
 import android.util.ArrayMap;
+import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ import net.kdt.pojavlaunch.utils.JSONUtils;
 import net.kdt.pojavlaunch.utils.MCOptionUtils;
 import net.kdt.pojavlaunch.utils.OldVersionsUtils;
 import net.kdt.pojavlaunch.utils.RendererCompatUtil;
+import net.kdt.pojavlaunch.plugins.LibraryPlugin; 
 
 import java.io.File;
 import java.io.IOException;
@@ -71,6 +73,21 @@ public class GameRunner {
             if(name.contains("angelica")) return true;
         }
         return false;
+    }
+
+    public static boolean hasReplay(File gameDir) {
+        File modsDir = new File(gameDir, "mods");
+        File[] mods = modsDir.listFiles(file -> file.isFile() && file.getName().endsWith(".jar"));
+        if(mods == null) return false;
+        for(File file : mods) {
+            String name = file.getName().toLowerCase(); //bhai kids protector
+            if(name.contains("replay")) return true;
+        }
+        return false;
+    }
+
+    public static boolean hasFfmpeg(Context context) {
+     return LibraryPlugin.discoverPlugin(context, LibraryPlugin.ID_FFMPEG_PLUGIN) != null;
     }
 
     public static boolean hasVkMod(File gameDir) {

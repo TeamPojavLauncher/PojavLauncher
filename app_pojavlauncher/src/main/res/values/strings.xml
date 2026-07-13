@@ -523,4 +523,7 @@
     <string name="preference_category_keyboard">Keyboard settings</string>
     <string name="preference_keyboard_autopan_title">Enable keyboard panning</string>
     <string name="preference_keyboard_autopan_summary">Allows on-screen keyboard to move the game window instead of overlapping it if the last touch was below the visible zone. Has no effect on custom control layout buttons with the same function</string>
+    <string name="install_button">Install</string>
+    <string name="no_ffmpeg_title">No FFmpeg</string>
+    <string name="no_ffmpeg_message">Replay Mod needs the FFmpeg plugin to export videos. Please Install it.</string>
 </resources>
