@@ -75,7 +75,7 @@
     <string name="global_unpacking">%s আনপ্যাক করা হচ্ছে</string>
     <string name="global_error_field_empty">এই ক্ষেত্রটি খালি থাকতে পারবে না</string>
     <string name="global_waiting">অপেক্ষা করুন</string>
-    <string name="global_select">নির্বাচন করুন</string>
+    <string name="global_select">সিলেক্ট</string>
     <string name="global_retry">পুনরায় চেষ্টা করুন</string>
     <string name="global_default">ডিফল্ট</string>
     <string name="global_off">Off</string>
@@ -86,7 +86,7 @@
     <string name="mcn_check_fail_vulkan_support">এই ডিভাইসে Zink (Vulkan) রেন্ডারার সমর্থিত নয়!</string>
     <!-- MainActivity: Control buttons -->
     <string name="control_chat">Chat</string>
-    <string name="control_debug">Debug</string>
+    <string name="control_debug">ডিবাগ</string>
     <string name="control_primary">Pri</string>
     <string name="control_secondary">Sec</string>
     <string name="control_shift">◇</string>
@@ -178,7 +178,7 @@
     <string name="preference_video_description">রেজোলিউশন, রেন্ডারার এবং পারফরম্যান্স</string>
     <string name="preference_control_title">কন্ট্রোল কাস্টমাইজেশন</string>
     <string name="preference_control_description">জেসচার, বোতাম এবং স্কেলিং</string>
-    <string name="preference_java_title">জাভা টুইকস</string>
+    <string name="preference_java_title">Java টুইক</string>
     <string name="preference_java_description">জাভা রানটাইম, JVM আর্গুমেন্ট, RAM পরিমাণ এবং স্যান্ডবক্স</string>
     <string name="preference_misc_title">বিবিধ সেটিংস</string>
     <string name="preference_misc_description">ভার্সন লিস্ট এবং লাইব্রেরি যাচাই</string>
@@ -335,7 +335,7 @@
     <string name="preference_category_gestures">জেসচার</string>
     <string name="preference_category_buttons">বোতাম</string>
     <string name="preference_category_experimental_settings">পরীক্ষামূলক সেটিংস</string>
-    <string name="preference_category_java_tweaks">Java টুইক</string>
+    <string name="preference_category_java_tweaks">জাভা টুইকস</string>
     <string name="preference_category_main_categories">বিভাগসমূহ</string>
     <string name="preference_category_miscellaneous">বিবিধ সেটিংস</string>
     <string name="preference_category_video">ভিডিও সেটিংস</string>
@@ -368,7 +368,7 @@
     <string name="controller_button_x">X</string>
     <string name="controller_button_y">Y</string>
     <string name="controller_button_start">স্টার্ট</string>
-    <string name="controller_button_select">সিলেক্ট</string>
+    <string name="controller_button_select">নির্বাচন করুন</string>
     <string name="controller_button_trigger_left">লেফট ট্রিগার</string>
     <string name="controller_button_trigger_right">রাইট ট্রিগার</string>
     <string name="controller_button_shoulder_left">লেফট শোল্ডার</string>
@@ -479,7 +479,7 @@
     <string name="preference_category_keyboard">Keyboard settings</string>
     <string name="preference_keyboard_autopan_title">Enable keyboard panning</string>
     <string name="preference_keyboard_autopan_summary">Allows on-screen keyboard to move the game window instead of overlapping it if the last touch was below the visible zone. Has no effect on custom control layout buttons with the same function</string>
-    <string name="install_button">Install</string>
+    <string name="install_button">ইনস্টল করুন</string>
     <string name="no_ffmpeg_title">No FFmpeg</string>
     <string name="no_ffmpeg_message">Replay Mod needs the FFmpeg plugin to export videos. Please Install it.</string>
     <string name="preference_data_migration_title">Import data</string>
