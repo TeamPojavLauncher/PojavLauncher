@@ -109,7 +109,7 @@
     <!-- ImportControlActivity Strings -->
     <string name="import_control_label">导出控制布局文件</string>
     <string name="import_control_invalid_file">文件无效或已损坏</string>
-    <string name="import_control_import_button">导入控制布局</string>
+    <string name="import_control_import_button">导出控制布局文件</string>
     <string name="import_control_verifying_file">正在校检文件，请稍后重试…</string>
     <string name="import_control_invalid_name">名称无效或文件已存在</string>
     <string name="import_control_done">导入完成！</string>
