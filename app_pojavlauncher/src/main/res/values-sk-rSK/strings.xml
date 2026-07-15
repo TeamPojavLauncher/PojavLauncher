@@ -109,7 +109,7 @@
     <!-- ImportControlActivity Strings -->
     <string name="import_control_label">Importovať ovládacie prvky</string>
     <string name="import_control_invalid_file">Neplatný alebo poškodený súbor</string>
-    <string name="import_control_import_button">Importovať ovládacie prvky</string>
+    <string name="import_control_import_button">importovať ovládacie prvky</string>
     <string name="import_control_verifying_file">Súbor sa overuje, počkajte a skúste to znova…</string>
     <string name="import_control_invalid_name">Neexistujúci názov súboru alebo názov súboru už existuje</string>
     <string name="import_control_done">Import ovládacích prvkov bol dokončený</string>
@@ -360,7 +360,7 @@
     <string name="log_view_button_scroll_on">Autoscroll\nON</string>
     <string name="log_view_button_output_off">Output\nOFF</string>
     <string name="log_view_button_output_on">Output\nON</string>
-    <string name="log_view_label_log_output">Log output:</string>
+    <string name="log_view_label_log_output">Záznam logu:</string>
     <string name="execute_jar_failed_to_read_file">Failed to read the .jar file</string>
     <string name="execute_jar_incompatible_runtime">Execute .jar feature is not compatible with Java %d</string>
     <string name="controller_button_a">A</string>
@@ -479,7 +479,7 @@
     <string name="preference_category_keyboard">Keyboard settings</string>
     <string name="preference_keyboard_autopan_title">Enable keyboard panning</string>
     <string name="preference_keyboard_autopan_summary">Allows on-screen keyboard to move the game window instead of overlapping it if the last touch was below the visible zone. Has no effect on custom control layout buttons with the same function</string>
-    <string name="install_button">Install</string>
+    <string name="install_button">Inštalovať</string>
     <string name="no_ffmpeg_title">No FFmpeg</string>
     <string name="no_ffmpeg_message">Replay Mod needs the FFmpeg plugin to export videos. Please Install it.</string>
     <string name="preference_data_migration_title">Import data</string>
