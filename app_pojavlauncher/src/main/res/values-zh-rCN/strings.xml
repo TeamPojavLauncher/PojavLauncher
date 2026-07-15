@@ -9,6 +9,7 @@
     <string name="login_online_username_hint">用户名</string>
     <string name="login_online_login_label">登录</string>
     <!-- Hint -->
+    <string name="hint_control_mapping">触摸认知界面图标打开上下文菜单:gear：\n点击按钮自定义：编辑、缩放、移除或更改其键盘绑定。</string>
     <!-- Warnings -->
     <string name="warning_remove_account">此账户将被移除！</string>
     <!-- AlertDialog title -->
@@ -25,7 +26,7 @@
     <string name="toast_3">Exit</string>
     -->
     <!-- MCLauncherActivity: Tabs -->
-    <string name="mcl_tab_wiki">Wiki</string>
+    <string name="mcl_tab_wiki">维基</string>
     <!-- MCLauncherActivity: Account status -->
     <!-- MCLauncherActivity: Strings -->
     <string name="mcl_launch_cleancache">正在清理缓存</string>
@@ -50,8 +51,11 @@
     <string name="mcl_setting_subtitle_javaargs">注意，如果你不清楚你在做什么请勿随意修改，否则可能会导致游戏崩溃！</string>
     <string name="mcl_setting_category_renderer">渲染器</string>
     <string name="mcl_setting_renderer_gles2_4">Holy GL4ES -（全版本可用，速度较快）</string>
+    <string name="mcl_setting_renderer_opengles_ng_gl4es">Krypton Wrapper - (所有版本，快速)</string>
     <string name="mcl_setting_renderer_vulkan_zink">Zink（Vulkan）-（全版本可用，速度中等）</string>
     <string name="mcl_setting_renderer_ltw">LTW (OpenGL ES 3) - 仅限 1.17+</string>
+    <string name="mcl_setting_renderer_mobileglues">MobileGlues (OpenGL ES) - (1.17+ 只有快速)</string>
+    <string name="mcl_setting_renderer_freedreno_kgsl">Freedreno - 所有版本，快速，仅广告</string>
     <string name="mcl_setting_veroption_release">正式版</string>
     <string name="mcl_setting_veroption_snapshot">快照版</string>
     <string name="mcl_setting_veroption_oldalpha">远古 alpha 版</string>
@@ -74,8 +78,10 @@
     <string name="global_select">选择</string>
     <string name="global_retry">请重试</string>
     <string name="global_default">默认</string>
+    <string name="global_off">关闭</string>
     <!-- MainActivity: strings -->
     <string name="mcn_exit_title">应用程序/游戏以代码 %d退出，请查看 latestlog.txt 了解详情；如果你不知道发生了什么，请点击 “分享日志文件” 将日志文件发送给他人分析，而不是在此页面截屏。</string>
+    <string name="mcn_abort_title">应用程序/游戏已中止，请检查最新日志.txt获取更多信息</string>
     <string name="mcn_exit_confirm">您确定要强制关闭？</string>
     <string name="mcn_check_fail_vulkan_support">此设备不支持 Zink（Vulkan）渲染器！</string>
     <!-- MainActivity: Control buttons -->
@@ -115,7 +121,9 @@
     <string name="customctrl_size">大小</string>
     <string name="customctrl_mapping">按键映射</string>
     <string name="customctrl_orientation">方向</string>
+    <string name="customctrl_background_bitmap">背景图像</string>
     <string name="customctrl_background_color">背景颜色</string>
+    <string name="customctrl_background_color_warning">更改背景颜色将重置背景图像</string>
     <string name="customctrl_corner_radius">圆角半径</string>
     <string name="customctrl_stroke_width">边框宽度</string>
     <string name="customctrl_stroke_color">边框颜色</string>
@@ -180,6 +188,10 @@
     <string name="preference_sustained_performance_description">通过限制峰值性能来限制过热降频。</string>
     <string name="preference_force_vsync_title">强制启用垂直同步</string>
     <string name="preference_force_vsync_description">通过限制峰值性能来限制过热降频。</string>
+    <string name="preference_use_angle_title">使用AGNLE</string>
+    <string name="preference_use_angle_description">允许使用 ANGLE 而不是LTW 的系统驱动程序。可以在一些GPU 上修复模组的图形问题。</string>
+    <string name="preference_force_legacy_zink_title">使用旧版Zink</string>
+    <string name="preference_force_legacy_zink_description">强制使用旧版Zink而不是根据当前设备选择它。可能会解决一些图形问题。如果游戏变得缓慢，请禁用。</string>
     <string name="preference_force_english_title">强制使用英文</string>
     <string name="preference_force_english_description">允许您按开发者的原意看到原始字符串，此操作需要重启。</string>
     <string name="preference_edit_controls_title">编辑控制布局</string>
@@ -198,6 +210,9 @@
     <string name="profiles_latest_release">最新正式版</string>
     <string name="profiles_profile_name">名称</string>
     <string name="profiles_profile_version">版本</string>
+    <string name="instance_shared_data">共享数据 (点击切换)</string>
+    <string name="instance_shared_data_on">将游戏数据存储在共享目录</string>
+    <string name="instance_shared_data_off">在实例目录中存储游戏数据</string>
     <string name="global_delete">删除</string>
     <string name="pedit_java_runtime">Java 运行环境</string>
     <string name="pedit_renderer">渲染器</string>
@@ -217,12 +232,12 @@
     <string name="main_add_account">添加账户</string>
     <string name="tasks_ongoing">任务正在执行中，请稍候…</string>
     <string name="no_saved_accounts">没有已保存的账户</string>
-
+    <string name="mc_download_failed">无法下载游戏！这可能是由于网络连接不好、不正确地放置文件等。</string>
     <string name="xerr_unknown">未知的 Xbox Live API 错误 %d</string>
-
+    <string name="xerr_no_account">您似乎没有 Xbox Live 帐户。请在 https://minecraft.net/ 登录一次，然后重试。</string>
     <string name="xerr_adult_verification">需要成年人验证您的账户。</string>
     <string name="xerr_child">您的账户是儿童账户，需要添加到家庭中方能登录。</string>
-
+    <string name="mc_not_owned">这个账户似乎没有 MC 配置文件。 如果您有 Xbox 游戏通行证，请登录到游戏网站并设置您的个人资料。</string>
     <string name="xerr_not_available">Xbox Live 在您所在的国家/地区不可用。</string>
     <string name="preference_enable_gyro_title">启用陀螺仪控制</string>
     <string name="preference_enable_gyro_description">启用此功能将允许您通过转动手机来在游戏中转动视角。</string>
@@ -235,6 +250,7 @@
     <string name="storage_required">PojavLauncher 需要连接外部存储，请重新连接并重启应用。</string>
     <string name="mcl_setting_title_buttonallcaps">在按钮标签中仅使用大写字母</string>
     <string name="mcl_setting_subtitle_buttonallcaps">如果您想在按键中显示小写字母，请关闭此设置。</string>
+    <string name="create_instance">创建新实例</string>
     <string name="preference_shader_dump_title">启用着色器输出</string>
     <string name="preference_shader_dump_description">记录切换的着色器到日志文件中。</string>
     <string name="percent_format">%d%%</string>
@@ -251,25 +267,36 @@
     <string name="preference_wipe_controller_description">允许您重置手柄按键映射。</string>
     <string name="preference_deadzone_scale_title">摇杆死区比例</string>
     <string name="preference_deadzone_scale_description">若摇杆偏移，请调高此选项。</string>
+    <string name="preference_microphone_access_title">请求麦克风访问权限</string>
+    <string name="preference_microphone_access_description">请求系统允许游戏设备麦克风</string>
     <string name="preference_force_big_core_title">强制渲染器在大核上运行</string>
-
+    <string name="preference_force_big_core_desc">强制游戏的渲染线程以最高频率在核心上运行。</string>
     <string name="version_select_hint">选择版本</string>
     <string name="forge_dl_progress">正在下载 %s 的安装程序</string>
     <string name="forge_dl_searching">正在搜索 Forge 版本号</string>
     <string name="modloader_dl_failed_to_load_list">加载版本列表失败！</string>
     <string name="forge_dl_no_installer">抱歉，此版本的 Forge 没有安装程序，尚不支持。</string>
     <string name="forge_dl_select_version">选择 Forge 版本</string>
+    <string name="neoforge_dl_no_installer">对不起，这个版本的 NeoForge 没有安装程序，不支持安装程序。</string>
+    <string name="neoforge_dl_select_version">选择 NeoForge 版本</string>
     <string name="fabric_dl_progress">正在下载 %s 加载器元数据</string>
     <string name="fabric_dl_loader_version">%s 加载器版本</string>
-
+    <string name="fabric_dl_game_version">游戏版本</string>
     <string name="fabric_dl_install">安装</string>
     <string name="fabric_dl_cant_read_meta">读取 %s 加载器元数据失败！请稍后重试。</string>
+    <string name="fabric_dl_cant_read_meta2">无法读取 Fabric 加载器元数据。请稍后再试。</string>
+    <string name="modloader_dl_install_fabric_instance">创建 Fabric 实例</string>
+    <string name="modloader_dl_install_quilt_instance">创建Quilt 实例</string>
+    <string name="modloader_dl_install_forge_instance">创建 Forge 实例</string>
+    <string name="modloader_dl_install_neoforge_instance">创建 NeoForge 实例</string>
+    <string name="create_instance_vanilla">创建原版实例</string>
     <string name="create_profile_vanilla_like_versions">类原版版本</string>
     <string name="create_profile_modded_versions">模组加载器版本</string>
     <string name="fabric_dl_loader_title">选择版本</string>
     <string name="of_dl_select_version">选择 OptiFine 版本</string>
     <string name="of_dl_failed_to_scrape">无法收集 OptiFine 安装数据！</string>
     <string name="of_dl_progress">正在下载 %s</string>
+    <string name="mod_dl_install_optifine">安装 OptiFine</string>
     <string name="hint_search_modpack">搜索整合包</string>
     <string name="preference_vulkan_driver_system_title">使用系统 Vulkan 驱动</string>
     <string name="preference_vulkan_driver_system_description">强制启动器使用系统自带的 Vulkan 驱动而非骁龙 Adreno GPU 的 Turnip 驱动。此项设置会影响的 Zink 和调用 Vulkan 的模组。</string>
@@ -288,6 +315,7 @@
     <string name="modpack_install_notification_data_not_available">模组加载器信息下载失败！</string>
     <string name="modpack_install_modloader_download_failed">模组加载器文件下载失败！</string>
     <string name="modpack_install_download_failed">整合包文件下载失败！</string>
+    <string name="modpack_install_instance_button">创建 modpack 实例</string>
     <string name="notif_error_occured">发生了一个错误</string>
     <string name="notif_error_occured_desc">点击查看详请</string>
     <string name="fabric_dl_only_stable">仅显示稳定版本</string>
@@ -370,4 +398,101 @@
     <string name="local_login_bad_username_title">用户名不合适</string>
     <string name="local_login_bad_username_text">用户名长度必须在 3–16 个字符之间，并且只能包含拉丁字母、数字 0–9 和下划线。</string>
     <string name="quick_setting_title">快速设置</string>
+    <string name="create_bta_instance">创建“比冒险更好！”实例</string>
+    <string name="select_bta_version">选择“比冒险更好！”版本</string>
+    <string name="bta_installer_available_versions">支持的 BTA 版本</string>
+    <string name="bta_installer_untested_versions">未测试的 BTA 版本</string>
+    <string name="bta_installer_nightly_versions">每晚BTA 版本</string>
+    <string name="newdl_extracting_native_libraries">正在提取本地库 (%d/%d)</string>
+    <string name="compat_version_not_supported">您的设备无法运行此版本，因为您的设备不支持LTW。</string>
+    <string name="compat_sodium_not_supported">您的设备无法在此版本上运行 Sodium，因为您的设备上不支持LTW。</string>
+    <string name="oauth_unknown_error">未知身份验证错误</string>
+    <string name="oauth_web_complete">正在验证…</string>
+    <string name="auth_select_microsoft">Microsoft 帐户</string>
+    <string name="auth_select_elyby">Ely.by 帐户</string>
+    <string name="auth_select_local">本地账户</string>
+    <string name="instance_dir_missing">缺少实例</string>
+    <string name="gamedir_open_failed">打开游戏目录失败</string>
+    <string name="newerdl_inserting_metadata">搜索文件元数据…</string>
+    <string name="newerdl_inserting_metadata_count">正在搜索文件元数据… (%d/%d)</string>
+    <string name="newerdl_downloading_files_count">正在下载文件… (%d/%d, %.2f MB/s)</string>
+    <string name="newerdl_downloading_files_size">正在下载文件… (%.2f/%.2f MB, %.2f MB/s)</string>
+    <string name="preference_verify_game_files_title">验证游戏文件</string>
+    <string name="preference_verify_game_files_description">验证已下载的游戏文件与元数据中的校验和大小集。元数据JSON文件不受此设置的限制。</string>
+    <string name="preference_go_vroom_title">快速启动游戏</string>
+    <string name="preference_go_vroom_description">在连续重启时不验证文件校验。使游戏启动得非常快。</string>
+    <string name="vml_fail_load_runtime">加载 Java 虚拟机失败: %s</string>
+    <string name="vml_fail_create_runtime">创建 Java 虚拟机失败: %s</string>
+    <string name="vml_fail_find_hooks_native">找不到本地钩子。</string>
+    <string name="vml_fail_find_hooks">找不到挂钩目标失败。请检查最新日志.txt以了解详情</string>
+    <string name="vml_fail_insert_hooks">安装钩子失败: %s</string>
+    <string name="vml_fail_load_classpath">无法加载类路径。请检查最新日志.txt。</string>
+    <string name="vml_fail_run_main">启动主类失败。检查最新日志.txt以了解详情</string>
+    <string name="vml_huh">\???</string>
+    <string name="vml_err_ok">成功</string>
+    <string name="vml_err_unknown">未知错误</string>
+    <string name="vml_err_detached">线程脱离Java VM</string>
+    <string name="vml_err_version">不兼容的 JNI 版本</string>
+    <string name="vml_err_nomem">内存不足</string>
+    <string name="vml_err_exists">虚拟机已经加载</string>
+    <string name="vml_err_inval">参数错误</string>
+    <string name="gr_err_renderer_load_Failed">加载渲染库失败</string>
+    <string name="ltw_4x_msaa_warning_msg">您似乎已在开发者设置中打开\"Force 4x MSAA\"。请关闭它以避免渲染问题。</string>
+    <string name="no_instance">没有选择实例。请创建一个实例或选择一个。</string>
+    <string name="downloading_java_runtime_uni">正在下载运行时间，阶段 1/2 (%.2f/%.2f MB)</string>
+    <string name="downloading_java_runtime_platform">正在下载运行时间，阶段2/2 (%.2f/%.2f MB)</string>
+    <string name="runtime_error_title">运行时间不可用</string>
+    <string name="runtime_error_missing">Java %d 尚未安装。请选择其他兼容的运行时间或连接到互联网自动安装。</string>
+    <string name="runtime_error_install_failed">安装 Java %d失败。请检查您的互联网连接并重试。</string>
+    <string name="modloader_dl_install_legacy_fabric_instance">创建旧版Fabric 实例</string>
+    <string name="instance_delete">删除实例</string>
+    <string name="instance_delete_confirmation">您确定要删除实例吗？这将永久删除实例目录中的所有世界、模组、资源和任何其他数据。 此操作不能被撤销！</string>
+    <string name="preference_renderer_mobileglues_settings">MobileGlues 渲染器设置</string>
+    <string name="mg_renderer_glsl_cache">Max GLSL cache size</string>
+    <string name="mg_renderer_angle">使用 ANGLE 作为驱动程序</string>
+    <string name="mg_renderer_multidraw">多绘制模拟模式</string>
+    <string name="mg_renderer_title_errorSetting">过滤错误</string>
+    <string name="mg_renderer_title_timerQueryExt">在 F3 菜单中禁用 GPU 使用</string>
+    <string name="mg_renderer_summary_timerQueryExt">修复在某些马里设备上打开F3时随机崩溃的问题</string>
+    <string name="preference_ANGLE_only">仅切换选项</string>
+    <string name="mg_renderer_title_angleDepthClearFixMode">通过方块修复手和持有的物品</string>
+    <string name="mg_renderer_summary_angleDepthClearFixMode">只影响ANGLE，可以影响性能。</string>
+    <string name="mg_renderer_title_gl43exts">广告实验OpenGL 4.3 扩展</string>
+    <string name="mg_renderer_summary_gl43exts">可以帮助处理模组崩溃。如果不需要，禁用会导致崩溃。</string>
+    <string name="mg_renderer_title_computeShaderext">Advertise Experimental Compute Shader扩展</string>
+    <string name="mg_renderer_summary_computeShaderext">可能会帮助打碎阴影。如果不需要的话，禁用会导致崩溃。</string>
+    <string name="mg_renderer_title_multidrawCompute">使用 Compute Multiprap 仿真程序</string>
+    <string name="mg_renderer_summary_multidrawCompute">使用计算阴影进行多边形</string>
+    <string name="mg_renderer_title_dsaExt">广告实验直接状态访问扩展</string>
+    <string name="mg_renderer_summary_dsaExt">可能会帮助Iris shaderpacks，加速渲染模组所需。</string>
+    <string name="mg_renderer_title_fsr">AMD FSR 1 升级</string>
+    <string name="mcl_setting_title_renderer_settings">额外渲染器设置</string>
+    <string name="mcl_setting_title_renderer_subtitle">渲染器特定设置</string>
+    <string name="import_local_modpack">导入本地modpack</string>
+    <string name="local_login_buy_game_title">购买Minecraft</string>
+    <string name="local_login_buy_game">本地帐户是免费的，Minecraft是一个付费游戏。 我们认为，每个人都应该有机会尝试这样做，并希望有一天你会购买它。</string>
+    <string name="vk_mod_title">检测到Vulkan Mod</string>
+    <string name="vk_mod_message">您似乎正在使用 VulkanMod ，这是不支持的，可能导致崩溃，因为大多数设备都有较差的Vulkan 驱动程序。您将单独使用。 如果您遇到任何故障，我们将不会提供任何帮助。请不要将任何bug报告给模组社区</string>
+    <string name="continue_button">继续</string>
+    <string name="preference_sysmem_title">强制渲染到系统内存</string>
+    <string name="preference_sysmem_summary">Force Freedreno 可直接渲染到系统内存。启用如果性能低或您遇到渲染问题</string>
+    <string name="preference_category_keyboard">键盘设置</string>
+    <string name="preference_keyboard_autopan_title">启用键盘推送</string>
+    <string name="preference_keyboard_autopan_summary">允许屏幕上的键盘移动游戏窗口而不是重叠，如果最后一次触摸在可见区域以下。 对具有相同功能的自定义控制布局按钮没有任何影响</string>
+    <string name="install_button">安装</string>
+    <string name="no_ffmpeg_title">没有FFmpeg</string>
+    <string name="no_ffmpeg_message">回放Mod 需要FFmpeg 插件来导出视频。请安装它。</string>
+    <string name="preference_data_migration_title">导入数据</string>
+    <string name="preference_data_migration_summary">开始从旧应用安装导入数据 (实例、控制地图)</string>
+    <string name="migration_progress_foreign">提供正确的旧安装！</string>
+    <string name="migration_progress_failed">迁移数据失败！</string>
+    <string name="migration_progress_finish">数据迁移完成！</string>
+    <string name="migration_progress_self">您不能从同一应用导入数据！</string>
+    <string name="migration_progress_copying">正在复制 %1s</string>
+    <string name="migration_progress_warning_title">数据迁移</string>
+    <string name="migration_progress_warning_summary">您将启动数据迁移过程。此过程将复制所有选定的启动器实例并控制地图到当前应用安装。 所有冲突文件都将是OverWRITTEN！考虑备份。您已被警告。</string>
+    <string name="migration_progress_space">Your device does not have enough space for data migration. Free minimum $%1l MB or greater to continue.</string>
+    <string name="migration_notice">看起来您过去已经使用过此应用程序。您可以从杂项设置中导入旧的启动器安装数据。</string>
+    <string name="preference_alsoft_opensl_title">强力使用 OpenSL 进行音频</string>
+    <string name="preference_alsoft_opensl_summary">强制启用 OpenSL 后端在 ALSoft 而不是 Oboe。可以修复某些设备上的音频捕获问题。如果您看到音频回放/捕获问题，请禁用</string>
 </resources>
