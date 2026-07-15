@@ -109,7 +109,7 @@
     <!-- ImportControlActivity Strings -->
     <string name="import_control_label">Importar controles</string>
     <string name="import_control_invalid_file">Arquivo inválido ou corrompido</string>
-    <string name="import_control_import_button">Importar controles</string>
+    <string name="import_control_import_button">importar controles</string>
     <string name="import_control_verifying_file">O arquivo está sendo verificado, por favor aguarde e tente novamente…</string>
     <string name="import_control_invalid_name">Nome inválido ou o arquivo já existe</string>
     <string name="import_control_done">Importação concluída</string>
@@ -479,7 +479,7 @@
     <string name="preference_category_keyboard">Configurações de teclado</string>
     <string name="preference_keyboard_autopan_title">Ativar a panela de teclado</string>
     <string name="preference_keyboard_autopan_summary">Permite que o teclado na tela mova a janela do jogo em vez de a sobrepor se o último toque estiver abaixo da zona visível. Não tem efeito nos botões de layout de controle personalizado com a mesma função</string>
-    <string name="install_button">Instale</string>
+    <string name="install_button">Instalar</string>
     <string name="no_ffmpeg_title">Sem FFmpeg</string>
     <string name="no_ffmpeg_message">O Mod de Replay precisa do plugin FFmpeg para exportar vídeos. Por favor instale-o.</string>
     <string name="preference_data_migration_title">Dado importado</string>
