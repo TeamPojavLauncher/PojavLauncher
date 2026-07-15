@@ -360,7 +360,7 @@
     <string name="log_view_button_scroll_on">自動捲動\n開啟</string>
     <string name="log_view_button_output_off">輸出\n關閉</string>
     <string name="log_view_button_output_on">輸出\n開啟</string>
-    <string name="log_view_label_log_output">記錄輸出：</string>
+    <string name="log_view_label_log_output">記錄輸出:</string>
     <string name="execute_jar_failed_to_read_file">讀取 .jar 檔案失敗</string>
     <string name="execute_jar_incompatible_runtime">執行 .jar 功能與 Java %d 不相容</string>
     <string name="controller_button_a">A</string>
@@ -479,7 +479,7 @@
     <string name="preference_category_keyboard">Keyboard settings</string>
     <string name="preference_keyboard_autopan_title">Enable keyboard panning</string>
     <string name="preference_keyboard_autopan_summary">Allows on-screen keyboard to move the game window instead of overlapping it if the last touch was below the visible zone. Has no effect on custom control layout buttons with the same function</string>
-    <string name="install_button">Install</string>
+    <string name="install_button">安裝</string>
     <string name="no_ffmpeg_title">No FFmpeg</string>
     <string name="no_ffmpeg_message">Replay Mod needs the FFmpeg plugin to export videos. Please Install it.</string>
     <string name="preference_data_migration_title">Import data</string>
