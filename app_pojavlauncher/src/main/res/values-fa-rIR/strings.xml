@@ -110,7 +110,7 @@
     <!-- ImportControlActivity Strings -->
     <string name="import_control_label">کننترلر ها را وارد کنید</string>
     <string name="import_control_invalid_file">فایل نامعتبر یا آسیب دیده هست</string>
-    <string name="import_control_import_button">کنترلر ها را وارد نمایید</string>
+    <string name="import_control_import_button">کننترلر ها را وارد کنید</string>
     <string name="import_control_verifying_file">فایل در حال تأیید است، لطفاً صبر کنید و دوباره امتحان کنید…</string>
     <string name="import_control_invalid_name">اسم نامعتبر است یا نام فایل از قبل وجود دارد</string>
     <string name="import_control_done">وارد کردن انجام شد</string>
@@ -480,7 +480,7 @@
     <string name="preference_category_keyboard">Keyboard settings</string>
     <string name="preference_keyboard_autopan_title">Enable keyboard panning</string>
     <string name="preference_keyboard_autopan_summary">Allows on-screen keyboard to move the game window instead of overlapping it if the last touch was below the visible zone. Has no effect on custom control layout buttons with the same function</string>
-    <string name="install_button">Install</string>
+    <string name="install_button">نصب</string>
     <string name="no_ffmpeg_title">No FFmpeg</string>
     <string name="no_ffmpeg_message">Replay Mod needs the FFmpeg plugin to export videos. Please Install it.</string>
     <string name="preference_data_migration_title">Import data</string>
