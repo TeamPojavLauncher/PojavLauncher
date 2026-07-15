@@ -9,6 +9,7 @@
     <string name="login_online_username_hint">使用者名稱</string>
     <string name="login_online_login_label">登入</string>
     <!-- Hint -->
+    <string name="hint_control_mapping">Touch the cogwheel icon to open the context menu ⚙\nTap a button to customize: edit, resize, remove, or change its keybinds.</string>
     <!-- Warnings -->
     <string name="warning_remove_account">這個帳號將被移除！</string>
     <!-- AlertDialog title -->
@@ -50,8 +51,11 @@
     <string name="mcl_setting_subtitle_javaargs">注意：若你不具備相關知識，修改這項設定可能會導致遊戲崩潰。</string>
     <string name="mcl_setting_category_renderer">渲染器</string>
     <string name="mcl_setting_renderer_gles2_4">Holy GL4ES -（全版本可用，速度快）</string>
+    <string name="mcl_setting_renderer_opengles_ng_gl4es">Krypton Wrapper - (all versions, fast)</string>
     <string name="mcl_setting_renderer_vulkan_zink">Zink (Vulkan) -（全版本支援，速度中等）</string>
     <string name="mcl_setting_renderer_ltw">LTW（OpenGL ES 3）- 僅限 1.17+</string>
+    <string name="mcl_setting_renderer_mobileglues">MobileGlues (OpenGL ES) - (1.17+ only, fast)</string>
+    <string name="mcl_setting_renderer_freedreno_kgsl">Freedreno - all versions, fast, Adreno-only</string>
     <string name="mcl_setting_veroption_release">正式版</string>
     <string name="mcl_setting_veroption_snapshot">快照版</string>
     <string name="mcl_setting_veroption_oldalpha">舊版 Alpha</string>
@@ -74,8 +78,10 @@
     <string name="global_select">選擇</string>
     <string name="global_retry">重試</string>
     <string name="global_default">預設</string>
+    <string name="global_off">Off</string>
     <!-- MainActivity: strings -->
     <string name="mcn_exit_title">應用程式/遊戲以代碼 %d 結束，請查看 latestlog.txt 以取得更多詳細資訊。</string>
+    <string name="mcn_abort_title">Application/Game aborted, check latestlog.txt for more information</string>
     <string name="mcn_exit_confirm">您確定要強制關閉嗎？</string>
     <string name="mcn_check_fail_vulkan_support">這部裝置不支援 Zink 渲染器！</string>
     <!-- MainActivity: Control buttons -->
@@ -115,7 +121,9 @@
     <string name="customctrl_size">大小</string>
     <string name="customctrl_mapping">對映</string>
     <string name="customctrl_orientation">方向</string>
+    <string name="customctrl_background_bitmap">Background image</string>
     <string name="customctrl_background_color">背景顏色</string>
+    <string name="customctrl_background_color_warning">Changing background color will reset the background image</string>
     <string name="customctrl_corner_radius">圓角半徑</string>
     <string name="customctrl_stroke_width">邊框粗細</string>
     <string name="customctrl_stroke_color">邊框顏色</string>
@@ -148,7 +156,7 @@
     <string name="memory_warning_msg">目前可用記憶體 (%d) 低於已配置記憶體 (%d)，這可能會導致遊戲崩潰。如果遊戲崩潰，請變更記憶體配置設定。</string>
     <string name="address_memory_warning_msg">目前可用的可定址記憶體空間 (%d) 低於已配置的記憶體 (%d) ，這將導致遊戲崩潰。如果遊戲崩潰，請變更記憶體配置設定。</string>
     <string name="mcl_memory_allocation">記憶體配置</string>
-
+    <string name="mcl_memory_allocation_subtitle">Controls how much memory is given to the Java runtime.</string>
     <string name="multirt_runtime_corrupt">Java 執行環境毀損</string>
     <string name="multirt_runtime_incompatiblearch">不相容的架構：%s</string>
     <string name="multirt_config_title">Java 執行環境</string>
@@ -180,6 +188,10 @@
     <string name="preference_sustained_performance_description">透過限制峰值效能來限制過熱降頻。</string>
     <string name="preference_force_vsync_title">強制啟用垂直同步</string>
     <string name="preference_force_vsync_description">透過限制峰值效能來限制過熱降頻。</string>
+    <string name="preference_use_angle_title">Use ANGLE</string>
+    <string name="preference_use_angle_description">Allows using ANGLE instead of the system driver for LTW. Can fix graphical issues with mods on some GPUs</string>
+    <string name="preference_force_legacy_zink_title">Use legacy Zink</string>
+    <string name="preference_force_legacy_zink_description">Forcefully use legacy Zink instead of selecting it depending on the current device. Might fix some graphical issues. Disable if the game became slow.</string>
     <string name="preference_force_english_title">強制使用英文</string>
     <string name="preference_force_english_description">允許你查看開發人員預期的原始字串。需要重新啟動。</string>
     <string name="preference_edit_controls_title">自訂控制鍵</string>
@@ -198,6 +210,9 @@
     <string name="profiles_latest_release">最新版本</string>
     <string name="profiles_profile_name">名稱</string>
     <string name="profiles_profile_version">版本</string>
+    <string name="instance_shared_data">Shared data (click to switch)</string>
+    <string name="instance_shared_data_on">Store game data in a shared directory</string>
+    <string name="instance_shared_data_off">Store game data in the instance directory</string>
     <string name="global_delete">刪除</string>
     <string name="pedit_java_runtime">Java 執行環境</string>
     <string name="pedit_renderer">渲染器</string>
@@ -217,12 +232,12 @@
     <string name="main_add_account">新增帳號</string>
     <string name="tasks_ongoing">程式執行中，請稍候</string>
     <string name="no_saved_accounts">無已儲存帳號</string>
-
+    <string name="mc_download_failed">Failed to download the game! This could be due to bad network connection, incorrectly placed files, etc..</string>
     <string name="xerr_unknown">未知的 Xbox Live API 錯誤 %d</string>
-
+    <string name="xerr_no_account">You don\'t seem to have an Xbox Live account. Please log in once on https://minecraft.net/ and try again.</string>
     <string name="xerr_adult_verification">需要成年人驗證你的帳號。</string>
     <string name="xerr_child">因為你的 Xbox 帳號未成年，若要登入，請將此帳號加入 Microsoft 家庭</string>
-
+    <string name="mc_not_owned">It seems like this account does not have an MC profile. If you have Xbox Game Pass, please log in to the game\'s website and set up your profile.</string>
     <string name="xerr_not_available">Xbox Live 在你的國家/地區無法使用</string>
     <string name="preference_enable_gyro_title">啟用陀螺儀控制</string>
     <string name="preference_enable_gyro_description">啟用此功能將允許你透過轉動手機來在遊戲中轉動視角。</string>
@@ -235,6 +250,7 @@
     <string name="storage_required">PojavLauncher 需要連接外部儲存空間，請重新連接並重新啟動應用程式。</string>
     <string name="mcl_setting_title_buttonallcaps">在按鈕標籤中僅使用大寫字母</string>
     <string name="mcl_setting_subtitle_buttonallcaps">如果你想在控制鍵中使用並顯示小寫字母，請關閉此設定。</string>
+    <string name="create_instance">Create new instance</string>
     <string name="preference_shader_dump_title">啟用著色器傾印</string>
     <string name="preference_shader_dump_description">將轉換後的著色器記錄到記錄檔中。</string>
     <string name="percent_format">%d%%</string>
@@ -251,25 +267,36 @@
     <string name="preference_wipe_controller_description">允許你重新映射控制器按鍵。</string>
     <string name="preference_deadzone_scale_title">搖桿死區比例</string>
     <string name="preference_deadzone_scale_description">如果搖桿飄移，請增加此值。</string>
+    <string name="preference_microphone_access_title">Request microphone access permission</string>
+    <string name="preference_microphone_access_description">Requests system to give access to device microphone for the game</string>
     <string name="preference_force_big_core_title">強制渲染器在大核心上執行</string>
-
+    <string name="preference_force_big_core_desc">Forces the game\'s render thread to run on the core with the highest maximum frequency.</string>
     <string name="version_select_hint">選擇版本</string>
     <string name="forge_dl_progress">正在下載 %s 的安裝程式</string>
     <string name="forge_dl_searching">正在搜尋 Forge 版本號</string>
     <string name="modloader_dl_failed_to_load_list">載入版本清單失敗！</string>
     <string name="forge_dl_no_installer">很抱歉，這個版本的 Forge 沒有安裝程式，所以現在還不受支援。</string>
     <string name="forge_dl_select_version">選擇 Forge 版本</string>
+    <string name="neoforge_dl_no_installer">Sorry, but this version of NeoForge does not have an installer, which is not yet supported.</string>
+    <string name="neoforge_dl_select_version">Select NeoForge version</string>
     <string name="fabric_dl_progress">正在下載 %s 載入器中繼資料</string>
     <string name="fabric_dl_loader_version">%s 載入器版本</string>
-
+    <string name="fabric_dl_game_version">Game version</string>
     <string name="fabric_dl_install">安裝</string>
     <string name="fabric_dl_cant_read_meta">讀取 %s 載入器中繼資料失敗，請稍後再試。</string>
+    <string name="fabric_dl_cant_read_meta2">Failed to read Fabric loader metadata. Please try again later.</string>
+    <string name="modloader_dl_install_fabric_instance">Create Fabric instance</string>
+    <string name="modloader_dl_install_quilt_instance">Create Quilt instance</string>
+    <string name="modloader_dl_install_forge_instance">Create Forge instance</string>
+    <string name="modloader_dl_install_neoforge_instance">Create NeoForge instance</string>
+    <string name="create_instance_vanilla">Create vanilla instance</string>
     <string name="create_profile_vanilla_like_versions">類原版版本</string>
     <string name="create_profile_modded_versions">模組版本</string>
     <string name="fabric_dl_loader_title">選擇版本</string>
     <string name="of_dl_select_version">選擇 OptiFine 版本</string>
     <string name="of_dl_failed_to_scrape">無法收集 OptiFine 安裝資料</string>
     <string name="of_dl_progress">正在下載 %s</string>
+    <string name="mod_dl_install_optifine">Install OptiFine</string>
     <string name="hint_search_modpack">搜尋模組包</string>
     <string name="preference_vulkan_driver_system_title">使用系統 Vulkan 驅動</string>
     <string name="preference_vulkan_driver_system_description">強制啟動器在 Snapdragon Adreno GPU 上使用系統 Vulkan 而非 Turnip 驅動程式。僅影響呼叫 Vulkan 的 Zink 和模組</string>
@@ -288,6 +315,7 @@
     <string name="modpack_install_notification_data_not_available">模組載入器資訊下載失敗！</string>
     <string name="modpack_install_modloader_download_failed">模組載入器檔案下載失敗！</string>
     <string name="modpack_install_download_failed">模組包檔案下載失敗！</string>
+    <string name="modpack_install_instance_button">Create modpack instance</string>
     <string name="notif_error_occured">發生錯誤</string>
     <string name="notif_error_occured_desc">按此查看詳細資訊</string>
     <string name="fabric_dl_only_stable">僅顯示穩定版本</string>
@@ -370,4 +398,101 @@
     <string name="local_login_bad_username_title">不適當的使用者名稱</string>
     <string name="local_login_bad_username_text">使用者名稱長度必須介於 3 到 16 個字元之間，且僅能包含拉丁字母、數字 0 到 9 以及底線。</string>
     <string name="quick_setting_title">快速設定</string>
+    <string name="create_bta_instance">Create \"Better than Adventure!\" instance</string>
+    <string name="select_bta_version">Select \"Better than Adventure!\" version</string>
+    <string name="bta_installer_available_versions">Supported BTA versions</string>
+    <string name="bta_installer_untested_versions">Untested BTA versions</string>
+    <string name="bta_installer_nightly_versions">Nightly BTA versions</string>
+    <string name="newdl_extracting_native_libraries">Extracting native libraries (%d/%d)</string>
+    <string name="compat_version_not_supported">Your device cannot run this version because LTW is not supported on your device.</string>
+    <string name="compat_sodium_not_supported">Your device cannot run Sodium on this version because LTW is not supported on your device.</string>
+    <string name="oauth_unknown_error">Unknown authentication error</string>
+    <string name="oauth_web_complete">Authenticating…</string>
+    <string name="auth_select_microsoft">Microsoft account</string>
+    <string name="auth_select_elyby">Ely.by account</string>
+    <string name="auth_select_local">Local account</string>
+    <string name="instance_dir_missing">Instance is missing</string>
+    <string name="gamedir_open_failed">Failed to open game directory</string>
+    <string name="newerdl_inserting_metadata">Searching for file metadata…</string>
+    <string name="newerdl_inserting_metadata_count">Searching for file metadata… (%d/%d)</string>
+    <string name="newerdl_downloading_files_count">Downloading files… (%d/%d, %.2f MB/s)</string>
+    <string name="newerdl_downloading_files_size">Downloading files… (%.2f/%.2f MB, %.2f MB/s)</string>
+    <string name="preference_verify_game_files_title">Verify game files</string>
+    <string name="preference_verify_game_files_description">Verify downloaded game files against the checksum and size set in the metadata. Metadata JSON files are verified regardless of this setting.</string>
+    <string name="preference_go_vroom_title">Fast game startup</string>
+    <string name="preference_go_vroom_description">Don\'t verify file checksums upon sequential restarts. Makes the game start-up very fast.</string>
+    <string name="vml_fail_load_runtime">Failed to load the Java virtual machine: %s</string>
+    <string name="vml_fail_create_runtime">Failed to create the Java virtual machine: %s</string>
+    <string name="vml_fail_find_hooks_native">Failed to find native hooks.</string>
+    <string name="vml_fail_find_hooks">Failed to find hook targets. Check latestlog.txt for details</string>
+    <string name="vml_fail_insert_hooks">Failed to install hooks: %s</string>
+    <string name="vml_fail_load_classpath">Failed to load the classpath. Check latestlog.txt for details</string>
+    <string name="vml_fail_run_main">Failed to start the main class. Check latestlog.txt for details</string>
+    <string name="vml_huh">\???</string>
+    <string name="vml_err_ok">Success</string>
+    <string name="vml_err_unknown">Unknown error</string>
+    <string name="vml_err_detached">Thread is detached from the Java VM</string>
+    <string name="vml_err_version">Incompatible JNI version</string>
+    <string name="vml_err_nomem">Out of RAM</string>
+    <string name="vml_err_exists">The VM is already loaded</string>
+    <string name="vml_err_inval">Bad arguments</string>
+    <string name="gr_err_renderer_load_Failed">Failed to load renderer library</string>
+    <string name="ltw_4x_msaa_warning_msg">It appears that you have turned on \"Force 4x MSAA\" in Developer settings. Please turn it off to avoid rendering issues.</string>
+    <string name="no_instance">No instance is selected. Please create an instance or select one.</string>
+    <string name="downloading_java_runtime_uni">Downloading runtime, stage 1/2 (%.2f/%.2f MB)</string>
+    <string name="downloading_java_runtime_platform">Downloading runtime, stage 2/2 (%.2f/%.2f MB)</string>
+    <string name="runtime_error_title">Runtime not available</string>
+    <string name="runtime_error_missing">Java %d is not yet installed. Please choose another compatible runtime or connect to the Internet to install it automatically.</string>
+    <string name="runtime_error_install_failed">Failed to install Java %d. Please check your Internet connection and try again.</string>
+    <string name="modloader_dl_install_legacy_fabric_instance">Create Legacy Fabric instance</string>
+    <string name="instance_delete">Delete instance</string>
+    <string name="instance_delete_confirmation">Are you sure you want to delete the instance? This will permanently delete all worlds, mods, resources and any other data in the instance directory. This action cannot be undone!</string>
+    <string name="preference_renderer_mobileglues_settings">MobileGlues Renderer Settings</string>
+    <string name="mg_renderer_glsl_cache">Max GLSL cache size</string>
+    <string name="mg_renderer_angle">Use ANGLE as driver</string>
+    <string name="mg_renderer_multidraw">Multidraw emulation mode</string>
+    <string name="mg_renderer_title_errorSetting">Error Filtering</string>
+    <string name="mg_renderer_title_timerQueryExt">Disable GPU Utilization in F3 menu</string>
+    <string name="mg_renderer_summary_timerQueryExt">Fixes random crashes when F3 is open on some Mali devices</string>
+    <string name="preference_ANGLE_only">ANGLE Only Options</string>
+    <string name="mg_renderer_title_angleDepthClearFixMode">Fix hand and held items from going through blocks</string>
+    <string name="mg_renderer_summary_angleDepthClearFixMode">Only affects ANGLE, can affect performance.</string>
+    <string name="mg_renderer_title_gl43exts">Advertise Experimental OpenGL 4.3 extensions</string>
+    <string name="mg_renderer_summary_gl43exts">May help with mod crashes. Disable if not needed, can cause crashes.</string>
+    <string name="mg_renderer_title_computeShaderext">Advertise Experimental Compute Shader extension</string>
+    <string name="mg_renderer_summary_computeShaderext">May help with shaderpack glitches. Disable if not needed, can cause crashes.</string>
+    <string name="mg_renderer_title_multidrawCompute">Use Compute Multidraw Emulation</string>
+    <string name="mg_renderer_summary_multidrawCompute">Uses compute shaders for multidraw emulation</string>
+    <string name="mg_renderer_title_dsaExt">Advertise Experimental Direct State Access extension</string>
+    <string name="mg_renderer_summary_dsaExt">May help with Iris shaderpacks, required for AcceleratedRendering mod</string>
+    <string name="mg_renderer_title_fsr">AMD FSR 1 Upscaling</string>
+    <string name="mcl_setting_title_renderer_settings">Extra Renderer Settings</string>
+    <string name="mcl_setting_title_renderer_subtitle">Renderer specific settings</string>
+    <string name="import_local_modpack">Import local modpack</string>
+    <string name="local_login_buy_game_title">Buy Minecraft</string>
+    <string name="local_login_buy_game">While local account is free, Minecraft is a paid game. We believe everyone should have a chance to try it, and hope that one day you will purchase it.</string>
+    <string name="vk_mod_title">Vulkan Mod Detected</string>
+    <string name="vk_mod_message">It appears you are using VulkanMod This is unsupported and may lead to crashes as most devices have poor Vulkan drivers You will be on your own. We will not provide any help if you encounter any crashes. Please do not report any bugs to the mods community</string>
+    <string name="continue_button">Continue</string>
+    <string name="preference_sysmem_title">Force rendering into the system memory</string>
+    <string name="preference_sysmem_summary">Forces Freedreno to render directly into the system memory. Enable if performance is low or you experience rendering issues</string>
+    <string name="preference_category_keyboard">Keyboard settings</string>
+    <string name="preference_keyboard_autopan_title">Enable keyboard panning</string>
+    <string name="preference_keyboard_autopan_summary">Allows on-screen keyboard to move the game window instead of overlapping it if the last touch was below the visible zone. Has no effect on custom control layout buttons with the same function</string>
+    <string name="install_button">Install</string>
+    <string name="no_ffmpeg_title">No FFmpeg</string>
+    <string name="no_ffmpeg_message">Replay Mod needs the FFmpeg plugin to export videos. Please Install it.</string>
+    <string name="preference_data_migration_title">Import data</string>
+    <string name="preference_data_migration_summary">Begin importing data (instances, control maps) from the old app installation</string>
+    <string name="migration_progress_foreign">Provide a correct old installation!</string>
+    <string name="migration_progress_failed">Failed to migrate data!</string>
+    <string name="migration_progress_finish">Data migration finished!</string>
+    <string name="migration_progress_self">You cannot import data from the same app!</string>
+    <string name="migration_progress_copying">Copying %1s</string>
+    <string name="migration_progress_warning_title">Data Migration</string>
+    <string name="migration_progress_warning_summary">You\'re going to launch a data migration process. This process will copy all selected launcher\'s instances and control maps to the current app installation. All conflicting files will be OVERWRITTEN! Consider making backups. You have been warned.</string>
+    <string name="migration_progress_space">Your device does not have enough space for data migration. Free minimum $%1l MB or greater to continue.</string>
+    <string name="migration_notice">Looks like you have already used this application in the past. You can import old launcher installation data from miscellaneous settings.</string>
+    <string name="preference_alsoft_opensl_title">Forcefully use OpenSL for audio</string>
+    <string name="preference_alsoft_opensl_summary">Forcefully enables OpenSL backend in ALSoft instead of Oboe. Can fix audio capture issues on some devices. Disable if you see audio playback/capture issues</string>
 </resources>
