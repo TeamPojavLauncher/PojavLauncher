@@ -73,7 +73,7 @@ import java.util.Objects;
 import git.artdeell.dnbootstrap.glfw.AndroidClipboardProvider;
 import git.artdeell.dnbootstrap.glfw.GLFW;
 import git.artdeell.dnbootstrap.glfw.GLFWCursorView;
-import git.artdeell.mojo.R;
+import net.kdt.pojavlaunch.R;
 
 public class MainActivity extends BaseActivity implements ControlButtonMenuListener, EditorExitable, ServiceConnection {
     public static final String INTENT_LAUNCH_VERSION = "intent_version";

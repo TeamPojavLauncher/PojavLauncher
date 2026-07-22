@@ -80,8 +80,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import git.artdeell.mojo.BuildConfig;
-import git.artdeell.mojo.R;
+import net.kdt.pojavlaunch.BuildConfig;
+import net.kdt.pojavlaunch.R;
 
 @SuppressWarnings("IOStreamConstructor")
 public final class Tools {

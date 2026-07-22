@@ -9,7 +9,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import git.artdeell.mojo.R;
+import net.kdt.pojavlaunch.R;
 
 public class MultiRTConfigDialog {
     private AlertDialog mDialog;

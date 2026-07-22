@@ -12,7 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.Preference;
 
-import git.artdeell.mojo.R;
+import net.kdt.pojavlaunch.R;
 
 import net.kdt.pojavlaunch.LauncherActivity;
 import net.kdt.pojavlaunch.progresskeeper.ProgressKeeper;

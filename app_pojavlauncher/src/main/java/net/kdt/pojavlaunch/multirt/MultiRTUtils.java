@@ -9,7 +9,7 @@ import android.util.Log;
 
 import com.kdt.mcgui.ProgressLayout;
 
-import git.artdeell.mojo.R;
+import net.kdt.pojavlaunch.R;
 import net.kdt.pojavlaunch.Tools;
 import net.kdt.pojavlaunch.utils.MathUtils;
 import net.kdt.pojavlaunch.utils.jre.JavaRunner;

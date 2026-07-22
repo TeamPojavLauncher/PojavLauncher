@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 
 import net.kdt.pojavlaunch.modloaders.ForgelikeUtils;
 
-import git.artdeell.mojo.R;
+import net.kdt.pojavlaunch.R;
 
 public class NeoforgeInstallFragment extends ForgelikeInstallFragment {
     public static final String TAG = "NeoforgeInstallFragment";

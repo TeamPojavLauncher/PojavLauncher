@@ -50,7 +50,7 @@ configurations {
 }
 
 android {
-    namespace 'git.artdeell.mojo'
+    namespace 'net.kdt.pojavlaunch'
 
     compileSdk = 36
 
