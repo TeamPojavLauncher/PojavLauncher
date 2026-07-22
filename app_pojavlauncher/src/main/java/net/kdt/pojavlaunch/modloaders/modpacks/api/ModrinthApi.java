@@ -4,7 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.kdt.mcgui.ProgressLayout;
 
-import git.artdeell.mojo.R;
+import net.kdt.pojavlaunch.R;
 import net.kdt.pojavlaunch.Tools;
 import net.kdt.pojavlaunch.downloader.Downloader;
 import net.kdt.pojavlaunch.downloader.TaskMetadata;

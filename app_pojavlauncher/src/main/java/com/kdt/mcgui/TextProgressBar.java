@@ -13,7 +13,7 @@ import android.widget.ProgressBar;
 import androidx.annotation.StringRes;
 import androidx.core.content.res.ResourcesCompat;
 
-import git.artdeell.mojo.R;
+import net.kdt.pojavlaunch.R;
 
 public class TextProgressBar extends ProgressBar {
 

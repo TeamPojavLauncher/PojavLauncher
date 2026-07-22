@@ -20,7 +20,7 @@ import net.kdt.pojavlaunch.LwjglGlfwKeycode;
 import net.kdt.pojavlaunch.MainActivity;
 
 import git.artdeell.dnbootstrap.glfw.GLFW;
-import git.artdeell.mojo.R;
+import net.kdt.pojavlaunch.R;
 
 import net.kdt.pojavlaunch.Tools;
 import net.kdt.pojavlaunch.customcontrols.ControlData;

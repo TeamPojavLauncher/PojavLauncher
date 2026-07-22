@@ -14,7 +14,7 @@ import net.kdt.pojavlaunch.utils.NotificationUtils;
 
 import java.io.Serializable;
 
-import git.artdeell.mojo.R;
+import net.kdt.pojavlaunch.R;
 
 public class ShowErrorActivity extends Activity {
 

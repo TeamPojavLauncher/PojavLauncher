@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
-import git.artdeell.mojo.R;
+import net.kdt.pojavlaunch.R;
 import net.kdt.pojavlaunch.Tools;
 import net.kdt.pojavlaunch.instances.Instance;
 import net.kdt.pojavlaunch.instances.Instances;

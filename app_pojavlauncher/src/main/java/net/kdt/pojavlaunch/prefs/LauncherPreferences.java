@@ -22,7 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 
-import git.artdeell.mojo.R;
+import net.kdt.pojavlaunch.R;
 
 public class LauncherPreferences {
     public static final String PREF_KEY_CURRENT_INSTANCE = "currentInstance";

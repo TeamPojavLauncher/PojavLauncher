@@ -20,7 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentActivity;
 
-import git.artdeell.mojo.R;
+import net.kdt.pojavlaunch.R;
 
 import net.kdt.pojavlaunch.PojavApplication;
 import net.kdt.pojavlaunch.Tools;

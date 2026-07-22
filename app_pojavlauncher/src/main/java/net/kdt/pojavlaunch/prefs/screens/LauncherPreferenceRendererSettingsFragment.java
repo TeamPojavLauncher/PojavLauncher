@@ -11,7 +11,7 @@ import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 
-import git.artdeell.mojo.R;
+import net.kdt.pojavlaunch.R;
 
 import java.util.Objects;
 

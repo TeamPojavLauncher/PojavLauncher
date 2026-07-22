@@ -21,7 +21,7 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 
-import git.artdeell.mojo.R;
+import net.kdt.pojavlaunch.R;
 
 /**
  * A class for migrating data from other launcher installations
