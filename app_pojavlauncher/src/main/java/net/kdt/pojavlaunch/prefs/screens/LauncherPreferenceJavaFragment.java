@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -29,12 +30,12 @@ import net.kdt.pojavlaunch.prefs.CustomSeekBarPreference;
 import net.kdt.pojavlaunch.prefs.LauncherPreferences;
 import net.kdt.pojavlaunch.utils.MemoryUtils;
 
-import java.util.Timer;
-import java.util.TimerTask;
+
 
 public class LauncherPreferenceJavaFragment extends LauncherPreferenceFragment {
     private EditText mSetJavaMemory;
-    private final Timer timer = new Timer();
+    private final Handler uiHandler = new Handler(Looper.getMainLooper());
+    private Runnable memoryUpdater;
     private MultiRTConfigDialog mDialogScreen;
     private final ActivityResultLauncher<Object> mVmInstallLauncher =
             registerForActivityResult(new OpenDocumentWithExtension("xz"), (data)->{
@@ -58,18 +59,29 @@ public class LauncherPreferenceJavaFragment extends LauncherPreferenceFragment {
         seek7.setRange(256, maxRAM);
         seek7.setValue(ramAllocation);
         seek7.setSuffix(" MB");
+        seek7.setSelectable(true);
 
-        timer.schedule(new TimerTask() {
+        memoryUpdater = new Runnable() {
             @Override
             public void run() {
-                runOnUiThread(() -> updateMemoryInfo(requireContext(), seek7));
+                if (isAdded()) {
+                    updateMemoryInfo(requireContext(), seek7);
+                    uiHandler.postDelayed(this, 1000);
+                }
             }
-        }, 0, 1000);
+        };
+        uiHandler.post(memoryUpdater);
 
         seek7.setOnPreferenceClickListener(preference -> {
             setMemoryAllocationDialog(seek7, ramAllocation, maxRAM);
             return true;
         });
+
+        seek7.setOnPreferenceChangeListener((preference, newValue) -> {
+            updateMemoryInfo(requireContext(), seek7);
+            return true;
+        });
+
         updateMemoryInfo(requireContext(), seek7);
 
         EditTextPreference editJVMArgs = findPreference("javaArgs");
@@ -85,7 +97,7 @@ public class LauncherPreferenceJavaFragment extends LauncherPreferenceFragment {
 
     @Override
     public void onDestroy() {
-        timer.cancel();
+        uiHandler.removeCallbacks(memoryUpdater);
         super.onDestroy();
     }
 
