@@ -495,4 +495,8 @@
     <string name="migration_notice">Det ser ud som om du tidligere har brugt dette program. Du kan importere gamle launcher-installationsdata fra diverse indstillinger.</string>
     <string name="preference_alsoft_opensl_title">Brug OpenSL til lyd på foranledning</string>
     <string name="preference_alsoft_opensl_summary">Aktiverer fortrydeligt OpenSL-backend i ALSoft i stedet for Oboe. Kan løse problemer med lydoptagelser på nogle enheder. Deaktivér, hvis du ser lydafspilning/optagelsesproblemer</string>
+    <string name="global_not_installed">Not Installed</string>
+    <string name="global_download">Download</string>
+    <string name="global_installing">Installing…</string>
+    <string name="multirt_no_internet">Failed to download, check your internet connection.</string>
 </resources>
