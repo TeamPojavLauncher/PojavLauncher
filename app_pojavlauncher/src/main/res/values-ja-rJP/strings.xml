@@ -495,4 +495,8 @@
     <string name="migration_notice">以前にこのアプリケーションを使用しているようです。その他の設定から古いランチャーのインストールデータをインポートできます。</string>
     <string name="preference_alsoft_opensl_title">オーディオに OpenSL を強制的に使用する</string>
     <string name="preference_alsoft_opensl_summary">強制的にOboeの代わりにALSoftでOpenSLバックエンドを有効にします。一部のデバイスでオーディオキャプチャの問題を修正できます。オーディオ再生/キャプチャの問題がある場合は無効にしてください。</string>
+    <string name="global_not_installed">Not Installed</string>
+    <string name="global_download">Download</string>
+    <string name="global_installing">Installing…</string>
+    <string name="multirt_no_internet">Failed to download, check your internet connection.</string>
 </resources>
