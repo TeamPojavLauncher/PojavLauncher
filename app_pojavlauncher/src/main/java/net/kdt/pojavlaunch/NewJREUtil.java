@@ -75,6 +75,12 @@ public class NewJREUtil {
             this.mSignatureCheckUtil = mSignatureCheckUtil;
         }
 
+        public RuntimeDownloaderVerifier(Map<String, byte[]> signatures, String runtimePath, SignatureCheckUtil mSignatureCheckUtil) {
+            this.mSignatures = signatures;
+            this.mRuntimePath = runtimePath;
+            this.mSignatureCheckUtil = mSignatureCheckUtil;
+        }
+
         public boolean downloadAndVerify(String component, File output, int progressString) throws IOException {
             DownloadUtils.downloadFileMonitored(
                     mRuntimePath + component, output, mDownloadBuffer,
@@ -213,17 +219,71 @@ public class NewJREUtil {
         instance.write();
     }
 
-    private enum InternalRuntime {
+    public enum ExternalRuntime {
+        JRE_8(8, "Internal-8", "components/jre-new"),
         JRE_17(17, "Internal-17", "components/jre-new"),
         JRE_21(21, "Internal-21", "components/jre-21"),
         JRE_25(25, "Internal-25", "components/jre-25");
+
         public final int majorVersion;
         public final String name;
         public final String path;
-        InternalRuntime(int majorVersion, String name, String path) {
+        public boolean isDownloading = false;
+
+        ExternalRuntime(int majorVersion, String name, String path) {
             this.majorVersion = majorVersion;
             this.name = name;
             this.path = path;
+        }
+
+        public void downloadRuntime(AssetManager assetManager) throws RuntimeSelectionException {
+            tryDownloadExternalRuntime(assetManager, this);
+        }
+    }
+
+    private static void tryDownloadExternalRuntime(AssetManager assetManager, ExternalRuntime externalRuntime) throws RuntimeSelectionException {
+        try {
+            String remoteVersion = DownloadUtils.downloadString(DOWNLOAD_URL + externalRuntime.path + "/version");
+            unpackExternalRuntime(assetManager, externalRuntime, remoteVersion);
+        } catch (IOException e) {
+            throw new RuntimeSelectionException(RuntimeSelectionException.RUNTIME_STATE_INSTALLATION_FAILED, externalRuntime.majorVersion);
+        }
+    }
+
+    private static void unpackExternalRuntime(AssetManager assetManager, ExternalRuntime externalRuntime, String versionSignatures) throws RuntimeSelectionException {
+        Map<String, byte[]> signatures = SignatureCheckUtil.decodeSignatureBundle(versionSignatures);
+        String platformBinFile = "bin-"+archAsString(Tools.DEVICE_ARCHITECTURE)+".tar.xz";
+        if(!signatures.containsKey("universal.tar.xz") || !signatures.containsKey(platformBinFile)) {
+            throw new RuntimeSelectionException(RuntimeSelectionException.RUNTIME_STATE_INSTALLATION_FAILED, externalRuntime.majorVersion);
+        }
+
+        File universalCache = null, platformCache = null;
+        try {
+            SignatureCheckUtil signatureCheckUtil = SignatureCheckUtil.create(assetManager);
+            universalCache = File.createTempFile("jre-install-", "-universal", Tools.DIR_CACHE);
+            platformCache = File.createTempFile("jre-install-", "-platform", Tools.DIR_CACHE);
+            
+            String runtimePath = DOWNLOAD_URL + externalRuntime.path + "/";
+            RuntimeDownloaderVerifier verifier = new RuntimeDownloaderVerifier(signatures, runtimePath, signatureCheckUtil);
+            
+            if (!verifier.downloadAndVerify("universal.tar.xz", universalCache, R.string.downloading_java_runtime_uni) ||
+                    !verifier.downloadAndVerify(platformBinFile, platformCache, R.string.downloading_java_runtime_platform)) {
+                throw new RuntimeSelectionException(RuntimeSelectionException.RUNTIME_STATE_INSTALLATION_FAILED, externalRuntime.majorVersion);
+            }
+
+            try (FileInputStream universal = new FileInputStream(universalCache); FileInputStream platform = new FileInputStream(platformCache)) {
+                MultiRTUtils.installRuntimeNamedBinpack(universal, platform, externalRuntime.name, versionSignatures);
+                MultiRTUtils.postPrepare(externalRuntime.name);
+                MultiRTUtils.forceReread(externalRuntime.name);
+            }
+        } catch (IOException e) {
+            throw new RuntimeSelectionException(RuntimeSelectionException.RUNTIME_STATE_INSTALLATION_FAILED, externalRuntime.majorVersion);
+        } finally {
+            ProgressLayout.clearProgress(ProgressLayout.UNPACK_RUNTIME);
+            if(universalCache != null && universalCache.isFile()) //noinspection ResultOfMethodCallIgnored
+                universalCache.delete();
+            if(platformCache != null && platformCache.isFile()) //noinspection ResultOfMethodCallIgnored
+                platformCache.delete();
         }
     }
 

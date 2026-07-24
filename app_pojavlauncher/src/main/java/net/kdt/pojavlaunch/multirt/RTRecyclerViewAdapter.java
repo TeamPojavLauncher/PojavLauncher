@@ -3,7 +3,9 @@ package net.kdt.pojavlaunch.multirt;
 import static net.kdt.pojavlaunch.PojavApplication.sExecutorService;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -18,9 +20,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import net.kdt.pojavlaunch.Architecture;
+import net.kdt.pojavlaunch.NewJREUtil;
 import net.kdt.pojavlaunch.R;
 import net.kdt.pojavlaunch.Tools;
 import net.kdt.pojavlaunch.prefs.LauncherPreferences;
+import net.kdt.pojavlaunch.utils.jre.RuntimeSelectionException;
 
 import java.io.IOException;
 import java.util.List;
@@ -28,6 +32,11 @@ import java.util.List;
 public class RTRecyclerViewAdapter extends RecyclerView.Adapter<RTRecyclerViewAdapter.RTViewHolder> {
 
     private boolean mIsDeleting = false;
+    private Activity mActivity;
+
+    public void setActivity(Activity activity) {
+        mActivity = activity;
+    }
 
     @NonNull
     @Override
@@ -38,13 +47,22 @@ public class RTRecyclerViewAdapter extends RecyclerView.Adapter<RTRecyclerViewAd
 
     @Override
     public void onBindViewHolder(@NonNull RTViewHolder holder, int position) {
-        final List<Runtime> runtimes = MultiRTUtils.getRuntimes();
-        holder.bindRuntime(runtimes.get(position),position);
+        final List<Runtime> installedRuntimes = MultiRTUtils.getRuntimes();
+        final List<NewJREUtil.ExternalRuntime> downloadableRuntimes = MultiRTUtils.getRuntimesToDownload();
+
+        if (position < installedRuntimes.size()) {
+            // Show installed runtime
+            holder.bindRuntime(installedRuntimes.get(position), position);
+        } else if (position < installedRuntimes.size() + downloadableRuntimes.size()) {
+            // Show downloadable runtime
+            int downloadPos = position - installedRuntimes.size();
+            holder.bindDownloadableRuntime(downloadableRuntimes.get(downloadPos), position);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return MultiRTUtils.getRuntimes().size();
+        return MultiRTUtils.getRuntimes().size() + MultiRTUtils.getRuntimesToDownload().size();
     }
 
     public boolean isDefaultRuntime(Runtime rt) {
@@ -77,6 +95,7 @@ public class RTRecyclerViewAdapter extends RecyclerView.Adapter<RTRecyclerViewAd
         final ImageButton mDeleteButton;
         final Context mContext;
         Runtime mCurrentRuntime;
+        NewJREUtil.ExternalRuntime mCurrentDownloadableRuntime;
         int mCurrentPosition;
 
         public RTViewHolder(View itemView) {
@@ -92,12 +111,15 @@ public class RTRecyclerViewAdapter extends RecyclerView.Adapter<RTRecyclerViewAd
             setupOnClickListeners();
         }
 
-        @SuppressLint("NotifyDataSetChanged") // same as all the other ones
+        @SuppressLint("NotifyDataSetChanged")
         private void setupOnClickListeners(){
             mSetDefaultButton.setOnClickListener(v -> {
                 if(mCurrentRuntime != null) {
                     setDefault(mCurrentRuntime);
                     RTRecyclerViewAdapter.this.notifyDataSetChanged();
+                } else if(mCurrentDownloadableRuntime != null) {
+                    // Download button clicked
+                    downloadRuntime(mCurrentDownloadableRuntime);
                 }
             });
 
@@ -129,9 +151,38 @@ public class RTRecyclerViewAdapter extends RecyclerView.Adapter<RTRecyclerViewAd
             });
         }
 
+        @SuppressLint("NotifyDataSetChanged")
+        private void downloadRuntime(NewJREUtil.ExternalRuntime runtime) {
+            if(mActivity == null) return;
+            
+            mSetDefaultButton.setEnabled(false);
+            mSetDefaultButton.setText(R.string.global_installing);
+            runtime.isDownloading = true;
+
+            sExecutorService.execute(() -> {
+                try {
+                    AssetManager assetManager = mActivity.getAssets();
+                    runtime.downloadRuntime(assetManager);
+                    
+                    mSetDefaultButton.post(() -> {
+                        runtime.isDownloading = false;
+                        notifyDataSetChanged();
+                    });
+                } catch (RuntimeSelectionException e) {
+                    Tools.showError(mActivity, e);
+                    mSetDefaultButton.post(() -> {
+                        runtime.isDownloading = false;
+                        notifyDataSetChanged();
+                    });
+                }
+            });
+        }
+
         public void bindRuntime(Runtime runtime, int pos) {
             mCurrentRuntime = runtime;
+            mCurrentDownloadableRuntime = null;
             mCurrentPosition = pos;
+            
             if(runtime.versionString != null && Tools.DEVICE_ARCHITECTURE == Architecture.archAsInt(runtime.arch)) {
                 mJavaVersionTextView.setText(runtime.name
                         .replace(".tar.xz", "")
@@ -157,6 +208,34 @@ public class RTRecyclerViewAdapter extends RecyclerView.Adapter<RTRecyclerViewAd
             mJavaVersionTextView.setText(runtime.name);
             mFullJavaVersionTextView.setTextColor(Color.RED);
             mSetDefaultButton.setVisibility(View.GONE);
+        }
+
+        public void bindDownloadableRuntime(NewJREUtil.ExternalRuntime runtime, int pos) {
+            mCurrentRuntime = null;
+            mCurrentDownloadableRuntime = runtime;
+            mCurrentPosition = pos;
+
+            // Set the title: "Internal 17", "Internal 21", etc.
+            mJavaVersionTextView.setText(runtime.name
+                    .replace(".tar.xz", "")
+                    .replace("-", " "));
+
+            // Show "Not Installed" status
+            mFullJavaVersionTextView.setText(R.string.global_not_installed);
+            mFullJavaVersionTextView.setTextColor(mDefaultColors);
+
+            // Show download button, hide delete
+            mSetDefaultButton.setVisibility(View.VISIBLE);
+            mDeleteButton.setVisibility(View.GONE);
+
+            // Handle downloading state
+            if (runtime.isDownloading) {
+                mSetDefaultButton.setEnabled(false);
+                mSetDefaultButton.setText(R.string.global_installing);
+            } else {
+                mSetDefaultButton.setEnabled(true);
+                mSetDefaultButton.setText(R.string.global_download);
+            }
         }
 
         private void updateButtonsVisibility(){
