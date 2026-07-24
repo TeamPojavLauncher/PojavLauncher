@@ -495,4 +495,8 @@
     <string name="migration_notice">Похоже, что вы уже использовали это приложение в прошлом. Вы можете импортировать старые установочные данные лаунчера из разных настроек.</string>
     <string name="preference_alsoft_opensl_title">Принудительно использовать OpenSL для аудио</string>
     <string name="preference_alsoft_opensl_summary">Принудительно включить OpenSL бэкэнд в ALSoft вместо Oboe. Может исправить проблемы захвата аудио на некоторых устройствах. Отключите, если вы видите проблемы воспроизведения/захвата аудио</string>
+    <string name="global_not_installed">Not Installed</string>
+    <string name="global_download">Download</string>
+    <string name="global_installing">Installing…</string>
+    <string name="multirt_no_internet">Failed to download, check your internet connection.</string>
 </resources>
