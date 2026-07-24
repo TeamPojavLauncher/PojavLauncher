@@ -495,4 +495,8 @@
     <string name="migration_notice">Il semble que vous ayez déjà utilisé cette application par le passé. Vous pouvez importer les anciennes données d\'installation du lanceur à partir de divers paramètres.</string>
     <string name="preference_alsoft_opensl_title">Forcer l\'utilisation d\'OpenSL pour l\'audio</string>
     <string name="preference_alsoft_opensl_summary">Activer de manière forcée l\'arrière-plan OpenSL dans ALSoft au lieu d\'Oboe. Peut résoudre les problèmes de capture audio sur certains appareils. Désactiver si vous voyez des problèmes de lecture et de capture audio</string>
+    <string name="global_not_installed">Not Installed</string>
+    <string name="global_download">Download</string>
+    <string name="global_installing">Installing…</string>
+    <string name="multirt_no_internet">Failed to download, check your internet connection.</string>
 </resources>
