@@ -495,4 +495,8 @@
     <string name="migration_notice">Wygląda na to, że ta aplikacja była już używana w przeszłości. Możesz zaimportować stare dane instalacyjne z różnych ustawień.</string>
     <string name="preference_alsoft_opensl_title">Wymuś użycie OpenSL dla dźwięku</string>
     <string name="preference_alsoft_opensl_summary">Wymuś włączenie zaplecza OpenSL w ALSoft zamiast Oboe. Można naprawić problemy z przechwytywaniem dźwięku na niektórych urządzeniach. Wyłącz jeśli widzisz problemy z odtwarzaniem/przechwytywaniem dźwięku</string>
+    <string name="global_not_installed">Not Installed</string>
+    <string name="global_download">Download</string>
+    <string name="global_installing">Installing…</string>
+    <string name="multirt_no_internet">Failed to download, check your internet connection.</string>
 </resources>
