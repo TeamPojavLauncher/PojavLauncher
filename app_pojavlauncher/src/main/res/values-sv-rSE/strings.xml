@@ -495,4 +495,8 @@
     <string name="migration_notice">Det verkar som om du redan har använt denna applikation tidigare. Du kan importera gamla installationsdata från diverse inställningar.</string>
     <string name="preference_alsoft_opensl_title">Använd kraftfullt OpenSL för ljud</string>
     <string name="preference_alsoft_opensl_summary">Aktivera kraftfullt OpenSL-backend i ALSoft istället för Oboe. Kan åtgärda problem med ljudinspelning på vissa enheter. Inaktivera om du ser problem med ljuduppspelning/inspelning</string>
+    <string name="global_not_installed">Not Installed</string>
+    <string name="global_download">Download</string>
+    <string name="global_installing">Installing…</string>
+    <string name="multirt_no_internet">Failed to download, check your internet connection.</string>
 </resources>
