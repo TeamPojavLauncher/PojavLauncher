@@ -495,4 +495,8 @@
     <string name="migration_notice">Sembra che tu abbia già usato questa applicazione in passato. Puoi importare i vecchi dati di installazione del launcher da impostazioni varie.</string>
     <string name="preference_alsoft_opensl_title">Usa con forza OpenSL per l\'audio</string>
     <string name="preference_alsoft_opensl_summary">Abilita forzatamente il backend OpenSL in ALSoft invece di Oboe. Puoi risolvere i problemi di acquisizione audio su alcuni dispositivi. Disabilita se vedi problemi di riproduzione e acquisizione audio</string>
+    <string name="global_not_installed">Not Installed</string>
+    <string name="global_download">Download</string>
+    <string name="global_installing">Installing…</string>
+    <string name="multirt_no_internet">Failed to download, check your internet connection.</string>
 </resources>
