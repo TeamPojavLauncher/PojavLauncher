@@ -495,4 +495,8 @@
     <string name="migration_notice">Vypadá to, že jste již tuto aplikaci používali v minulosti. Staré instalační údaje můžete importovat z různých nastavení.</string>
     <string name="preference_alsoft_opensl_title">Vynuceně použít OpenSL pro zvuk</string>
     <string name="preference_alsoft_opensl_summary">Vynuceně povolit OpenSL backend v ALSoft namísto Oboe. Může opravit problémy se zachytáváním zvuku na některých zařízeních. Zakažte, pokud vidíte problémy se přehráváním/zachytáváním zvuku</string>
+    <string name="global_not_installed">Not Installed</string>
+    <string name="global_download">Download</string>
+    <string name="global_installing">Installing…</string>
+    <string name="multirt_no_internet">Failed to download, check your internet connection.</string>
 </resources>
