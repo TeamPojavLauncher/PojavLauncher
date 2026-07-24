@@ -495,4 +495,8 @@
     <string name="migration_notice">Se pare că ați folosit deja această aplicație în trecut. Puteți importa datele vechi de instalare a lansatorului din diverse setări.</string>
     <string name="preference_alsoft_opensl_title">Utilizați forțat OpenSL pentru audio</string>
     <string name="preference_alsoft_opensl_summary">Activați forțat backend-ul OpenSL în ALSoft în loc de Oboe. Puteți remedia problemele de captare audio pe unele dispozitive. Dezactivați dacă vedeți probleme de redare/capare audio</string>
+    <string name="global_not_installed">Not Installed</string>
+    <string name="global_download">Download</string>
+    <string name="global_installing">Installing…</string>
+    <string name="multirt_no_internet">Failed to download, check your internet connection.</string>
 </resources>
