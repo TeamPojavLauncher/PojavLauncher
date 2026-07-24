@@ -495,4 +495,8 @@
     <string name="migration_notice">يبدو أنك استخدمت هذا التطبيق في الماضي. يمكنك استيراد بيانات تثبيت المشغل القديمة من إعدادات متنوعة.</string>
     <string name="preference_alsoft_opensl_title">استخدام OpenSL بالقوة للصوت</string>
     <string name="preference_alsoft_opensl_summary">تمكين خلفية OpenSL بقوة في ALSoft بدلاً من Oboe. يمكن إصلاح مشكلات التقاط الصوت على بعض الأجهزة. تعطيل إذا رأيت مشكلات تشغيل الصوت / التقاط الصوت</string>
+    <string name="global_not_installed">Not Installed</string>
+    <string name="global_download">Download</string>
+    <string name="global_installing">Installing…</string>
+    <string name="multirt_no_internet">Failed to download, check your internet connection.</string>
 </resources>
