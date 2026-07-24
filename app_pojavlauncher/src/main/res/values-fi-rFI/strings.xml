@@ -495,4 +495,8 @@
     <string name="migration_notice">Näyttää siltä, että olet jo käyttänyt tätä sovellusta aikaisemmin. Voit tuoda vanhan käynnistysohjelman asennustietoja sekalaisista asetuksista.</string>
     <string name="preference_alsoft_opensl_title">Käytä OpenSL: ää äänelle voimallisesti</string>
     <string name="preference_alsoft_opensl_summary">Ota OpenSL-taustaosa käyttöön Oboen sijasta ALSoft:ssa. Voi korjata äänen talteenotto-ongelmia joissain laitteissa. Poista käytöstä, jos näet äänen toiston/talteenoton ongelmia</string>
+    <string name="global_not_installed">Not Installed</string>
+    <string name="global_download">Download</string>
+    <string name="global_installing">Installing…</string>
+    <string name="multirt_no_internet">Failed to download, check your internet connection.</string>
 </resources>
