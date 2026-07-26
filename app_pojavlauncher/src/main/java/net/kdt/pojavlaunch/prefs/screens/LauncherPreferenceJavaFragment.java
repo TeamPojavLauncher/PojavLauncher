@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,8 +30,6 @@ import net.kdt.pojavlaunch.multirt.MultiRTConfigDialog;
 import net.kdt.pojavlaunch.prefs.CustomSeekBarPreference;
 import net.kdt.pojavlaunch.prefs.LauncherPreferences;
 import net.kdt.pojavlaunch.utils.MemoryUtils;
-
-
 
 public class LauncherPreferenceJavaFragment extends LauncherPreferenceFragment {
     private EditText mSetJavaMemory;
@@ -137,22 +136,30 @@ public class LauncherPreferenceJavaFragment extends LauncherPreferenceFragment {
             .setTitle(R.string.mcl_memory_allocation)
             .setMessage(getMemoryInfoText(requireContext()) + "\r\n" + getString(R.string.setting_java_memory_max, String.format("%s MB", maxRAM)))
             .setView(view)
-            .setPositiveButton(R.string.alertdialog_done, (dia, i) -> {
-                int Memory = Integer.parseInt(mSetJavaMemory.getText().toString());
-                if (Memory < 256) {
-                    setMemoryAllocationDialog(seek, ramAllocation, maxRAM);
-                    mSetJavaMemory.setError(requireContext().getString(R.string.setting_java_memory_too_small, 256));
-                    return;
-                }
-                if (Memory > maxRAM) {
-                    setMemoryAllocationDialog(seek, ramAllocation, maxRAM);
-                    mSetJavaMemory.setError(requireContext().getString(R.string.setting_java_memory_too_big, maxRAM));
-                    return;
-                }
-                seek.setValue(Memory);
-            })
+            .setPositiveButton(R.string.alertdialog_done, null)
             .setNegativeButton(R.string.alertdialog_cancel, null)
             .create();
+        
+        dialog.setOnShowListener(d -> {
+            Button positiveButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+            positiveButton.setOnClickListener(v -> {
+                try {
+                    int memory = Integer.parseInt(mSetJavaMemory.getText().toString());
+                    if (memory < 256) {
+                        mSetJavaMemory.setError("Min 256 MB");
+                        return;
+                    }
+                    if (memory > maxRAM) {
+                        mSetJavaMemory.setError("Max " + maxRAM + " MB");
+                        return;
+                    }
+                    seek.setValue(memory);
+                    dialog.dismiss();
+                } catch (NumberFormatException e) {
+                    mSetJavaMemory.setError("Invalid number");
+                }
+            });
+        });
         dialog.show();
     }
 
