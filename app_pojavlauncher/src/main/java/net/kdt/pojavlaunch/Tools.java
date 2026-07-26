@@ -3,6 +3,7 @@ package net.kdt.pojavlaunch;
 import static android.os.Build.VERSION.SDK_INT;
 import static net.kdt.pojavlaunch.PojavApplication.sExecutorService;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.NotificationChannel;
@@ -955,6 +956,20 @@ public final class Tools {
         if(cursorY < visibleHeight)
             return 0;
         return Math.min(imeHeight, cursorY - visibleHeight + padding);
+    }
+
+    @SuppressLint("DefaultLocale")
+    public static String formatFileSize(long bytes) {
+        if (bytes <= 0) return "0 B";
+
+        final String[] units = {"B", "KB", "MB", "GB"};
+        int unitIndex = 0;
+        double value = bytes;
+        while (value >= 1024 && unitIndex < units.length - 1) {
+            value /= 1024;
+            unitIndex++;
+        }
+        return String.format("%.2f %s", value, units[unitIndex]);
     }
 
     public static void restartLauncherActivity(Context context){
