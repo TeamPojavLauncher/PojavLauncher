@@ -495,8 +495,12 @@
     <string name="migration_notice">看起来您过去已经使用过此应用程序。您可以从杂项设置中导入旧的启动器安装数据。</string>
     <string name="preference_alsoft_opensl_title">强力使用 OpenSL 进行音频</string>
     <string name="preference_alsoft_opensl_summary">强制启用 OpenSL 后端在 ALSoft 而不是 Oboe。可以修复某些设备上的音频捕获问题。如果您看到音频回放/捕获问题，请禁用</string>
-    <string name="global_not_installed">Not Installed</string>
-    <string name="global_download">Download</string>
-    <string name="global_installing">Installing…</string>
-    <string name="multirt_no_internet">Failed to download, check your internet connection.</string>
+    <string name="setting_java_memory_desc">Control how much memory is allocated to Minecraft</string>
+    <string name="setting_java_memory_info">Current memory usage: %s / %s, Free memory size: %s</string>
+    <string name="setting_java_memory_max">Maximum allowable memory size: %s</string>
+    <string name="setting_java_memory_exceeded">The current memory allocation exceeds available memory size</string>
+    <string name="setting_java_memory_too_big">The current memory allocation is too large, maximum allowable size is %d MB</string>
+    <string name="setting_java_memory_too_small">The current memory allocation is too small, at least %d MB is required</string>
+    <string name="alertdialog_done">Done</string>
+    <string name="alertdialog_cancel">Cancel</string>
 </resources>
