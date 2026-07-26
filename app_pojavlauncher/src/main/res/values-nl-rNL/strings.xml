@@ -495,8 +495,12 @@
     <string name="migration_notice">Het lijkt erop dat je deze applicatie al hebt gebruikt in het verleden. Je kunt oude launcher installatiegegevens importeren uit andere instellingen.</string>
     <string name="preference_alsoft_opensl_title">Forceel OpenSL gebruiken voor audio</string>
     <string name="preference_alsoft_opensl_summary">Schakel OpenSL backend in in ALSoft in plaats van Oboe. Kan problemen met audio-opname op sommige apparaten oplossen. Schakel dit uit als je problemen met audio-afspelen/opnemen ziet</string>
-    <string name="global_not_installed">Not Installed</string>
-    <string name="global_download">Download</string>
-    <string name="global_installing">Installing…</string>
-    <string name="multirt_no_internet">Failed to download, check your internet connection.</string>
+    <string name="setting_java_memory_desc">Control how much memory is allocated to Minecraft</string>
+    <string name="setting_java_memory_info">Current memory usage: %s / %s, Free memory size: %s</string>
+    <string name="setting_java_memory_max">Maximum allowable memory size: %s</string>
+    <string name="setting_java_memory_exceeded">The current memory allocation exceeds available memory size</string>
+    <string name="setting_java_memory_too_big">The current memory allocation is too large, maximum allowable size is %d MB</string>
+    <string name="setting_java_memory_too_small">The current memory allocation is too small, at least %d MB is required</string>
+    <string name="alertdialog_done">Done</string>
+    <string name="alertdialog_cancel">Cancel</string>
 </resources>
