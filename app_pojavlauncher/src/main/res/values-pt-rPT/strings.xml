@@ -495,6 +495,10 @@
     <string name="migration_notice">Parece que você já usou este aplicativo no passado. Você pode importar dados antigos de instalação do lançador de configurações diversas.</string>
     <string name="preference_alsoft_opensl_title">Use OpenSL forçadamente para áudio</string>
     <string name="preference_alsoft_opensl_summary">Habilita com força o backend OpenSL em vez de Oboe. Pode corrigir problemas de captura de áudio em alguns dispositivos. Desative se você ver problemas de reprodução de áudio/captura</string>
+    <string name="global_not_installed">Not Installed</string>
+    <string name="global_download">Download</string>
+    <string name="global_installing">Installing…</string>
+    <string name="multirt_no_internet">Failed to download, check your internet connection.</string>
     <string name="setting_java_memory_desc">Control how much memory is allocated to Minecraft</string>
     <string name="setting_java_memory_info">Current memory usage: %s / %s, Free memory size: %s</string>
     <string name="setting_java_memory_max">Maximum allowable memory size: %s</string>
