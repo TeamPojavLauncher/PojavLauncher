@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- App name part -->
-    <string name="app_short_name">MJLauncher</string>
+    <string name="app_short_name">PojavLauncher</string>
 
     <!-- Action bar part -->
 
@@ -21,7 +21,7 @@
     <string name="alerttitle_installmod">Select a mod installer</string>
 
     <!-- Error messages -->
-    <string name="error_fatal">MJLauncher has unexpectedly crashed</string>
+    <string name="error_fatal">PojavLauncher has unexpectedly crashed</string>
     <string name="error_no_version">No version!</string>
     <string name="error_show_more">Show more</string>
     <string name="error_show_less">Show less</string>
@@ -67,6 +67,8 @@
     <string name="mcl_setting_renderer_vulkan_zink">Zink (Vulkan) - all versions, mid</string>
     <string name="mcl_setting_renderer_freedreno_kgsl">Freedreno - all versions, fast, Adreno-only</string>
     <string name="mcl_setting_renderer_ltw">LTW (OpenGL ES 3) - 1.17+ only, fast</string>
+    <string name="mcl_setting_renderer_opengles_ng_gl4es">Krypton Wrapper - (all versions, fast)</string>
+    <string name="mcl_setting_renderer_mobileglues">MobileGlues (OpenGL ES) - (1.17+ only, fast)</string>
     <string name="mcl_setting_veroption_release">Release</string>
     <string name="mcl_setting_veroption_snapshot">Snapshot</string>
     <string name="mcl_setting_veroption_oldalpha">Old-alpha</string>
@@ -244,7 +246,7 @@
     <string name="color_default_hex" translatable="false">FFFF0000</string>
     <string name="notif_channel_name">General</string>
     <string name="notif_channel_id" translatable="false">channel_id</string>
-    <string name="lazy_service_default_title">MJ Foreground Service</string>
+    <string name="lazy_service_default_title">Pojav Foreground Service</string>
     <string name="mcl_setting_veroption_installed">Installed</string>
     <string name="use_global_default">(Use global default)</string>
     <string name="default_control">Default controlmap</string>
@@ -274,7 +276,7 @@
     <string name="preference_gyro_sample_rate_title">Gyroscope sampling rate</string>
     <string name="preference_gyro_sample_rate_description">If you have performance issues with gyroscope controls, increase this.</string>
     <string name="microsoft_login_retry_later">Too many requests, please try again later.</string>
-    <string name="storage_required">MJLauncher requires external storage to be attached. Please reconnect it and restart the app.</string>
+    <string name="storage_required">PojavLauncher requires external storage to be attached. Please reconnect it and restart the app.</string>
     <string name="mcl_setting_title_buttonallcaps">Only use capital letters in button labels</string>
     <string name="mcl_setting_subtitle_buttonallcaps">Disable this if you want to use lowercase letters in your controls.</string>
     <string name="create_instance">Create new instance</string>
@@ -346,7 +348,7 @@
     <string name="modpack_download_downloading_mods">Downloading mods (%.2f MB / %.2f MB)</string>
     <string name="modpack_download_downloading_mods_fc">Downloading mods (File %d out of %d)</string>
     <string name="modpack_download_applying_overrides">Applying overrides (%d/%d)</string>
-    <string name="modpack_install_notification_title">MJ Modpack Installer</string>
+    <string name="modpack_install_notification_title">Pojav Modpack Installer</string>
     <string name="modpack_install_notification_success">Click here to finish modpack installation</string>
     <string name="modpack_install_notification_data_not_available">Failed to download mod loader information</string>
     <string name="modpack_install_modloader_download_failed">Failed to download the mod loader files</string>
@@ -378,7 +380,7 @@
     <string name="preference_category_miscellaneous">Miscellaneous settings</string>
     <string name="preference_category_video">Video settings</string>
     <string name="notification_permission_dialog_title">Permission request</string>
-    <string name="notification_permission_dialog_text">MJLauncher requires a permission to post notifications to prevent game/modpack downloads from stopping when you leave the app. Without this permission, Android may shut down your downloads when you put MJLauncher in background mode.</string>
+    <string name="notification_permission_dialog_text">PojavLauncher requires a permission to post notifications to prevent game/modpack downloads from stopping when you leave the app. Without this permission, Android may shut down your downloads when you put PojavLauncher in background mode.</string>
     <string name="notification_permission_toast">You can always change your mind later by going into Settings</string>
     <string name="preference_ask_for_notification_title">Allow notifications</string>
     <string name="preference_ask_for_notification_description">Click to re-request the notification permission, required for game/modpack background downloads to work properly.</string>
@@ -508,4 +510,45 @@
     <string name="loading_screen_title">Waiting for a game window to appear…</string>
     <string name="loading_screen_booted">Ready - running on %1$s!</string>
     <string name="loading_screen_warning">If you are stuck here, the game might have crashed</string>
+    <string name="setting_java_memory_desc">Control how much memory is allocated to Minecraft</string>
+    <string name="setting_java_memory_info">Current memory usage: %s / %s, Free memory size: %s</string>
+    <string name="setting_java_memory_max">Maximum allowable memory size: %s</string>
+    <string name="setting_java_memory_exceeded">The current memory allocation exceeds available memory size</string>
+    <string name="setting_java_memory_too_big">The current memory allocation is too large, maximum allowable size is %d MB</string>
+    <string name="setting_java_memory_too_small">The current memory allocation is too small, at least %d MB is required</string>
+    <string name="alertdialog_done">Done</string>
+    <string name="alertdialog_cancel">Cancel</string>
+    <string name="global_not_installed">Not Installed</string>
+    <string name="global_download">Download</string>
+    <string name="global_installing">Installing…</string>
+    <string name="multirt_no_internet">Failed to download, check your internet connection.</string>
+    <string name="vk_mod_title">Vulkan Mod Detected</string>
+    <string name="vk_mod_message">It appears you are using VulkanMod This is unsupported and may lead to crashes as most devices have poor Vulkan drivers You will be on your own. We will not provide any help if you encounter any crashes. Please do not report any bugs to the mods community</string>
+    <string name="continue_button">Continue</string>
+    <string name="mcl_setting_title_renderer_settings">Mobilegluse Renderer Settings</string>
+    <!-- MobileGlues settings -->
+    <string name="mg_category_rendering">Rendering</string>
+    <string name="mg_category_shader_cache">Shader cache</string>
+    <string name="mg_category_extensions">Extensions</string>
+    <string name="mg_category_advanced">Advanced</string>
+    <string name="option_angle_disable_if_possible">Prefer Disabled</string>
+    <string name="option_angle_enable_if_possible">Prefer Enabled</string>
+    <string name="option_angle_disable">Disable</string>
+    <string name="option_angle_enable">Enable</string>
+    <string name="mg_renderer_title_angle">Use ANGLE as OpenGL ES driver</string> 
+    <string name="option_no_error_auto">Auto</string>
+    <string name="option_no_error_enable">Do not ignore</string>
+    <string name="option_no_error_disable_pri">Ignore shader/program error</string>
+    <string name="option_no_error_disable_sec">Ignore shader/program/framebuffer error</string>
+    <string name="mg_renderer_title_noError">OpenGL Error Setting</string>
+    <string name="option_angle_clear_workaround_disable">Disable</string>
+    <string name="option_angle_clear_workaround_enable_1">Enable workaround</string>
+    <string name="mg_renderer_title_angleDepthClearFixMode">ANGLE Depth Clear Workaround</string>
+    <string name="mg_renderer_title_fsr1">(Experimental) Enable built-in FSR1</string>
+    <string name="mg_renderer_title_glslCache">Max GLSL Cache Size</string>
+    <string name="mg_renderer_title_computeShaderext">Enable Incomplete ARB_compute_shaderExtension</string>
+    <string name="mg_renderer_title_timerQueryExt">Disable Recommended timer_query Extension</string>
+    <string name="mg_renderer_title_dsaExt">Enable Advanced direct_state_access Extension</string>
+    <string name="mg_renderer_title_customGLVersion">Custom target OpenGL Version</string>
+    <string name="option_custom_gl_version_default">Disable</string>
 </resources>

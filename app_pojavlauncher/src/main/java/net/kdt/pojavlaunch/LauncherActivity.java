@@ -49,7 +49,7 @@ import net.kdt.pojavlaunch.tasks.AsyncVersionList;
 import net.kdt.pojavlaunch.tasks.MoJsonDownloader;
 import net.kdt.pojavlaunch.utils.NotificationUtils;
 
-import git.artdeell.mojo.R;
+import net.kdt.pojavlaunch.R;
 
 public class LauncherActivity extends BaseActivity {
     public static final String SETTING_FRAGMENT_TAG = "SETTINGS_FRAGMENT";
@@ -295,7 +295,7 @@ public class LauncherActivity extends BaseActivity {
 
     // Call async
     private void checkPreviousInstalls(){
-        final String[] packages = {"git.artdeell.mojo", "git.artdeell.mojo.debug", "git.artdeell.mojo.pub"};
+        final String[] packages = {"net.kdt.pojavlaunch", "net.kdt.pojavlaunch.debug", "net.kdt.pojavlaunch.pub"};
         for(String s : packages){
             Intent i = getPackageManager().getLaunchIntentForPackage(s);
             if(i == null) continue;

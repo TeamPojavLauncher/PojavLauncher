@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- App name part -->
-    <string name="app_short_name">MJLauncher</string>
+    <string name="app_name">PojavLauncher (Minecraft: Java Edition for Android)</string>
+    <string name="app_short_name">PojavLauncher</string>
     <!-- Action bar part -->
     <!-- Languages list part -->
     <!-- Login strings -->
@@ -14,7 +15,7 @@
     <!-- AlertDialog title -->
     <string name="alerttitle_installmod">حدد مشغل مودات لتثبيته</string>
     <!-- Error messages -->
-    <string name="error_fatal">لقد توقف MJLauncher بشكل غير متوقع</string>
+    <string name="error_fatal">لقد توقف PojavLauncher بشكل غير متوقع</string>
     <string name="error_no_version">لا يوجد إصدار!</string>
     <string name="error_show_more">اظهر المزيد</string>
     <string name="error_show_less">أظهِر أقل</string>
@@ -202,7 +203,7 @@
     <string name="pedit_java_runtime">بيئة تشغيل Java</string>
     <string name="pedit_renderer">عارض الرسوميات</string>
     <string name="notif_channel_name">عام</string>
-    <string name="lazy_service_default_title">خدمة MJ في المقدمة</string>
+    <string name="lazy_service_default_title">خدمة Mojo في المقدمة</string>
     <string name="mcl_setting_veroption_installed">مثبت</string>
     <string name="use_global_default">(استخدم الافتراضي العام)</string>
     <string name="default_control">مخطط التحكم الأفتراضي</string>
@@ -232,7 +233,7 @@
     <string name="preference_gyro_sample_rate_title">معدل أخذ العينات من الجايرسكوب</string>
     <string name="preference_gyro_sample_rate_description">اذا كان لديك مشاكل أداء في الجايروسكوب، زد هذا الخيار.</string>
     <string name="microsoft_login_retry_later">طلبات كثيرة جداً، الرجاء المحاولة مرة أخرى لاحقاً.</string>
-    <string name="storage_required">يتطلب MJLauncher أن تكون وحدة التخزين الخارجية متصلة. الرجاء إعادة الاتصال بها وإعادة تشغيل التطبيق.</string>
+    <string name="storage_required">يتطلب PojavLauncher أن تكون وحدة التخزين الخارجية متصلة. الرجاء إعادة الاتصال بها وإعادة تشغيل التطبيق.</string>
     <string name="mcl_setting_title_buttonallcaps">استخدم الأحرف الكبيرة فقط في اسماء الأزرار</string>
     <string name="mcl_setting_subtitle_buttonallcaps">عطل هذا اذا كنت تريد إستخدام الأحرف الصغيرة.</string>
     <string name="preference_shader_dump_title">تمكين افراغ الشادر</string>
@@ -283,7 +284,7 @@
     <string name="modpack_download_downloading_mods">تحميل المودات (%.2f MB / %.2f MB)</string>
     <string name="modpack_download_downloading_mods_fc">تحميل المودات (الملف %d من %d)</string>
     <string name="modpack_download_applying_overrides">تطبيق التجاوزات (%d/%d)</string>
-    <string name="modpack_install_notification_title">MJ Modpack Installerⁿ</string>
+    <string name="modpack_install_notification_title">Mojo Modpack Installerⁿ</string>
     <string name="modpack_install_notification_success">انقر هنا لإنهاء تثبيت modpack</string>
     <string name="modpack_install_notification_data_not_available">Не удалось загрузить информацию о загрузчике модов</string>
     <string name="modpack_install_modloader_download_failed">فشل تنزيل ملفات محمل المودات</string>
@@ -309,7 +310,7 @@
     <string name="preference_category_miscellaneous">أعدادات متنوعة</string>
     <string name="preference_category_video">إعدادات الفيديو</string>
     <string name="notification_permission_dialog_title">طلب السماح</string>
-    <string name="notification_permission_dialog_text">MJLauncher requires a permission to post notifications to prevent game/modpack downloads from stopping when you leave the app. Without this permission, Android may shut down your downloads when you put MJLauncher in background mode.</string>
+    <string name="notification_permission_dialog_text">PojavLauncher requires a permission to post notifications to prevent game/modpack downloads from stopping when you leave the app. Without this permission, Android may shut down your downloads when you put PojavLauncher in background mode.</string>
     <string name="notification_permission_toast">O</string>
     <string name="preference_ask_for_notification_title">السماح بالإشعارات</string>
     <string name="preference_ask_for_notification_description">.</string>

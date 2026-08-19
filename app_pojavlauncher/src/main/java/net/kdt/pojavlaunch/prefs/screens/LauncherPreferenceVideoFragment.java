@@ -5,10 +5,11 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.preference.ListPreference;
+import androidx.preference.Preference;
 import androidx.preference.SwitchPreference;
 import androidx.preference.SwitchPreferenceCompat;
 
-import git.artdeell.mojo.R;
+import net.kdt.pojavlaunch.R;
 
 import net.kdt.pojavlaunch.Architecture;
 import net.kdt.pojavlaunch.plugins.LibraryPlugin;
@@ -48,7 +49,7 @@ public class LauncherPreferenceVideoFragment extends LauncherPreferenceFragment 
         // Show ANGLE switch only if AnglePlugin is available
         LibraryPlugin angle = LibraryPlugin.discoverPlugin(getContext(), LibraryPlugin.ID_ANGLE_PLUGIN);
         SwitchPreferenceCompat angleSwitch = requirePreference("use_angle", SwitchPreferenceCompat.class);
-        angleSwitch.setVisible(angle != null);
+        angleSwitch.setVisible(true); //hehe
         angleSwitch.setChecked(LauncherPreferences.PREF_USE_ANGLE);
 
         // Same but for ZINK plugin
@@ -89,5 +90,8 @@ public class LauncherPreferenceVideoFragment extends LauncherPreferenceFragment 
     private void computeVisibility(){
         requirePreference("force_vsync", SwitchPreferenceCompat.class)
                 .setVisible(LauncherPreferences.PREF_USE_ALTERNATE_SURFACE);
+       String currentRenderer = LauncherPreferences.DEFAULT_PREF.getString("renderer", "opengles2");
+       boolean isMobileGluesRenderer = "opengles_mobileglues".equals(currentRenderer);
+       requirePreference("renderer_settings", Preference.class).setVisible(isMobileGluesRenderer);
     }
 }

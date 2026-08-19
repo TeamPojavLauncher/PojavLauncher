@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app2="http://schemas.android.com/apk/res-auto">
+
+    <net.kdt.pojavlaunch.prefs.BackButtonPreference
+        app2:iconSpaceReserved="false"/>
+
+
+    <PreferenceCategory
+        android:title="@string/mg_category_rendering"
+        app2:iconSpaceReserved="false">
+
+        <androidx.preference.ListPreference
+            android:title="@string/mg_renderer_title_angle"
+            android:key="enableANGLE"
+            android:defaultValue="1"
+            android:entries="@array/mg_renderer_names_angle"
+            android:entryValues="@array/mg_renderer_values_angle"
+            app2:useSimpleSummaryProvider="true"
+            app2:iconSpaceReserved="false"/>
+
+        <androidx.preference.ListPreference
+            android:title="@string/mg_renderer_title_noError"
+            android:key="enableNoError"
+            android:defaultValue="0"
+            android:entries="@array/mg_renderer_names_noError"
+            android:entryValues="@array/mg_renderer_values_noError"
+            app2:useSimpleSummaryProvider="true"
+            app2:iconSpaceReserved="false"/>
+
+        <androidx.preference.ListPreference
+            android:title="@string/mg_renderer_title_angleDepthClearFixMode"
+            android:key="angleDepthClearFixMode"
+            android:defaultValue="0"
+            android:entries="@array/mg_renderer_names_angleDepthClearFixMode"
+            android:entryValues="@array/mg_renderer_values_angleDepthClearFixMode"
+            app2:useSimpleSummaryProvider="true"
+            app2:iconSpaceReserved="false"/>
+
+        <SwitchPreference
+            android:title="@string/mg_renderer_title_fsr1"
+            android:key="enableFsr1"
+            android:defaultValue="false"
+            app2:iconSpaceReserved="false"/>
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory
+        android:title="@string/mg_category_shader_cache"
+        app2:iconSpaceReserved="false">
+
+        <net.kdt.pojavlaunch.prefs.CustomSeekBarPreference
+            android:title="@string/mg_renderer_title_glslCache"
+            android:key="maxGlslCacheSize"
+            android:defaultValue="32"
+            app2:min="0"
+            app2:seekBarIncrement="1"
+            app2:showSeekBarValue="true"
+            app2:iconSpaceReserved="false"/>
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory
+        android:title="@string/mg_category_extensions"
+        app2:iconSpaceReserved="false">
+
+        <SwitchPreference
+            android:title="@string/mg_renderer_title_computeShaderext"
+            android:key="enableExtComputeShader"
+            android:defaultValue="false"
+            app2:iconSpaceReserved="false"/>
+
+        <SwitchPreference
+            android:title="@string/mg_renderer_title_timerQueryExt"
+            android:key="enableExtTimerQuery"
+            android:defaultValue="true"
+            app2:iconSpaceReserved="false"/>
+
+        <SwitchPreference
+            android:title="@string/mg_renderer_title_dsaExt"
+            android:key="enableExtDirectStateAccess"
+            android:defaultValue="false"
+            app2:iconSpaceReserved="false"/>
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory
+        android:title="@string/mg_category_advanced"
+        app2:iconSpaceReserved="false">
+
+        <androidx.preference.ListPreference
+            android:title="@string/mg_renderer_title_customGLVersion"
+            android:key="customGLVersion"
+            android:defaultValue="0"
+            android:entries="@array/mg_renderer_names_customGLVersion"
+            android:entryValues="@array/mg_renderer_values_customGLVersion"
+            app2:useSimpleSummaryProvider="true"
+            app2:iconSpaceReserved="false"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

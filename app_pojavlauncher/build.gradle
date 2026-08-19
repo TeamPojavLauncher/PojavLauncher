@@ -27,7 +27,7 @@ def getVersionName = {
     }else {
         def branchName = currentBranch.getName()
         def commitAbbreviation = latestCommit.abbreviatedId
-        return "iris-${dateToday}-${commitAbbreviation}-${branchName}"
+        return "bhai-bhai-${dateToday}-${commitAbbreviation}-${branchName}"
     }
 }
 
@@ -50,7 +50,7 @@ configurations {
 }
 
 android {
-    namespace 'git.artdeell.mojo'
+    namespace 'net.kdt.pojavlaunch'
 
     compileSdk = 36
 
@@ -65,29 +65,41 @@ android {
             keyAlias "androiddebugkey"
             keyPassword "android"
         }
+        customRelease {
+            storeFile file("pojav_release.jks")
+            storePassword System.getenv("POJAV_KEYSTORE_PASSWORD")
+            keyAlias "android_github_release"
+            keyPassword System.getenv("POJAV_KEYSTORE_PASSWORD")
+        }
         googlePlayBuild {
-            storeFile file("mojo_upload_next.jks")
-            storePassword System.getenv("UPLOAD_KEYSTORE_PASSWORD")
+            storeFile file("pojav_gplay.jks")
+            storePassword System.getenv("POJAV_GPLAY_KEYSTORE_PASSWORD")
             keyAlias "key0"
+            keyPassword System.getenv("POJAV_GPLAY_KEYSTORE_PASSWORD")
+        }
+        upload {
+            storeFile file("pojav_upload.jks")
+            storePassword System.getenv("UPLOAD_KEYSTORE_PASSWORD")
+            keyAlias "upload"
             keyPassword System.getenv("UPLOAD_KEYSTORE_PASSWORD")
         }
         publicBuild {
-            storeFile file("mojo_release_next.jks")
-            storePassword System.getenv("MOJOPUB_KEYSTORE_PASSWORD")
+            storeFile file("pojav_pub.jks")
+            storePassword System.getenv("POJAVPUB_KEYSTORE_PASSWORD")
             keyAlias "key0"
-            keyPassword System.getenv("MOJOPUB_KEYSTORE_PASSWORD")
+            keyPassword System.getenv("POJAVPUB_KEYSTORE_PASSWORD")
         }
     }
 
     defaultConfig {
-        applicationId "git.artdeell.mjlaunch"
+        applicationId "net.kdt.pojavlaunch"
         minSdkVersion 21
         targetSdkVersion 36
         versionCode getDateSeconds()
         versionName getVersionName()
         multiDexEnabled false //important
         resValue 'string', 'curseforge_api_key', getCFApiKey()
-        resValue 'string', 'group_id', 'git.artdeell'
+        resValue 'string', 'group_id', 'net.kdt'
     }
 
     flavorDimensions  = ["runtime"]
@@ -110,8 +122,10 @@ android {
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.customDebug
-            resValue 'string', 'application_package', 'git.artdeell.mjlaunch.debug'
-            resValue 'string', 'storageProviderAuthorities', 'git.artdeell.mjlaunch.scoped.gamefolder.debug'
+            resValue "string", "app_name", "PojavLauncher (Debug)"
+            resValue "string", "app_short_name", "PojavLauncher (Debug)"
+            resValue 'string', 'application_package', 'net.kdt.pojavlaunch.debug'
+            resValue 'string', 'storageProviderAuthorities', 'net.kdt.pojavlaunch.scoped.gamefolder.debug'
         }
         proguard {
             initWith debug
@@ -128,11 +142,11 @@ android {
             // Don't set to true or java.awt will be a.a or something similar.
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            // defaultConfig already set
-            // multiDexEnabled = true
-            // debuggable = true
-            resValue 'string', 'storageProviderAuthorities', 'git.artdeell.mjlaunch.scoped.gamefolder'
-            resValue 'string', 'application_package', 'git.artdeell.mjlaunch'
+            signingConfig signingConfigs.customRelease
+            resValue "string", "app_name", "PojavLauncher (Minecraft: Java Edition for Android)"
+            resValue "string", "app_short_name", "PojavLauncher"
+            resValue 'string', 'application_package', 'net.kdt.pojavlaunch'
+            resValue 'string', 'storageProviderAuthorities', 'net.kdt.pojavlaunch.scoped.gamefolder'
         }
         gplay {
             initWith release
@@ -141,7 +155,12 @@ android {
         }
         pubRelease {
             initWith release
-            signingConfig signingConfigs.publicBuild
+            signingConfig signingConfigs.customDebug // WIP, changeme
+            applicationIdSuffix '.pub'
+            resValue "string", "app_name", "PojavLauncher (Minecraft: Java Edition for Android)"
+            resValue "string", "app_short_name", "PojavLauncher (Nightly)"
+            resValue 'string', 'application_package', 'net.kdt.pojavlaunch.pub'
+            resValue 'string', 'storageProviderAuthorities', 'net.kdt.pojavlaunch.pub.scoped.gamefolder'
             matchingFallbacks += List.of("release")
         }
     }
@@ -343,6 +362,8 @@ dependencies {
 
     implementation project(":glfw:jni_bindings")
     implementation project(":sdl:jni_bindings")
+    implementation project(":MobileGlues")
+    implementation project(":NG-GL4ES")
     // implementation 'net.sourceforge.streamsupport:streamsupport-cfuture:1.7.0'
 
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])

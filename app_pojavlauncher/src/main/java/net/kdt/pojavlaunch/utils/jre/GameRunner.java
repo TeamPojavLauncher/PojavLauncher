@@ -36,7 +36,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import git.artdeell.mojo.R;
+import net.kdt.pojavlaunch.R;
 
 public class GameRunner {
     /**
@@ -70,6 +70,17 @@ public class GameRunner {
         for(File file : mods) {
             String name = file.getName();
             if(name.contains("angelica")) return true;
+        }
+        return false;
+    }
+
+    public static boolean hasVkMod(File gameDir) {
+        File modsDir = new File(gameDir, "mods");
+        File[] mods = modsDir.listFiles(file -> file.isFile() && file.getName().endsWith(".jar"));
+        if(mods == null) return false;
+        for(File file : mods) {
+            String name = file.getName().toLowerCase(); //bhai kids protector
+            if(name.contains("vulkan")) return true;
         }
         return false;
     }

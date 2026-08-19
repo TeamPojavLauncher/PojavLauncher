@@ -14,7 +14,7 @@ import net.kdt.pojavlaunch.game.platform.Platform;
 import net.kdt.pojavlaunch.game.platform.cursor.PlatformCursor;
 import net.kdt.pojavlaunch.game.platform.cursor.PlatformCursorImplementor;
 
-import git.artdeell.mojo.R;
+import net.kdt.pojavlaunch.R;
 
 /**
  * A view that draws the platform cursor on the screen

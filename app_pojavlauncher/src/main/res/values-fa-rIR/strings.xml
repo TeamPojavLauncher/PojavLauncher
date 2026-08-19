@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- App name part -->
-    <string name="app_short_name">پوجاو لانچر</string>
+    <string name="app_name">PojavLauncher (Minecraft: Java Edition for Android)</string>
+    <string name="app_short_name">PojavLauncher</string>
     <!-- Action bar part -->
     <!-- Languages list part -->
     <!-- Login strings -->
@@ -190,7 +191,7 @@
     <string name="pedit_java_runtime">Java Runtime</string>
     <string name="pedit_renderer">رندر کننده</string>
     <string name="notif_channel_name">عمومی</string>
-    <string name="lazy_service_default_title">سرویس پیش‌زمینه MJ</string>
+    <string name="lazy_service_default_title">سرویس پیش‌زمینه Pojav</string>
     <string name="mcl_setting_veroption_installed">نصب شد</string>
     <string name="use_global_default">(از پیش‌فرض استفاده کنید)</string>
     <string name="progresslayout_tasks_in_progress">%d وظیفه در حال انجام</string>

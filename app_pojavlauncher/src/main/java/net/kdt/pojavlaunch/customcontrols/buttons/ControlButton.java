@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import net.kdt.pojavlaunch.game.GameActivity;
 
-import git.artdeell.mojo.R;
+import net.kdt.pojavlaunch.R;
 
 import net.kdt.pojavlaunch.Tools;
 import net.kdt.pojavlaunch.customcontrols.ControlData;

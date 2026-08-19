@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string-array name="renderer">
         <item name="1">@string/mcl_setting_renderer_gles2_4</item>
-        <item name="2">@string/mcl_setting_renderer_vulkan_zink</item>
-        <item name="3">@string/mcl_setting_renderer_freedreno_kgsl</item>
-        <item name="4">@string/mcl_setting_renderer_ltw</item>
+        <item name="2">@string/mcl_setting_renderer_opengles_ng_gl4es</item>
+        <item name="3">@string/mcl_setting_renderer_vulkan_zink</item>
+        <item name="4">@string/mcl_setting_renderer_freedreno_kgsl</item>
+        <item name="5">@string/mcl_setting_renderer_ltw</item>
+        <item name="6">@string/mcl_setting_renderer_mobileglues</item>
     </string-array>
 
     <string-array name="menu_customcontrol">
         <item name="0">@string/customctrl_addbutton</item>
         <item name="1">@string/customctrl_addbutton_drawer</item>
         <item name="2">@string/customctrl_addbutton_joystick</item>
-        <item name="2">@string/global_load</item>
-        <item name="3">@string/global_save</item>
-        <item name="4">@string/customctrl_selectdefault</item>
-        <item name="5">@string/customctrl_editor_exit</item>
+        <item name="3">@string/global_load</item>
+        <item name="4">@string/global_save</item>
+        <item name="5">@string/customctrl_selectdefault</item>
+        <item name="6">@string/customctrl_editor_exit</item>
     </string-array>
 
     <string-array name="menu_customcontrol_customactivity">
@@ -34,20 +37,96 @@
         <item>@string/quick_setting_title</item>
         <item>@string/mcl_option_customcontrol</item>
     </string-array>
-    
+
     <string-array name="renderer_values">
         <item>opengles2</item> <!-- holy-gl4es with OpenGL ES 2/"3" -->
+        <item>opengles3</item>
         <item>vulkan_zink</item> <!-- zink with OpenGL (undef) -->
-        <item>freedreno_kgsl</item> <!-- freedreno gallium driver with OpenGL 4.6 -->
-        <item>opengles3_ltw</item> <!-- GL Core on GLES wrapper with GL3/4 -->
+        <item>freedreno_kgsl</item>
+        <item>opengles3_ltw</item>
+        <item>opengles_mobileglues</item>
+
     </string-array>
+
     <string-array name="download_source_names">
         <item>@string/global_default</item>
         <item>BMCLAPI</item>
     </string-array>
+
     <string-array name="download_source_values">
         <item>default</item>
         <item>bmclapi</item>
     </string-array>
 
+
+    <!-- MobileGlues settings -->
+
+    <string-array name="mg_renderer_names_angle">
+        <item>@string/option_angle_disable_if_possible</item>
+        <item>@string/option_angle_enable_if_possible</item>
+        <item>@string/option_angle_disable</item>
+        <item>@string/option_angle_enable</item>
+    </string-array>
+
+    <string-array name="mg_renderer_values_angle">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+
+    <string-array name="mg_renderer_names_noError">
+        <item>@string/option_no_error_auto</item>
+        <item>@string/option_no_error_enable</item>
+        <item>@string/option_no_error_disable_pri</item>
+        <item>@string/option_no_error_disable_sec</item>
+    </string-array>
+
+    <string-array name="mg_renderer_values_noError">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+
+    <string-array name="mg_renderer_names_angleDepthClearFixMode">
+        <item>@string/option_angle_clear_workaround_disable</item>
+        <item>@string/option_angle_clear_workaround_enable_1</item>
+    </string-array>
+
+    <string-array name="mg_renderer_values_angleDepthClearFixMode">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
+
+    <string-array name="mg_renderer_names_customGLVersion">
+        <item>@string/option_custom_gl_version_default</item>
+        <item>OpenGL 4.6</item>
+        <item>OpenGL 4.5</item>
+        <item>OpenGL 4.4</item>
+        <item>OpenGL 4.3</item>
+        <item>OpenGL 4.2</item>
+        <item>OpenGL 4.1</item>
+        <item>OpenGL 4.0</item>
+        <item>OpenGL 3.3</item>
+        <item>OpenGL 3.2</item>
+    </string-array>
+
+    <string-array name="mg_renderer_values_customGLVersion">
+        <item>0</item>
+        <item>46</item>
+        <item>45</item>
+        <item>44</item>
+        <item>43</item>
+        <item>42</item>
+        <item>41</item>
+        <item>40</item>
+        <item>33</item>
+        <item>32</item>
+    </string-array>
+
 </resources>
+

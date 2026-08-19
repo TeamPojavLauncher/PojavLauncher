@@ -14,7 +14,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import git.artdeell.mojo.R;
+import net.kdt.pojavlaunch.R;
 
 public class RendererCompatUtil {
     private static RenderersList sCompatibleRenderers;

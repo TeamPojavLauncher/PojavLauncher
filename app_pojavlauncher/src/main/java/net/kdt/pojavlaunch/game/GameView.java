@@ -37,7 +37,7 @@ import net.kdt.pojavlaunch.render.SurfaceViewSurfaceProvider;
 import net.kdt.pojavlaunch.render.TextureViewSurfaceProvider;
 import net.kdt.pojavlaunch.utils.MCOptionUtils;
 
-import git.artdeell.mojo.R;
+import net.kdt.pojavlaunch.R;
 import git.artdeell.mojoexec.MojoExec;
 
 import static net.kdt.pojavlaunch.game.platform.Platform.PLATFORM;

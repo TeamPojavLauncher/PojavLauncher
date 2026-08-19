@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.appcompat.app.AlertDialog;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -19,7 +20,7 @@ import androidx.fragment.app.Fragment;
 import com.kdt.mcgui.mcVersionSpinner;
 
 import net.kdt.pojavlaunch.CustomControlsActivity;
-import git.artdeell.mojo.R;
+import net.kdt.pojavlaunch.R;
 
 import net.kdt.pojavlaunch.Tools;
 import net.kdt.pojavlaunch.contracts.OpenDocumentWithExtension;
@@ -29,6 +30,7 @@ import net.kdt.pojavlaunch.instances.Instance;
 import net.kdt.pojavlaunch.instances.Instances;
 import net.kdt.pojavlaunch.progresskeeper.ProgressKeeper;
 import net.kdt.pojavlaunch.utils.FileUtils;
+import net.kdt.pojavlaunch.utils.jre.GameRunner;
 
 import java.io.File;
 
@@ -65,7 +67,22 @@ public class MainMenuFragment extends Fragment {
         mInstallJarButton.setOnClickListener(v -> runInstallerWithConfirmation());
         mEditProfileButton.setOnClickListener(v -> mVersionSpinner.openProfileEditor(requireActivity()));
 
-        mPlayButton.setOnClickListener(v -> ExtraCore.setValue(ExtraConstants.LAUNCH_GAME, true));
+        mPlayButton.setOnClickListener(v -> {
+        Instance instance = Instances.loadSelectedInstance();
+        File gamedir = instance.getGameDirectory();
+
+        if (GameRunner.hasVkMod(gamedir)) {
+            new AlertDialog.Builder(requireContext())
+            .setTitle(R.string.vk_mod_title)
+            .setMessage(R.string.vk_mod_message)
+            .setPositiveButton(R.string.continue_button, (d, w) -> {
+                ExtraCore.setValue(ExtraConstants.LAUNCH_GAME, true);
+            })
+            .show();
+        } else {
+        ExtraCore.setValue(ExtraConstants.LAUNCH_GAME, true);
+        }
+        });
 
         mShareLogsButton.setOnClickListener((v) -> shareLog(requireContext()));
 

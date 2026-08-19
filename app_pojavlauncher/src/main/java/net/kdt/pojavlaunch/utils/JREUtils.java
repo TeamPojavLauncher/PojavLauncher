@@ -82,17 +82,13 @@ public class JREUtils {
     }
 
     // Sets up ANGLE driver environment
-    public static void setupAngleEnv(Context ctx, Map<String, String> envMap) {
-        if (!LauncherPreferences.PREF_USE_ANGLE) return;
-        LibraryPlugin angle = LibraryPlugin.discoverPlugin(ctx, LibraryPlugin.ID_ANGLE_PLUGIN);
-        if (angle == null) return;
-        String[] angleLibs = {"libEGL_angle.so", "libGLESv2_angle.so"};
-        if (!angle.checkLibraries(angleLibs)) {
-            Log.e("AngleEnvSetup", "AnglePlugin exists, but the ANGLE libraries are not present. Is the plugin corrupted?");
-            return;
-        }
-        envMap.put("LIBGL_EGL", angle.resolveAbsolutePath(angleLibs[0]));
-        envMap.put("LIBGL_GLES", angle.resolveAbsolutePath(angleLibs[1]));
+    public static void setupAngleEnv(Context context, Map<String, String> envMap) {
+       if (!LauncherPreferences.PREF_USE_ANGLE) return;
+       String nativeLibDir = context.getApplicationInfo().nativeLibraryDir;
+       String eglPath = nativeLibDir + "/libEGL_angle.so";
+       String glesPath = nativeLibDir + "/libGLESv2_angle.so";
+       envMap.put("LIBGL_EGL", eglPath);
+       envMap.put("LIBGL_GLES", glesPath);
     }
 
     public static void setupFfmpegEnv(Context ctx, Map<String, String> envMap) {
@@ -134,8 +130,24 @@ public class JREUtils {
 		}
 		envMap.put("MOD_ANDROID_RUNTIME", modRuntimeDir.getAbsolutePath());
 
-        setupAngleEnv(context, envMap);
         setupFfmpegEnv(context, envMap);
+
+        if (renderer.equals("opengles3_ltw")) {
+          setupAngleEnv(context, envMap);
+        }
+
+        if(renderer.equals("opengles3")) {
+           envMap.put("LIBGL_USE_MC_COLOR", "1");
+           envMap.put("LIBGL_GL", "31");
+           envMap.put("LIBGL_ES", "3");
+           envMap.put("LIBGL_NORMALIZE", "1");
+           envMap.put("LIBGL_NOERROR", "1");
+        }
+
+        if(renderer.equals("opengles_mobileglues")) {
+           envMap.put("MG_DIR_PATH", Tools.DIR_DATA + "/MobileGlues");
+        }
+
         // Init mesa renderers
         MesaUtils.initEnvironment(context, renderer, envMap);
 
@@ -256,9 +268,18 @@ public class JREUtils {
                 useGles = true;
                 glesVersion = 3;
                 break;
+            case "opengles_mobileglues" :
+                renderLibrary = "libmobileglues.so"; 
+                useGles = true; 
+                glesVersion = 3; 
+                break;
+            case "opengles3":
+                renderLibrary = "libng_gl4es.so";
+                useGles = true;
+                glesVersion = 3;
+                break;
             case "opengles2":
             case "opengles2_5":
-            case "opengles3":
             default:
                 renderLibrary = "libgl4es_114.so";
                 useGles = true;
