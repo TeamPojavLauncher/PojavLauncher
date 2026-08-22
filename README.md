@@ -1,4 +1,4 @@
-<h1 align="center">PojavLauncher</h1>
+<h1 align="center">PojavLauncher (a.k.a. Pojav Reborn)</h1>
 
 <a href="./README_RU.md">Readme на русском</a>
 
@@ -26,13 +26,8 @@ PojavLauncher is a launcher that allows you to play Minecraft: Java Edition on y
 
 For more details, check out our [wiki](https://pojavlauncher.app/)!
 
-> [!NOTE]
-> This is not the original PojavLauncher. The original project has been discontinued. This repository is a rewrite based on [MojoLauncher](https://github.com/MojoLauncher/MojoLauncher) commits. We are not affiliated with the PojavLauncherTeam in any way.
->
-> We do not maintain any social media accounts except Discord. All official PojavLauncherTeam social channels have been archived.
->
-> - Join [Discord](https://discord.gg/2HYpzs4gZT) for the latest updates and news.
-> - Check out the [original PojavLauncher](https://github.com/PojavLauncherTeam/PojavLauncher) source code.
+> [!IMPORTANT]
+> This is not the original PojavLauncher. This project is based on [MojoLauncher](https://github.com/MojoLauncher/MojoLauncher). For more details, please see [DISCLAIMER.md](DISCLAIMER.md).
 
 ## Table of Contents
 
@@ -66,11 +61,13 @@ For more details, check out our [wiki](https://pojavlauncher.app/)!
 
 ## Getting PojavLauncher
 
-You can get PojavLauncher via three methods:
+You can get PojavLauncher via five methods:
 
-1. **Releases:** Download the latest prebuilt app from [nightly.link](https://nightly.link/TeamPojavLauncher/PojavLauncher/workflows/android/v3_openjdk?preview) or select from our [stable releases](https://github.com/TeamPojavLauncher/PojavLauncher/releases) or [automatic builds](https://github.com/TeamPojavLauncher/PojavLauncher/actions).
-2. **Google Play:** Get it from Google Play by clicking on this badge: [![Google Play](https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=net.kdt.pojavlaunch)
-3. **Build from Source:** Follow the [building instructions](#building) below.
+1. **Releases:** Download the latest release.apk from our [stable releases](https://github.com/TeamPojavLauncher/PojavLauncher/releases).
+2. **Google Play (Deprecated):** Get it from Google Play by clicking on this badge: [![Google Play](https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=net.kdt.pojavlaunch)
+3. **Nightly.link:** Get the latest pre-built app from [nightly.link](https://nightly.link/TeamPojavLauncher/PojavLauncher/workflows/android/v3_openjdk?preview)
+4. **Automated builds:** Download the latest debug.apk from [automatic builds](https://github.com/TeamPojavLauncher/PojavLauncher/actions).
+5. **Build from Source:** Follow the [building instructions](#building) below.
 
 ## Building
 
@@ -87,9 +84,9 @@ The built APK will be located in `app_pojavlauncher/build/outputs/apk/debug/`.
 
 If you need more control over the build process, follow these steps:
 
-1. **Java Runtime Environment (JRE):** Download the `jre8-pojav` artifact from our [CI auto builds](https://github.com/TeamPojavLauncher/android-openjdk-build-multiarch/actions).  This package contains pre-built JREs for all supported architectures.  If you need to build the JRE yourself, follow the instructions in the [android-openjdk-build-multiarch](https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch) repository.
+1. **Java Runtime Environment (JRE):** Download the `jre8-pojav` artifact from our [CI auto builds](https://github.com/MojoLauncher/android-openjdk-build-multiarch/actions).  This package contains pre-built JREs for all supported architectures.  If you need to build the JRE yourself, follow the instructions in the [android-openjdk-build-multiarch](https://github.com/MojoLauncher/android-openjdk-build-multiarch) repository.
 
-2. **LWJGL:** The build instructions for the custom LWJGL are available over the [LWJGL repository](https://github.com/PojavLauncherTeam/lwjgl3).
+2. **LWJGL:** The build instructions for the custom LWJGL are available over the [LWJGL repository](https://github.com/MojoLauncher/lwjgl3).
 
 3. **Language List:** Because languages are auto-added by Crowdin, you need to run the language list generator before building. In the project directory, run:
    * Linux/macOS:
@@ -121,15 +118,18 @@ If you need more control over the build process, follow these steps:
 - [x] New input pipe rewritten to native code
 - [x] Rewritten entire controls system
 - [x] Added MobileGlues Renderer
-- [x] Added NG_GL4ES (Krypton Wrapper) Renderer
+- [x] Added NG_GL4ES (Krypton Wrapper) Renderer as GL4ES backend
+- [x] Added Freedreno for Adreno devices
 - [x] Instance system in favor of profiles
 - [x] Out-of-the-box 1.21.5 support
+- [x] mrpack/CurseForge zip import
 - [ ] LTW: resolve issues with Create
 - [ ] LTW: enable compute shader/image extensions
 - [ ] LTW: switch to a color-renderable format for framebuffers
+- [ ] Add [MobileGL](https://github.com/MobileGL-Dev/MobileGL) for Mali devices
 - [ ] Modpack/mod management tool
-- [x] mrpack/CurseForge zip import
 - [ ] MMC-compatible instance import
+- [ ] Implement common native library standard
 - [ ] Patch-on-dlopen for mod native libraries
 - [ ] More to come!
 
@@ -139,7 +139,7 @@ See our [issue tracker](https://github.com/TeamPojavLauncher/PojavLauncher/issue
 
 ## FAQ
 
-See our [wiki](https://pojavlauncherteam.github.io/) for more information.
+See our [wiki](https://pojavlauncherteam.github.io/) for more information. (Currently an outdated wiki.) 
 
 ## Contributing
 
@@ -149,7 +149,7 @@ Any code change should be submitted as a pull request. The description should ex
 
 ## Support
 
-For support, please join our [Discord server](https://discord.com/invite/aenk3EUvER).
+For support, please join our [Discord server](https://discord.gg/2HYpzs4gZT).
 
 ## License
 
@@ -168,6 +168,7 @@ PojavLauncher is licensed under [GNU LGPLv3](https://github.com/PojavLauncherTea
 
 ### Graphics & Rendering
 - [GL4ES](https://github.com/PojavLauncherTeam/gl4es): [MIT License](https://github.com/ptitSeb/gl4es/blob/master/LICENSE)
+- [Holy GL4ES](https://github.com/PojavLauncherTeam/holy-gl4es): [MIT License](https://github.com/PojavLauncherTeam/holy-gl4es/blob/main/LICENSE)
 - [MobileGlues](https://github.com/MobileGL-Dev/MobileGlues): [LGPL-2.1 License](https://github.com/MobileGL-Dev/MobileGlues/blob/dev-es/LICENSE)
 - [Krypton Wrapper](https://github.com/BZLZHH/NG-GL4ES): [MIT License](https://github.com/BZLZHH/NG-GL4ES/blob/main/LICENSE)
 - [Mesa 3D Graphics Library](https://gitlab.freedesktop.org/mesa/mesa): [MIT License](https://docs.mesa3d.org/license.html)
@@ -183,7 +184,7 @@ PojavLauncher is licensed under [GNU LGPLv3](https://github.com/PojavLauncherTea
 - [Authlib-Injector](https://github.com/yushijinhun/authlib-injector) (Authorization via ely.by): [AGPL-3.0](https://github.com/yushijinhun/authlib-injector/blob/develop/LICENSE)
 
 ### Audio
-- [OpenAL-Soft](https://github.com/kcat/openal-soft): [GNU GPLv2 License](app_pojavlauncher/src/main/assets/licenses/OPENAL-SOFT_GPL2)
+- [OpenAL-Soft](https://github.com/kcat/openal-soft): [GNU LIBRARY GENERAL PUBLIC LICENSE](https://github.com/kcat/openal-soft/blob/master/COPYING) and [modified PFFFT](https://github.com/kcat/openal-soft/blob/master/LICENSE-pffft)
 - [oboe](https://github.com/google/oboe): [Apache License 2.0](https://github.com/google/oboe/blob/main/LICENSE)
 
 ### Other Services

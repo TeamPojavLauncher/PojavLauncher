@@ -53,6 +53,13 @@ jobs:
           gradle :app_pojavlauncher:assembleFullPubRelease
           mv app_pojavlauncher/build/outputs/apk/full/pubRelease/app_pojavlauncher-full-pubRelease.apk out/Pojavlauncher-nightly.apk
 
+      - name: Upload nightly.apk to Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Pojavlauncher-nightly
+          path: out/Pojavlauncher-nightly.apk
+          retention-days: 30  # Keep for 30 days instead
+
       - name: Release Nightly APK
         if: github.repository_owner == 'TeamPojavLauncher' && github.ref_name == 'v3_openjdk'
         uses: softprops/action-gh-release@v3
@@ -65,6 +72,8 @@ jobs:
 
             > **Build #${{ github.run_number }}** · ${{ steps.time.outputs.timestamp }}
 
+            ⚠️ **This is a nightly build — it may be unstable and contain bugs. Use at your own risk.**
+
             **Commit hash:** `${{ github.sha }}`
             **Branch:** `${{ github.ref_name }}`
             **Workflow:** [Run #${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
@@ -72,6 +81,9 @@ jobs:
 
             ## Changes
             For detailed changes, check the commit history.
+
+            ## Report Bugs
+            Please report bugs in [issues](https://github.com/TeamPojavLauncher/PojavLauncher/issues) or in our [Discord server](https://discord.gg/2HYpzs4gZT).
 
           files: |
             out/Pojavlauncher-nightly.apk

@@ -1,4 +1,4 @@
-<h1 align="center">PojavLauncher</h1>
+<h1 align="center">PojavLauncher (a.k.a. Pojav Reborn)</h1>
 
 <img src="https://github.com/PojavLauncherTeam/PojavLauncher/blob/v3_openjdk/app_pojavlauncher/src/main/assets/pojavlauncher.png" align="left" width="130" height="150" alt="PojavLauncher logo">
 
@@ -22,13 +22,8 @@ PojavLauncher হল একটি লঞ্চার যা আপনাকে �
 
 বিস্তারিত তথ্যের জন্য আমাদের [উইকি](https://pojavlauncher.app/) দেখুন!
 
-> [!NOTE]
-> এটি আসল PojavLauncher নয়। মূল প্রকল্পটি বন্ধ হয়ে গেছে। এই রিপোজিটরিটি [MojoLauncher](https://github.com/MojoLauncher/MojoLauncher)  কমিটগুলোর উপর ভিত্তি করে একটি রিরাইট। আমরা PojavLauncherTeam এর সাথে কোনোভাবে সম্পর্কিত নই।
->
-> আমরা Discord ছাড়া অন্য কোনো সোশ্যাল মিডিয়া পরিচালনা করি না। PojavLauncherTeam-এর সব অফিসিয়াল সোশ্যাল চ্যানেল আর্কাইভ করা হয়েছে।
->
-> - সর্বশেষ আপডেট ও খবরের জন্য [Discord](https://discord.gg/2HYpzs4gZT) যোগ দিন।
-> - মূল PojavLauncher সোর্স কোড দেখতে [এখানে](https://github.com/PojavLauncherTeam/PojavLauncher) যান।
+> [!IMPORTANT]
+> এটি মূল PojavLauncher নয়। এই প্রকল্পটি [MojoLauncher](https://github.com/MojoLauncher/MojoLauncher)। আরও তথ্যের জন্য দয়া করে [DISCLAIMER.md](DISCLAIMER.md) দেখুন।
 
 ## বিষয়সূচি
 
@@ -62,11 +57,13 @@ PojavLauncher হল একটি লঞ্চার যা আপনাকে �
 
 ## PojavLauncher পেতে
 
-PojavLauncher তিনটি উপায়ে পেতে পারেন:
+PojavLauncher পাঁচটি উপায়ে পেতে পারেন:
 
-1. **রিলিজেস:** সর্বশেষ প্রি-বিল্ট অ্যাপ [nightly.link](https://nightly.link/TeamPojavLauncher/PojavLauncher/workflows/android/v3_openjdk?preview) থেকে ডাউনলোড করুন অথবা আমাদের [স্থিতিশীল রিলিজেস](https://github.com/TeamPojavLauncher/PojavLauncher/releases) বা [স্বয়ংক্রিয় বিল্ডস](https://github.com/TeamPojavLauncher/PojavLauncher/actions) থেকে নির্বাচন করুন।
-2. **Google Play:** এই ব্যাজে ক্লিক করে Google Play থেকে পান: [![Google Play](https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=net.kdt.pojavlaunch)
-3. **সোর্স থেকে বিল্ড করুন:** নীচের [বিল্ড নির্দেশিকা](#বিল্ড-করা) অনুসরণ করুন।
+1. **রিলিজেস:** আমাদের [স্থিতিশীল রিলিজেস](https://github.com/TeamPojavLauncher/PojavLauncher/releases) থেকে সর্বশেষ release.apk ডাউনলোড করুন।
+2. **Google Play (বর্জিত):** এই ব্যাজে ক্লিক করে Google Play থেকে পান: [![Google Play](https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=net.kdt.pojavlaunch)
+3. **Nightly.link:** [nightly.link](https://nightly.link/TeamPojavLauncher/PojavLauncher/workflows/android/v3_openjdk?preview) থেকে সর্বশেষ প্রি-বিল্ট অ্যাপ পান।
+4. **স্বয়ংক্রিয় বিল্ডস:** [স্বয়ংক্রিয় বিল্ডস](https://github.com/TeamPojavLauncher/PojavLauncher/actions) থেকে সর্বশেষ debug.apk ডাউনলোড করুন।
+5. **সোর্স থেকে বিল্ড করুন:** নীচের [বিল্ড নির্দেশিকা](#বিল্ড-করা) অনুসরণ করুন।
 
 ## বিল্ড করা
 
@@ -100,31 +97,34 @@ PojavLauncher বিল্ড করার সবচেয়ে সহজ উ�
 
 ## বর্তমান অবস্থা
 
-* [x] OpenJDK 8 মোবাইল পোর্ট: ARM32, ARM64, x86, x86_64
-* [x] OpenJDK 17 মোবাইল পোর্ট: ARM32, ARM64, x86, x86_64
-* [x] OpenJDK 21 মোবাইল পোর্ট: ARM32, ARM64, x86, x86_64
-* [x] হেডলেস মড ইনস্টলার
-* [x] GUI সহ মড ইনস্টলার
-* [x] OpenGL OpenJDK পরিবেশে
-* [x] OpenAL (অধিকাংশ ডিভাইসে কাজ করে)
-* [x] Minecraft 1.12.2 এবং তার নিচের সমর্থন
-* [x] Minecraft 1.13 এবং তার উপরের সমর্থন
-* [x] Minecraft 1.17 (22w13a) এবং তার উপরের সমর্থন
-* [x] গেম সারফেস জুমিং
-* [x] নতুন ইনপুট পাইপ নেটিভ কোডে পুনঃলিখন
-* [x] সম্পূর্ণ কন্ট্রোল সিস্টেম পুনঃলিখন
-* [x] MobileGlues Renderer যোগ করা হয়েছে
-* [x] NG_GL4ES (Krypton Wrapper) Renderer যোগ করা হয়েছে
-* [x] প্রোফাইল-ভিত্তিক ইনস্ট্যান্স সিস্টেম
-* [x] আউট-অফ-দ্য-বক্স 1.21.5 সমর্থন
-* [ ] LTW: Create-এর সমস্যা সমাধান
-* [ ] LTW: Compute Shader/ইমেজ এক্সটেনশন সক্রিয় করা
-* [ ] LTW: ফ্রেমবাফারের জন্য কালার-রেন্ডারেবল ফরম্যাটে পরিবর্তন
-* [ ] Modpack/Mod ম্যানেজমেন্ট টুল
-* [x] mrpack/CurseForge zip ইমপোর্ট
-* [ ] MMC-সামঞ্জস্যপূর্ণ ইনস্ট্যান্স ইমপোর্ট
-* [ ] মড নেটিভ লাইব্রেরির জন্য Patch-on-dlopen
-* [ ] আরও আসছে!
+- [x] OpenJDK 8 মোবাইল পোর্ট: ARM32, ARM64, x86, x86_64
+- [x] OpenJDK 17 মোবাইল পোর্ট: ARM32, ARM64, x86, x86_64
+- [x] OpenJDK 21 মোবাইল পোর্ট: ARM32, ARM64, x86, x86_64
+- [x] হেডলেস মড ইনস্টলার
+- [x] GUI সহ মড ইনস্টলার
+- [x] OpenJDK পরিবেশে OpenGL
+- [x] OpenAL (বেশিরভাগ ডিভাইসে কাজ করে)
+- [x] Minecraft 1.12.2 এবং তার নিচের সংস্করণের সমর্থন
+- [x] Minecraft 1.13 এবং তার উপরের সংস্করণের সমর্থন
+- [x] Minecraft 1.17 (22w13a) এবং তার উপরের সংস্করণের সমর্থন
+- [x] গেম সারফেস জুম করা
+- [x] নেটিভ কোডে নতুন ইনপুট পাইপ পুনর্লিখিত
+- [x] সম্পূর্ণ নিয়ন্ত্রণ ব্যবস্থা পুনর্লিখিত
+- [x] MobileGlues রেন্ডারার যোগ করা হয়েছে
+- [x] GL4ES ব্যাকএন্ড হিসাবে NG_GL4ES (Krypton Wrapper) রেন্ডারার যোগ করা হয়েছে
+- [x] Adreno ডিভাইসের জন্য Freedreno যোগ করা হয়েছে
+- [x] প্রোফাইলের পরিবর্তে ইনস্ট্যান্স সিস্টেম
+- [x] বাক্সের বাইরে থেকে 1.21.5 সমর্থন
+- [x] mrpack/CurseForge জিপ আমদানি
+- [ ] LTW: Create এর সাথে সমস্যা সমাধান করুন
+- [ ] LTW: কম্পিউট শেডার/ইমেজ এক্সটেনশন সক্ষম করুন
+- [ ] LTW: ফ্রেমবাফারের জন্য রঙ-রেন্ডারযোগ্য ফর্ম্যাটে স্যুইচ করুন
+- [ ] Mali ডিভাইসের জন্য [MobileGL](https://github.com/MobileGL-Dev/MobileGL) যোগ করুন
+- [ ] মডপ্যাক/মড ম্যানেজমেন্ট টুল
+- [ ] MMC-সামঞ্জস্যপূর্ণ ইনস্ট্যান্স আমদানি
+- [ ] সাধারণ নেটিভ লাইব্রেরি মান প্রয়োগ করুন
+- [ ] মড নেটিভ লাইব্রেরির জন্য Patch-on-dlopen
+- [ ] আরও অনেক কিছু আসছে!
 
 ## পরিচিত সমস্যা
 
@@ -161,6 +161,7 @@ PojavLauncher [GNU LGPLv3](https://github.com/PojavLauncherTeam/PojavLauncher/bl
 
 ### গ্রাফিক্স এবং রেন্ডারিং
 - [GL4ES](https://github.com/PojavLauncherTeam/gl4es): [MIT লাইসেন্স](https://github.com/ptitSeb/gl4es/blob/master/LICENSE)
+- [Holy GL4ES](https://github.com/PojavLauncherTeam/holy-gl4es): [MIT লাইসেন্স](https://github.com/PojavLauncherTeam/holy-gl4es/blob/main/LICENSE)
 - [MobileGlues](https://github.com/MobileGL-Dev/MobileGlues): [LGPL-2.1 লাইসেন্স](https://github.com/MobileGL-Dev/MobileGlues/blob/dev-es/LICENSE)
 - [Krypton Wrapper](https://github.com/BZLZHH/NG-GL4ES): [MIT লাইসেন্স](https://github.com/BZLZHH/NG-GL4ES/blob/main/LICENSE)
 - [Mesa 3D গ্রাফিক্স লাইব্রেরি](https://gitlab.freedesktop.org/mesa/mesa): [MIT লাইসেন্স](https://docs.mesa3d.org/license.html)
@@ -176,7 +177,7 @@ PojavLauncher [GNU LGPLv3](https://github.com/PojavLauncherTeam/PojavLauncher/bl
 - [Authlib-Injector](https://github.com/yushijinhun/authlib-injector) (ely.by এর মাধ্যমে অনুমোদন): [AGPL-3.0](https://github.com/yushijinhun/authlib-injector/blob/develop/LICENSE)
 
 ### অডিও
-- [OpenAL-Soft](https://github.com/kcat/openal-soft): [GNU GPLv2 লাইসেন্স](app_pojavlauncher/src/main/assets/licenses/OPENAL-SOFT_GPL2)
+- [OpenAL-Soft](https://github.com/kcat/openal-soft): [GNU LIBRARY GENERAL PUBLIC LICENSE](https://github.com/kcat/openal-soft/blob/master/COPYING) এবং [modified PFFFT](https://github.com/kcat/openal-soft/blob/master/LICENSE-pffft)
 - [oboe](https://github.com/google/oboe): [Apache লাইসেন্স 2.0](https://github.com/google/oboe/blob/main/LICENSE)
 
 ### অন্যান্য সেবা

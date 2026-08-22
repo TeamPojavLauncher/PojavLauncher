@@ -1,4 +1,6 @@
-<h1 align="center">PojavLauncher</h1>
+<h1 align="center">PojavLauncher (также известный как Pojav Reborn)</h1>
+
+<a href="./README.md">Readme in English</a>
 
 <img src="https://github.com/PojavLauncherTeam/PojavLauncher/blob/v3_openjdk/app_pojavlauncher/src/main/assets/pojavlauncher.png" align="left" width="130" height="150" alt="Логотип PojavLauncher">
 
@@ -6,7 +8,7 @@
 <img src="https://img.shields.io/badge/platform-Android-green" alt="Платформа"/>
 <img src="https://img.shields.io/badge/minSdk-21-blue" alt="Min SDK"/>
 [![Статус проекта](https://img.shields.io/badge/status-active-brightgreen.svg?style=flat)](https://github.com/TeamPojavLauncher/PojavLauncher/commits)
-[![GitHub commit activity](https://img.shields.io/github/commit-activity/m/TeamPojavLauncher/PojavLauncher.svg?style=flat)](https://github.com/TeamPojavLauncher/PojavLauncher/graphs/commit-activity)
+[![Активность коммитов GitHub](https://img.shields.io/github/commit-activity/m/TeamPojavLauncher/PojavLauncher.svg?style=flat)](https://github.com/TeamPojavLauncher/PojavLauncher/graphs/commit-activity)
 [![Проблемы на GitHub](https://img.shields.io/github/issues/TeamPojavLauncher/PojavLauncher.svg?style=flat&color=%23FFA500)](https://github.com/TeamPojavLauncher/PojavLauncher/issues)
 [![Crowdin](https://badges.crowdin.net/pojavlauncher/localized.svg)](https://crowdin.com/project/pojavlauncher)
 [![Контрибьютеры GitHub](https://img.shields.io/github/contributors/TeamPojavLauncher/PojavLauncher.svg?style=flat)](https://github.com/TeamPojavLauncher/PojavLauncher/graphs/contributors)
@@ -20,17 +22,16 @@
 
 PojavLauncher — это лаунчер, позволяющий вам играть в Minecraft: Java Edition на вашем Android и [iOS](https://github.com/PojavLauncherTeam/PojavLauncher_iOS) устройстве.
 
+* Этот лаунчер может запускать почти все доступные версии Minecraft в диапазоне от rd-132211 до снапшотов 26.x (включая версии Combat Test).
+* Моддинг через Forge и Fabric так же поддерживается.
+* Этот репозиторий содержит исходный код для Android. Для iOS/iPadOS посетите [PojavLauncher_iOS](https://github.com/PojavLauncherTeam/PojavLauncher_iOS).
+
 Для получения дополнительной информации посетите наш [вики](https://pojavlauncher.app/)!
 
-> [!NOTE]
-> Это не оригинальный PojavLauncher. Оригинальный проект был прекращён. Данный репозиторий является переписанной версией на основе коммитов [MojoLauncher](https://github.com/MojoLauncher/MojoLauncher). Мы не связаны с командой PojavLauncherTeam в какой-либо форме.
->
-> Мы не ведём никаких социальных сетей, кроме Discord. Все официальные социальные каналы PojavLauncherTeam были архивированы.
->
-> - Присоединяйтесь к [Discord](https://discord.gg/2HYpzs4gZT) для получения последних обновлений и новостей.
-> - Исходный код оригинального PojavLauncher доступен [здесь](https://github.com/PojavLauncherTeam/PojavLauncher).
+> [!IMPORTANT]
+> Это не оригинальный PojavLauncher. Этот проект основан на [MojoLauncher](https://github.com/MojoLauncher/MojoLauncher). Для получения дополнительной информации, пожалуйста, см. [DISCLAIMER.md](DISCLAIMER.md).
 
-## Оглавление
+## Навигация
 
 * [Введение](#введение)
 * [Получение PojavLauncher](#получение-pojavlauncher)
@@ -43,7 +44,7 @@ PojavLauncher — это лаунчер, позволяющий вам игра�
 * [Участие в разработке](#участие-в-разработке)
 * [Поддержка](#поддержка)
 * [Лицензия](#лицензия)
-* [Благодарности и зависимости](#благодарности-и-компоненты-от-третьих-сторон-с-их-лицензиями)
+* [Благодарности и компоненты от третьих сторон и их лицензии](#благодарности-и-компоненты-третьих-сторон-и-их-лицензии)
     * [Основные компоненты](#основные-компоненты)
     * [Фреймворк и библиотеки поддержки](#фреймворк-и-библиотеки-поддержки)
     * [Графика и отрисовка](#графика-и-отрисовка)
@@ -55,18 +56,21 @@ PojavLauncher — это лаунчер, позволяющий вам игра�
 
 ## Введение
 
-* PojavLauncher — это лаунчер Minecraft: Java Edition для Android и iOS, основанный на [Boardwalk](https://github.com/zhuowei/Boardwalk)
-* Этот лаунчер может запускать практически все доступные версии Minecraft, начиная от rd-132211 до 26.x снимков (включая версии Combat Test)
-* Также поддерживается модификация через Forge и Fabric.
+* PojavLauncher — это лаунчер Minecraft: Java Edition для Android и iOS основанный на [Boardwalk](https://github.com/zhuowei/Boardwalk)
+* Этот лаунчер может запускать почти все доступные версии Minecraft в диапазоне от rd-132211 до снапшотов 26.x (включая версии Combat Test).
+* Моддинг через Forge и Fabric так же поддерживается.
 * Этот репозиторий содержит исходный код для Android. Для iOS/iPadOS посетите [PojavLauncher_iOS](https://github.com/PojavLauncherTeam/PojavLauncher_iOS).
 
 ## Получение PojavLauncher
 
-Вы можете получить PojavLauncher тремя способами:
+Вы можете получить PojavLauncher пятью способами:
 
-1. **Выпуски:** Загрузите последнюю предварительно собранную версию приложения с [nightly.link](https://nightly.link/TeamPojavLauncher/PojavLauncher/workflows/android/v3_openjdk?preview) или выберите из наших [стабильных выпусков](https://github.com/TeamPojavLauncher/PojavLauncher/releases) или [автоматических сборок](https://github.com/TeamPojavLauncher/PojavLauncher/actions).
-2. **Google Play:** Загрузите из Google Play, нажав на этот значок: [![Google Play](https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=net.kdt.pojavlaunch)
-3. **Сборка из исходного кода:** Следуйте [инструкциям по сборке](#сборка) ниже.
+1. **Релизы:** Загрузите последний release.apk из наших [стабильных релизов](https://github.com/TeamPojavLauncher/PojavLauncher/releases).
+2. **Google Play (устаревший):** Загрузите из Google Play, нажав на эту кнопку:
+[![Google Play](https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=net.kdt.pojavlaunch)
+3. **Nightly.link:** Получите последний готовый билд с [nightly.link](https://nightly.link/TeamPojavLauncher/PojavLauncher/workflows/android/v3_openjdk?preview).
+4. **Автоматические сборки:** Загрузите последний debug.apk из [автоматических сборок](https://github.com/TeamPojavLauncher/PojavLauncher/actions).
+5. **Сборка из исходного кода:** Следуйте [инструкциям по сборке](#сборка) ниже.
 
 ## Сборка
 
@@ -103,31 +107,35 @@ PojavLauncher — это лаунчер, позволяющий вам игра�
 5. **Сборка лаунчера:** `./gradlew :app_pojavlauncher:assembleDebug` (Замените `gradlew` на `gradlew.bat` на Windows).
 
 ## Текущая дорожная карта
-- [x] OpenJDK 8 Mobile port: ARM32, ARM64, x86, x86_64
-- [x] OpenJDK 17 Mobile port: ARM32, ARM64, x86, x86_64
-- [x] OpenJDK 21 Mobile port: ARM32, ARM64, x86, x86_64
-- [x] Установщик модов без интерфейса
+
+- [x] Мобильный порт OpenJDK 8: ARM32, ARM64, x86, x86_64
+- [x] Мобильный порт OpenJDK 17: ARM32, ARM64, x86, x86_64
+- [x] Мобильный порт OpenJDK 21: ARM32, ARM64, x86, x86_64
+- [x] Headless установщик модов
 - [x] Установщик модов с графическим интерфейсом
-- [x] OpenGL в окружении OpenJDK
+- [x] OpenGL в среде OpenJDK
 - [x] OpenAL (работает на большинстве устройств)
 - [x] Поддержка Minecraft 1.12.2 и ниже
 - [x] Поддержка Minecraft 1.13 и выше
 - [x] Поддержка Minecraft 1.17 (22w13a) и выше
 - [x] Масштабирование игровой поверхности
-- [x] Новый входной канал переписан в нативный код
-- [x] Полностью переработана система управления
-- [x] Добавлен визуализатор MobileGlues
-- [x] Добавлен визуализатор NG_GL4ES (Krypton Wrapper)
-- [x] Система инстансов вместо профилей
-- [x] Готовая поддержка 1.21.5
-- [ ] LTW: решение проблем с Create
-- [ ] LTW: включение расширений compute shader/image
-- [ ] LTW: переход на формат с возможностью визуализации цвета для буферов кадров
-- [ ] Инструмент управления модпаками/модами
+- [x] Переписанная система входных потоков в нативный код
+- [x] Полностью переписанная система управления
+- [x] Добавлен рендерер MobileGlues
+- [x] Добавлен рендерер NG_GL4ES (Krypton Wrapper) как бэкенд GL4ES
+- [x] Добавлен Freedreno для устройств Adreno
+- [x] Система экземпляров вместо профилей
+- [x] Поддержка 1.21.5 из коробки
 - [x] Импорт mrpack/CurseForge zip
-- [ ] Импорт инстансов совместимых с MMC
+- [ ] LTW: решить проблемы с Create
+- [ ] LTW: включить расширения вычислительных шейдеров/изображений
+- [ ] LTW: переключиться на цветопередающий формат для буферов кадров
+- [ ] Добавить [MobileGL](https://github.com/MobileGL-Dev/MobileGL) для устройств Mali
+- [ ] Инструмент управления модпаками/модами
+- [ ] Совместимый с MMC импорт экземпляров
+- [ ] Внедрить общий стандарт нативной библиотеки
 - [ ] Patch-on-dlopen для нативных библиотек модов
-- [ ] Ещё много чего в разработке!
+- [ ] Еще многое предстоит!
 
 ## Известные проблемы
 
@@ -137,33 +145,34 @@ PojavLauncher — это лаунчер, позволяющий вам игра�
 
 Больше информации можно найти в нашем [вики](https://pojavlauncherteam.github.io/).
 
-## Участие в разработке
+## Внести свой вклад в проект
 
-Мы приветствуем вклад! Мы приветствуем любого вида вклад, не только код. Например, вы можете помочь улучшить [вики](https://pojavlauncherteam.github.io/), поспособствовать [переводам](https://crowdin.com/project/pojavlauncher) или отправить отчёты об ошибках и запросы на новые функции.
+Мы приветствуем желающих внести свой вклад в проект! Нам не помешает любая помощь, не только код. Например, вы можете помочь в разработке и формировании вики. Вы так же можете помочь [перевести проект](https://crowdin.com/project/pojavlauncher) на ваш язык!
 
-Любое изменение кода должно быть отправлено как pull request. Описание должно объяснить, что делает код, и дать шаги для его выполнения.
+Любые изменения в коде этого репозитория должны быть отправлены в виде pull request-а. Описание должно объяснять что делает код и предоставлять шаги для его запуска.
 
 ## Поддержка
 
-Для получения поддержки присоединитесь к нашему [серверу Discord](https://discord.com/invite/aenk3EUvER).
+Для поддержки пожалуйста присоединитесь к нашему [серверу Discord](https://discord.gg/2HYpzs4gZT).
 
 ## Лицензия
 
-PojavLauncher распространяется под лицензией [GNU LGPLv3](https://github.com/PojavLauncherTeam/PojavLauncher/blob/v3_openjdk/LICENSE).
+PojavLauncher лицензирован под [GNU LGPLv3](https://github.com/PojavLauncherTeam/PojavLauncher/blob/v3_openjdk/LICENSE).
 
-## Кредиты и компоненты третьих сторон и их лицензии
+## Благодарности и компоненты от третьих сторон и их лицензии
 
 ### Основные компоненты
 - [PojavLauncher](https://github.com/PojavLauncherTeam/PojavLauncher): [Лицензия GNU LGPLv3](https://github.com/PojavLauncherTeam/PojavLauncher/blob/v3_openjdk/LICENSE)
 - [Boardwalk](https://github.com/zhuowei/Boardwalk) (JVM Launcher): Лицензия неизвестна / [Apache License 2.0](https://github.com/zhuowei/Boardwalk/blob/master/LICENSE) или [GNU GPLv2](https://github.com/zhuowei/Boardwalk/blob/master/LICENSE)
 - [MojoLauncher](https://github.com/MojoLauncher/MojoLauncher): [Лицензия GNU LGPLv3](https://github.com/MojoLauncher/MojoLauncher/blob/v3_openjdk/LICENSE)
 
-### Поддержка фреймворков и библиотек
+### Фреймворк и библиотеки поддержки
 - Android Support Libraries: [Apache License 2.0](https://android.googlesource.com/platform/prebuilts/maven_repo/android/+/master/NOTICE.txt)
 - [OpenJDK](https://github.com/PojavLauncherTeam/openjdk-multiarch-jdk8u): [Лицензия GNU GPLv2](https://openjdk.java.net/legal/gplv2+ce.html)
 
-### Графика и рендеринг
+### Графика и отрисовка
 - [GL4ES](https://github.com/PojavLauncherTeam/gl4es): [Лицензия MIT](https://github.com/ptitSeb/gl4es/blob/master/LICENSE)
+- [Holy GL4ES](https://github.com/PojavLauncherTeam/holy-gl4es): [Лицензия MIT](https://github.com/PojavLauncherTeam/holy-gl4es/blob/main/LICENSE)
 - [MobileGlues](https://github.com/MobileGL-Dev/MobileGlues): [Лицензия LGPL-2.1](https://github.com/MobileGL-Dev/MobileGlues/blob/dev-es/LICENSE)
 - [Krypton Wrapper](https://github.com/BZLZHH/NG-GL4ES): [Лицензия MIT](https://github.com/BZLZHH/NG-GL4ES/blob/main/LICENSE)
 - [Mesa 3D Graphics Library](https://gitlab.freedesktop.org/mesa/mesa): [Лицензия MIT](https://docs.mesa3d.org/license.html)
@@ -179,11 +188,11 @@ PojavLauncher распространяется под лицензией [GNU LG
 - [Authlib-Injector](https://github.com/yushijinhun/authlib-injector) (авторизация через ely.by): [AGPL-3.0](https://github.com/yushijinhun/authlib-injector/blob/develop/LICENSE)
 
 ### Аудио
-- [OpenAL-Soft](https://github.com/kcat/openal-soft): [Лицензия GNU GPLv2](app_pojavlauncher/src/main/assets/licenses/OPENAL-SOFT_GPL2)
+- [OpenAL-Soft](https://github.com/kcat/openal-soft): [GNU LIBRARY GENERAL PUBLIC LICENSE](https://github.com/kcat/openal-soft/blob/master/COPYING) и [modified PFFFT](https://github.com/kcat/openal-soft/blob/master/LICENSE-pffft)
 - [oboe](https://github.com/google/oboe): [Apache License 2.0](https://github.com/google/oboe/blob/main/LICENSE)
 
 ### Другие услуги
-- Спасибо [Mineskin](https://mineskin.eu/) и [MCHeads](https://mc-heads.net) за предоставление аватаров Minecraft
+- Спасибо [Mineskin](https://mineskin.eu/) и [MCHeads](https://mc-heads.net) за предоставления аватаров Minecraft
 
 ## Дорожная карта
 
