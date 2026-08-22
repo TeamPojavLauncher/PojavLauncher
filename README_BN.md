@@ -193,4 +193,4 @@ PojavLauncher [GNU LGPLv3](https://github.com/PojavLauncherTeam/PojavLauncher/bl
 * মড ইনস্টলেশনের অভিজ্ঞতা উন্নত করা।  
 
 আমরা আমাদের রোডম্যাপের জন্য সম্প্রদায়ের মতামত এবং পরামর্শকে স্বাগত জানাই।  
-আমাদের [ইস্যু ট্র্যাকার](https://github.com/PojavLauncherTeam/PojavLauncher/issues)-এ কোনো ফিচার রিকোয়েস্ট খুলতে দ্বিধা করবেন না।
+আমাদের [ইস্যু ট্র্যাকার](https://github.com/TeamPojavLauncher/PojavLauncher/issues)-এ কোনো ফিচার রিকোয়েস্ট খুলতে দ্বিধা করবেন না।

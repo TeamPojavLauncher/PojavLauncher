@@ -18,11 +18,11 @@ jobs:
         with:
           submodules: recursive
 
-      #  - name: Set up JDK 21
-      #  uses: actions/setup-java@v3
-      #  with:
-      #    distribution: 'temurin'
-      #    java-version: '21'
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'
 
       - name: Get LTW
         uses: dawidd6/action-download-artifact@v6
@@ -34,27 +34,61 @@ jobs:
           name: output-aar
           path: app_pojavlauncher/libs
 
-      - name: Get Mesa
-        uses: dawidd6/action-download-artifact@v6  
-        continue-on-error: true
-        with:
-          github_token: ${{ secrets.MESA_ACTIONS }}
-          repo: MojoLauncher/mesa-unified2
-          workflow: android.yml
-          workflow_conclusion: success
-          branch: mojo/26.2
-          name: mesa-aar
-          path: app_pojavlauncher/libs
+      # - name: Get Mesa
+      #  uses: dawidd6/action-download-artifact@v6  
+      #  continue-on-error: true
+      #  with:
+      #    github_token: ${{ secrets.MESA_ACTIONS }}
+      #    repo: MojoLauncher/mesa-unified2
+      #    workflow: android.yml
+      #    workflow_conclusion: success
+      #    branch: mojo/26.2
+      #    name: mesa-aar
+      #    path: app_pojavlauncher/libs
+
+      # - name: Get JRE 8
+      #  uses: dawidd6/action-download-artifact@v9
+      #  with:
+      #    workflow: build.yml
+      #    path: app_pojavlauncher/src/main/assets/components/jre
+      #    workflow_conclusion: completed
+      #    repo: MojoLauncher/android-openjdk-build-multiarch
+      #    branch: buildjre8
+      #    name: jre8-pojav
+
+      # - name: Get JRE17
+      #  uses: dawidd6/action-download-artifact@v9
+      #  with:
+      #    workflow: build.yml
+      #    path: app_pojavlauncher/src/main/assets/components/jre-new
+      #    workflow_conclusion: completed
+      #    repo: MojoLauncher/android-openjdk-build-multiarch
+      #    branch: buildjre17-21
+      #    name: jre17-pojav
+
+      #  - name: Get JRE21
+      #  uses: dawidd6/action-download-artifact@v9
+      #  with:
+      #    workflow: build.yml
+      #    path: app_pojavlauncher/src/main/assets/components/jre-21
+      #    workflow_conclusion: completed
+      #    repo: MojoLauncher/android-openjdk-build-multiarch
+      #    branch: buildjre17-21
+      #    name: jre21-pojav
+
+      # - name: Get JRE25
+      #  uses: dawidd6/action-download-artifact@v9
+      #  with:
+      #    workflow: build.yml
+      #    path: app_pojavlauncher/src/main/assets/components/jre-25
+      #    workflow_conclusion: completed
+      #    repo: MojoLauncher/android-openjdk-build-multiarch
+      #    branch: buildjre8
+      #    name: jre8-pojav
 
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: "8.14.3"
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
 
       - name: Create out directory
         run: mkdir out
@@ -73,6 +107,7 @@ jobs:
 
       - name: Build Debug .apk (No runtime)
         run: |
+         # Build the launcher (without jre8 installed)
           gradle :app_pojavlauncher:assembleNoruntimeDebug
           mv app_pojavlauncher/build/outputs/apk/noruntime/debug/app_pojavlauncher-noruntime-debug.apk out/app-debug-noruntime.apk
 
