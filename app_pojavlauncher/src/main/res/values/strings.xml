@@ -496,6 +496,19 @@
     <string name="preference_keyboard_autopan_summary">Allows on-screen keyboard to move the game window instead of overlapping it if the last touch was below the visible zone. Has no effect on custom control layout buttons with the same function</string>
     <string name="preference_data_migration_title">Import data</string>
     <string name="preference_data_migration_summary">Begin importing data (instances, control maps) from the old app installation</string>
+
+    <string name="preference_check_update_title">Check for updates</string>
+    <string name="preference_check_update_summary">Check GitHub for a newer build of the app and install it</string>
+    <string name="appupdate_check_failed">Failed to check for updates, see the log for details</string>
+    <string name="appupdate_up_to_date">You already have the latest version</string>
+    <string name="appupdate_no_asset">The latest release has no downloadable APK</string>
+    <string name="appupdate_dialog_title">Update available: %1$s</string>
+    <string name="appupdate_dialog_title_permission">Permission required</string>
+    <string name="appupdate_dialog_message_empty">A new build of the app is available.</string>
+    <string name="appupdate_dialog_update">Update</string>
+    <string name="appupdate_dialog_ignore">Ignore this version</string>
+    <string name="appupdate_downloading">Downloading update…</string>
+    <string name="appupdate_permission_required">Allow PojavLauncher to install unknown apps to continue updating.</string>
     <string name="migration_progress_foreign">Provide a correct old installation!</string>
     <string name="migration_progress_failed">Failed to migrate data!</string>
     <string name="migration_progress_finish">Data migration finished!</string>

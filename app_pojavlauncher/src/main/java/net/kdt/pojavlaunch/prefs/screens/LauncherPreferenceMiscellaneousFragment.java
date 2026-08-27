@@ -16,6 +16,7 @@ import net.kdt.pojavlaunch.R;
 
 import net.kdt.pojavlaunch.LauncherActivity;
 import net.kdt.pojavlaunch.progresskeeper.ProgressKeeper;
+import net.kdt.pojavlaunch.tasks.AppUpdateChecker;
 import net.kdt.pojavlaunch.tasks.DataMigrator;
 import net.kdt.pojavlaunch.utils.GLInfoUtils;
 import net.kdt.pojavlaunch.utils.RendererCompatUtil;
@@ -50,6 +51,11 @@ public class LauncherPreferenceMiscellaneousFragment extends LauncherPreferenceF
                 return true;
             }
             mMigrateLauncher.launch(null);
+            return true;
+        });
+        Preference checkUpdatePreference = requirePreference("checkForAppUpdate");
+        checkUpdatePreference.setOnPreferenceClickListener(preference -> {
+            new AppUpdateChecker(getLauncherActivity()).checkForUpdates(false);
             return true;
         });
         setupMicrophoneRequestPreference();

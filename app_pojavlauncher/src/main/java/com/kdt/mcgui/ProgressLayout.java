@@ -38,6 +38,7 @@ public class ProgressLayout extends ConstraintLayout implements View.OnClickList
     public static final String EXTRACT_SINGLE_FILES = "extract_single_files";
     public static final String INSTANCE_INSTALL = "instance_install";
     public static final String DATA_MIGRATION = "data_migration";
+    public static final String APP_UPDATE = "app_update";
 
     public ProgressLayout(@NonNull Context context) {
         super(context);

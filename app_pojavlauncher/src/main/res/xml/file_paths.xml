@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Exposes Tools.DIR_CACHE/app_update/ (net.kdt.pojavlaunch.tasks.AppUpdateChecker) so the
+         downloaded APK can be handed to the system installer via a content:// URI. -->
+    <cache-path name="app_update" path="app_update/" />
+</paths>
