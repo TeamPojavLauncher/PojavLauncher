@@ -16,7 +16,6 @@
            android:key="renderer_settings"
            android:title="@string/mcl_setting_title_renderer_settings"
            android:icon="@drawable/ic_mg_renderer"
-           android:fragment="net.kdt.pojavlaunch.prefs.screens.LauncherPreferenceMobileGluseSettingsFragment"
            />
 
         <androidx.preference.SwitchPreferenceCompat
