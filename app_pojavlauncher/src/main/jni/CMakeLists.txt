@@ -72,3 +72,39 @@ add_library(awt_xawt SHARED
         awt_xawt/xawt_fake.c
 )
 target_link_libraries(awt_xawt PRIVATE awt_headless)
+
+# ------ MobileGlues info getter ------
+
+add_library(mobileglues_info_getter SHARED
+        mobileglues/mobileglues_info_getter.cpp
+)
+
+find_library(android-lib android)
+find_library(log-lib log)
+
+target_compile_options(mobileglues_info_getter PRIVATE
+        -Oz
+        -fdata-sections
+        -ffunction-sections
+        -fvisibility=hidden
+        -fvisibility-inlines-hidden
+        -fno-rtti
+        -fno-exceptions
+        -flto
+)
+
+target_link_options(mobileglues_info_getter PRIVATE
+        -Wl,--gc-sections
+        -Wl,--strip-all
+        -flto
+)
+
+target_include_directories(mobileglues_info_getter PRIVATE
+        mobileglues
+)
+
+target_link_libraries(mobileglues_info_getter
+        ${android-lib}
+        ${log-lib}
+        dl
+)

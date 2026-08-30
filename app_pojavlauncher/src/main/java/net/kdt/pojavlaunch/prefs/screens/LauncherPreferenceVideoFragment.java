@@ -1,6 +1,7 @@
 package net.kdt.pojavlaunch.prefs.screens;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import androidx.preference.SwitchPreferenceCompat;
 import net.kdt.pojavlaunch.R;
 
 import net.kdt.pojavlaunch.Architecture;
+import net.kdt.pojavlaunch.mobileglues.MainActivity;
 import net.kdt.pojavlaunch.plugins.LibraryPlugin;
 import net.kdt.pojavlaunch.prefs.CustomSeekBarPreference;
 import net.kdt.pojavlaunch.prefs.LauncherPreferences;
@@ -68,6 +70,11 @@ public class LauncherPreferenceVideoFragment extends LauncherPreferenceFragment 
         RendererCompatUtil.RenderersList renderersList = RendererCompatUtil.getCompatibleRenderers(getContext());
         rendererListPreference.setEntries(renderersList.rendererDisplayNames);
         rendererListPreference.setEntryValues(renderersList.rendererIds.toArray(new String[0]));
+
+        requirePreference("renderer_settings", Preference.class).setOnPreferenceClickListener(preference -> {
+            startActivity(new Intent(getContext(), MainActivity.class));
+            return true;
+        });
 
         computeVisibility();
     }
