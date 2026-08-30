@@ -8,7 +8,7 @@
 
 [![Android CI](https://github.com/TeamPojavLauncher/PojavLauncher/workflows/Android%20CI/badge.svg)](https://github.com/TeamPojavLauncher/PojavLauncher/actions)
 <img src="https://img.shields.io/badge/platform-Android-green" alt="Platform"/>
-<img src="https://img.shields.io/badge/minSdk-21-blue" alt="Min SDK"/>
+<img src="https://img.shields.io/badge/minSdk-23-blue" alt="Min SDK"/>
 [![Project Status](https://img.shields.io/badge/status-active-brightgreen.svg?style=flat)](https://github.com/TeamPojavLauncher/PojavLauncher/commits)
 [![Monthly commit activity for PojavLauncher](https://img.shields.io/github/commit-activity/m/TeamPojavLauncher/PojavLauncher.svg?style=flat)](https://github.com/TeamPojavLauncher/PojavLauncher/graphs/commit-activity)
 [![GitHub issues](https://img.shields.io/github/issues/TeamPojavLauncher/PojavLauncher.svg?style=flat&color=%23FFA500)](https://github.com/TeamPojavLauncher/PojavLauncher/issues)
