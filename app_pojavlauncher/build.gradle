@@ -29,7 +29,7 @@ def getVersionName = {
     }else {
         def branchName = currentBranch.getName()
         def commitAbbreviation = latestCommit.abbreviatedId
-        return "bhai-bhai-${dateToday}-${commitAbbreviation}-${branchName}"
+        return "hebe-${dateToday}-${commitAbbreviation}-${branchName}"
     }
 }
 
@@ -159,7 +159,7 @@ android {
             initWith release
             signingConfig signingConfigs.customDebug // WIP, changeme
             applicationIdSuffix '.pub'
-            resValue "string", "app_name", "PojavLauncher (Minecraft: Java Edition for Android)"
+            resValue "string", "app_name", "PojavLauncher (Nightly)"
             resValue "string", "app_short_name", "PojavLauncher (Nightly)"
             resValue 'string', 'application_package', 'net.kdt.pojavlaunch.pub'
             resValue 'string', 'storageProviderAuthorities', 'net.kdt.pojavlaunch.pub.scoped.gamefolder'
