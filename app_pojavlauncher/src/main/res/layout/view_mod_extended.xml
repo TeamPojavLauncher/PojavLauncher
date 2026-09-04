@@ -30,6 +30,8 @@
         android:layout_height="wrap_content"
         android:enabled="false"
         android:text="@string/generic_install"
+        android:drawableStart="@drawable/ic_download"
+        android:drawablePadding="@dimen/padding_tiny"
         android:layout_marginHorizontal="@dimen/padding_large"
         android:layout_marginTop="@dimen/padding_moderate"
         android:layout_marginBottom="@dimen/padding_large"

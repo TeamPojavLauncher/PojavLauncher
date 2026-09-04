@@ -67,6 +67,7 @@
             app2:min="0"
             android:max="100"
             app2:seekBarIncrement="@integer/button_scale_seekbar_increment"
+            android:icon="@drawable/ic_px_sliders"
             />
         <SwitchPreference
             android:key="buttonAllCaps"
@@ -118,7 +119,8 @@
         <SwitchPreference
             android:key="enableGyro"
             android:title="@string/preference_enable_gyro_title"
-            android:summary="@string/preference_enable_gyro_description"/>
+            android:summary="@string/preference_enable_gyro_description"
+            android:icon="@drawable/ic_px_gestures"/>
         <net.kdt.pojavlaunch.prefs.CustomSeekBarPreference
             android:key="gyroSensitivity"
             android:title="@string/preference_gyro_sensitivity_title"
@@ -127,7 +129,8 @@
             app2:min="@integer/gyro_speed_seekbar_min"
             android:max="@integer/gyro_speed_seekbar_max"
             app2:seekBarIncrement="@integer/gyro_speed_seekbar_increment"
-            app2:showSeekBarValue="true"/>
+            app2:showSeekBarValue="true"
+            android:icon="@drawable/ic_px_speed"/>
         <net.kdt.pojavlaunch.prefs.CustomSeekBarPreference
             android:key="gyroSampleRate"
             android:title="@string/preference_gyro_sample_rate_title"
@@ -135,21 +138,24 @@
             app2:min="@integer/gyro_rate_seekbar_min"
             android:max="@integer/gyro_rate_seekbar_max"
             app2:selectable="false"
-            app2:showSeekBarValue="true"/>
+            app2:showSeekBarValue="true"
+            android:icon="@drawable/ic_px_speed"/>
         <SwitchPreferenceCompat
             android:key="gyroSmoothing"
             android:title="@string/preference_gyro_smoothing_title"
             android:summary="@string/preference_gyro_smoothing_description"
             android:defaultValue="true"
-            />
+            android:icon="@drawable/ic_px_dynamic" />
         <SwitchPreference
             android:key="gyroInvertX"
             android:title="@string/preference_gyro_invert_x_axis"
-            android:summary="@string/preference_gyro_invert_x_axis_description"/>
+            android:summary="@string/preference_gyro_invert_x_axis_description"
+            android:icon="@drawable/ic_px_switch_arrows_x"/>
         <SwitchPreference
             android:key="gyroInvertY"
             android:title="@string/preference_gyro_invert_y_axis"
-            android:summary="@string/preference_gyro_invert_y_axis_description"/>
+            android:summary="@string/preference_gyro_invert_y_axis_description"
+            android:icon="@drawable/ic_px_switch_arrows_x"/>
 
     </PreferenceCategory>
 
@@ -159,10 +165,12 @@
         <Preference
             android:title="@string/preference_remap_controller_title"
             android:summary="@string/preference_remap_controller_description"
-            android:fragment="net.kdt.pojavlaunch.fragments.GamepadMapperFragment"/>
+            android:fragment="net.kdt.pojavlaunch.fragments.GamepadMapperFragment"
+            android:icon="@drawable/ic_px_gamepad"/>
         <net.kdt.pojavlaunch.prefs.GamepadRemapPreference
             android:title="@string/preference_wipe_controller_title"
             android:summary="@string/preference_wipe_controller_description"
+            android:icon="@drawable/ic_px_trash"
             />
         <net.kdt.pojavlaunch.prefs.CustomSeekBarPreference
             android:key="gamepad_deadzone_scale"
@@ -172,6 +180,7 @@
             app2:min="@integer/gamepad_deadzone_seekbar_min"
             android:max="@integer/gamepad_deadzone_seekbar_max"
             app2:seekBarIncrement="@integer/gamepad_deadzone_seekbar_increment"
+            android:icon="@drawable/ic_px_pointer_size"
             />
 
     </PreferenceCategory>
@@ -181,6 +190,7 @@
             android:key="keyboardAutoPanning"
             android:title="@string/preference_keyboard_autopan_title"
             android:summary="@string/preference_keyboard_autopan_summary"
+            android:icon="@drawable/ic_px_letters"
             />
     </PreferenceCategory>
 
