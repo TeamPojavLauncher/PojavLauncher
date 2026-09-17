@@ -21,6 +21,7 @@ import net.kdt.pojavlaunch.lifecycle.LifecycleAwareAlertDialog;
 import net.kdt.pojavlaunch.multirt.MultiRTUtils;
 import net.kdt.pojavlaunch.multirt.Runtime;
 import net.kdt.pojavlaunch.prefs.LauncherPreferences;
+import net.kdt.pojavlaunch.plugins.LibraryPlugin;
 import net.kdt.pojavlaunch.game.renderer.GameRenderer;
 import net.kdt.pojavlaunch.game.renderer.RenderSpec;
 import net.kdt.pojavlaunch.utils.DateUtils;
@@ -90,9 +91,10 @@ public class GameRunner {
         return false;
     }
 
-    public static  String  hasFfmpeg(Context context) {
-     return "khankirchele";
-    }
+    public static boolean hasFfmpeg(Context context) {
+        LibraryPlugin ffmpeg = LibraryPlugin.discoverPlugin(context, LibraryPlugin.ID_FFMPEG_PLUGIN);
+        return ffmpeg != null;
+   }
 
     public static boolean hasVkMod(File gameDir) {
         File modsDir = new File(gameDir, "mods");
