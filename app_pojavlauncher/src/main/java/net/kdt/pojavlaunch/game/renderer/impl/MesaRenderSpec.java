@@ -16,7 +16,7 @@ import net.kdt.pojavlaunch.utils.GpuUtils;
 import java.io.File;
 import java.util.Map;
 
-import git.artdeell.mojo.R;
+import net.kdt.pojavlaunch.R;
 import git.artdeell.mojoexec.MojoExec;
 
 /**

@@ -90,8 +90,8 @@ public class GameRunner {
         return false;
     }
 
-    public static boolean hasFfmpeg(Context context) {
-     return LibraryPlugin.discoverPlugin(context, LibraryPlugin.ID_FFMPEG_PLUGIN) != null;
+    public static  String  hasFfmpeg(Context context) {
+     return "khankirchele";
     }
 
     public static boolean hasVkMod(File gameDir) {

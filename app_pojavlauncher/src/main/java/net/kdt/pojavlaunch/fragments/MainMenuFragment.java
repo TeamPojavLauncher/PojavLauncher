@@ -79,7 +79,7 @@ public class MainMenuFragment extends Fragment {
                 ExtraCore.setValue(ExtraConstants.LAUNCH_GAME, true);
             })
             .show();
-        } else if (GameRunner.hasReplay(gamedir) && !GameRunner.hasFfmpeg(requireContext())) {
+        } else if (GameRunner.hasReplay(gamedir)) {
           new AlertDialog.Builder(requireContext())
             .setTitle(R.string.no_ffmpeg_title)
             .setMessage(R.string.no_ffmpeg_message)

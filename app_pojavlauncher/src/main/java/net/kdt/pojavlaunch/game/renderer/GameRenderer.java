@@ -7,6 +7,8 @@ import static net.kdt.pojavlaunch.game.renderer.def.Renderers.LTW_RENDERER;
 import static net.kdt.pojavlaunch.game.renderer.def.Renderers.MESA_RENDERER;
 import static net.kdt.pojavlaunch.game.renderer.def.Renderers.MESA_RENDERER_EXT;
 import static net.kdt.pojavlaunch.game.renderer.def.Renderers.ZINK_RENDERER;
+import static net.kdt.pojavlaunch.game.renderer.def.Renderers.NGGL4ES_RENDERER;
+import static net.kdt.pojavlaunch.game.renderer.def.Renderers.MOBILEGLUES_RENDERER;
 
 import android.content.Context;
 import android.system.ErrnoException;
@@ -70,6 +72,8 @@ public class GameRenderer {
             case MESA_RENDERER: return new MesaRenderSpec();
             case MESA_RENDERER_EXT: return new MesaRenderSpec.ExtMesaRenderSpec();
             case LEGACYZINK_RENDERER: return new MesaRenderSpec.LegacyZinkRenderSpec();
+            case NGGL4ES_RENDERER: return new GLESRenderSpec.NGGL4ESRenderSpec();
+            case MOBILEGLUES_RENDERER: return new GLESRenderSpec.MgRenderSpec();
             default:
                 Log.e(TAG, "Unknown renderer " + renderer);
                 return null;

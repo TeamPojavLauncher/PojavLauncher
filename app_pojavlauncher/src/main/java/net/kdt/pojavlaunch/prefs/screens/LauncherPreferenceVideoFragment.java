@@ -57,11 +57,6 @@ public class LauncherPreferenceVideoFragment extends LauncherPreferenceFragment 
             hasAngle = provider instanceof GLESProvider.ExternalAngleProvider || provider instanceof GLESProvider.SystemAngleProvider;
         }
         SwitchPreferenceCompat angleSwitch = requirePreference("use_angle", SwitchPreferenceCompat.class);
-<<<<<<< HEAD
-        angleSwitch.setVisible(true); //hehe
-=======
-        angleSwitch.setVisible(hasAngle);
->>>>>>> upstream/v3_openjdk
         angleSwitch.setChecked(LauncherPreferences.PREF_USE_ANGLE);
 
         ListPreference rendererListPreference = requirePreference("renderer",
