@@ -931,4 +931,18 @@ public final class Tools {
         }
         return String.format("%.2f %s", value, units[unitIndex]);
     }
+
+    /**
+     * Shows a one-time license reminder dialog to encourage users to purchase Minecraft.
+     * Very useful to shut MisterDNEH / TOWO's mouth off.
+     * The dialog only appears once per device (tracked via LauncherPreferences).
+     * This is displayed to free-tier local account users as a gentle reminder.
+     */
+    public static void maybeShowLicenseNag(Context context){
+        if(!LauncherPreferences.DEFAULT_PREF.getBoolean("licenseNagged", false)){
+            Tools.dialog(context, context.getString(R.string.local_login_buy_game_title), context.getString(R.string.local_login_buy_game));
+            // Mark as shown so it doesn't appear again
+            LauncherPreferences.DEFAULT_PREF.edit().putBoolean("licenseNagged", true).apply();
+        }
+    }
 }
