@@ -66,19 +66,5 @@
             android:title="@string/preference_use_angle_title"
             android:icon="@drawable/ic_mat_use_angle"
             />
-        <androidx.preference.SwitchPreferenceCompat
-            android:defaultValue="true"
-            android:key="vsync_in_zink"
-            android:summary="@string/preference_vsync_in_zink_description"
-            android:title="@string/preference_vsync_in_zink_title"
-            android:icon="@drawable/ic_mat_vsync_zink"
-            />
-        <SwitchPreference
-            android:title="@string/preference_force_legacy_zink_title"
-            android:summary="@string/preference_force_legacy_zink_description"
-            android:key="zinkForceLegacy"
-            android:defaultValue="false"
-            android:icon="@drawable/ic_mat_legacy_mode"
-            />
     </PreferenceCategory>
 </PreferenceScreen>

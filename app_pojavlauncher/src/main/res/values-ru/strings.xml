@@ -40,10 +40,13 @@
     <string name="mcl_setting_title_javaargs">Аргументы запуска JVM</string>
     <string name="mcl_setting_subtitle_javaargs">Осторожно, необдуманное изменение может привести к сбою игры.</string>
     <string name="mcl_setting_category_renderer">Визуализатор</string>
-    <string name="mcl_setting_renderer_gles2_4">Holy GL4ES - все версии до 1.21.4, быстрый</string>
-    <string name="mcl_setting_renderer_vulkan_zink">Zink (Vulkan) - все версии, средний</string>
-    <string name="mcl_setting_renderer_freedreno_kgsl">Freedreno - все версии, быстрый, только Adreno</string>
+    <string name="mcl_setting_renderer_gles2_4">GL4ES (OpenGL ES 2) - 1.21.4 и ниже, быстрый</string>
     <string name="mcl_setting_renderer_ltw">LTW (OpenGL ES 3) - 1.17 и выше, быстрый</string>
+    <string name="mcl_setting_renderer_vulkan_zink">Zink (Vulkan) - все версии, средний</string>
+    <string name="mcl_setting_renderer_vulkan_lzink">Старый Zink (Vulkan) - все версии, средний</string>
+    <string name="mcl_setting_renderer_freedreno_kgsl">Freedreno (KGSL) - все версии, быстрый</string>
+    <string name="mcl_setting_renderer_mesa_desktop">Mesa (DRM) - все версии, быстрый</string>
+    <string name="mcl_setting_renderer_mesa_desktop_ext">Mesa (DRM, внешний) - все версии, быстрый</string>
     <string name="mcl_setting_veroption_release">Релизы</string>
     <string name="mcl_setting_veroption_snapshot">Снапшоты</string>
     <string name="mcl_setting_veroption_oldalpha">Старые альфа</string>
@@ -167,8 +170,6 @@
     <string name="preference_force_vsync_title">Принудительная вертикальная синхронизация</string>
     <string name="preference_force_vsync_description">Уменьшает перегрев устройства за счёт ограничения максимальной производительности.</string>
     <string name="preference_use_angle_title">Использовать ANGLE</string>
-    <string name="preference_force_legacy_zink_title">Принудительно использовать старый Zink</string>
-    <string name="preference_force_legacy_zink_description">Включает принудительное использование старой версии Zink вне зависимости от текущего устройства. Может исправить некоторые графические проблемы. Выключите, если игра стала работать медленно.</string>
     <string name="preference_use_angle_description">Позволяет использовать ANGLE вместо системного драйвера. Может исправить некоторые графические проблемы при использовании модов на некоторых видеоядрах</string>
     <string name="preference_force_english_title">Принудительно включить английский</string>
     <string name="preference_force_english_description">Позволяет увидеть оригинальные строки такими, какими их задумали разработчики. Требуется перезапуск.</string>
