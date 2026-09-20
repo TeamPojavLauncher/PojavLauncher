@@ -945,4 +945,10 @@ public final class Tools {
             LauncherPreferences.DEFAULT_PREF.edit().putBoolean("licenseNagged", true).apply();
         }
     }
+
+    public static void maybeClearList(List<?> list) {
+        try {
+            list.clear();
+        } catch (UnsupportedOperationException ignored) {}
+    }
 }
