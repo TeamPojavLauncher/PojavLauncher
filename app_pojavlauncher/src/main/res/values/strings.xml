@@ -67,6 +67,7 @@
     <string name="mcl_setting_renderer_ltw">LTW (OpenGL ES 3) - 1.17+ only, fast</string>
     <string name="mcl_setting_renderer_nggl4es">Krypton Wrapper - (all versions, fast)</string>
     <string name="mcl_setting_renderer_mobileglues">MobileGlues (OpenGL ES) - (1.17+ only, fast)</string>
+    <string name="mcl_setting_renderer_sfpew">SFPEW/MobileGlues (OpenGL ES) - (all versions, fast)</string>
     <string name="mcl_setting_renderer_vulkan_zink">Zink (Vulkan) - all versions, mid</string>
     <string name="mcl_setting_renderer_vulkan_lzink">Legacy Zink (Vulkan) - all versions, mid</string>
     <string name="mcl_setting_renderer_freedreno_kgsl">Freedreno (KGSL) - all versions, fast</string>
@@ -543,4 +544,5 @@
     <string name="main_please_restart">Please restart the game from the launcher homescreen</string>
     <string name="local_login_buy_game_title">Buy Minecraft</string>
     <string name="local_login_buy_game">While local account is free, Minecraft is a paid game. We believe everyone should have a chance to try it, and hope that one day you will purchase it.</string>
+    <string name="angelica_found_sfpew_notice">Angelica mod found, Simple FPE Wrapper not needed</string>
 </resources>

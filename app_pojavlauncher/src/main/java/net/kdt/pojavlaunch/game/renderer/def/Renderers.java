@@ -10,4 +10,5 @@ public final class Renderers {
     public static final String LEGACYZINK_RENDERER = "vulkan_legacyzink";
     public static final String MOBILEGLUES_RENDERER = "opengles_mobileglues";
     public static final String NGGL4ES_RENDERER = "opengles_nggl4es";
+    public static final String SFPEW_RENDERER = "opengles_sfpew";
     }

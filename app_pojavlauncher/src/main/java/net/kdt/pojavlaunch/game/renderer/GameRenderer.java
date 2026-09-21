@@ -9,6 +9,7 @@ import static net.kdt.pojavlaunch.game.renderer.def.Renderers.MESA_RENDERER_EXT;
 import static net.kdt.pojavlaunch.game.renderer.def.Renderers.ZINK_RENDERER;
 import static net.kdt.pojavlaunch.game.renderer.def.Renderers.NGGL4ES_RENDERER;
 import static net.kdt.pojavlaunch.game.renderer.def.Renderers.MOBILEGLUES_RENDERER;
+import static net.kdt.pojavlaunch.game.renderer.def.Renderers.SFPEW_RENDERER;
 
 import android.content.Context;
 import android.system.ErrnoException;
@@ -74,6 +75,7 @@ public class GameRenderer {
             case LEGACYZINK_RENDERER: return new MesaRenderSpec.LegacyZinkRenderSpec();
             case NGGL4ES_RENDERER: return new GLESRenderSpec.NGGL4ESRenderSpec();
             case MOBILEGLUES_RENDERER: return new GLESRenderSpec.MgRenderSpec();
+            case SFPEW_RENDERER: return new GLESRenderSpec.SFPEWRenderSpec();
             default:
                 Log.e(TAG, "Unknown renderer " + renderer);
                 return null;
