@@ -9,6 +9,7 @@ import static net.kdt.pojavlaunch.game.renderer.def.Renderers.MESA_RENDERER_EXT;
 import static net.kdt.pojavlaunch.game.renderer.def.Renderers.ZINK_RENDERER;
 import static net.kdt.pojavlaunch.game.renderer.def.Renderers.NGGL4ES_RENDERER;
 import static net.kdt.pojavlaunch.game.renderer.def.Renderers.MOBILEGLUES_RENDERER;
+import static net.kdt.pojavlaunch.game.renderer.def.Renderers.SFPEW_RENDERER;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -42,7 +43,7 @@ public class RendererCache {
         Resources resources = context.getResources();
         // This is the list that controls em all!
         String[] renderers = {
-                GL4ES_RENDERER, LTW_RENDERER, ZINK_RENDERER, FREEDRENO_RENDERER, MESA_RENDERER, MESA_RENDERER_EXT, LEGACYZINK_RENDERER, MOBILEGLUES_RENDERER, NGGL4ES_RENDERER
+                GL4ES_RENDERER, LTW_RENDERER, ZINK_RENDERER, FREEDRENO_RENDERER, MESA_RENDERER, MESA_RENDERER_EXT, LEGACYZINK_RENDERER, MOBILEGLUES_RENDERER, NGGL4ES_RENDERER, SFPEW_RENDERER
         };
         ArrayList<String> rendererIds = new ArrayList<>(renderers.length);
         ArrayList<String> rendererNames = new ArrayList<>(rendererIds);
