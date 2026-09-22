@@ -66,5 +66,11 @@
             android:title="@string/preference_use_angle_title"
             android:icon="@drawable/ic_mat_use_angle"
             />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:icon="@drawable/ic_px_volcano"
+            android:key="zinkPreferSystemDriver"
+            android:summary="@string/preference_vulkan_driver_system_description"
+            android:title="@string/preference_vulkan_driver_system_title"/>
     </PreferenceCategory>
 </PreferenceScreen>
