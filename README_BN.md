@@ -1,18 +1,15 @@
 <h1 align="center">PojavLauncher (a.k.a. Pojav Reborn)</h1>
 
+<a href="./README.md">Readme in English</a>
+
+<a href="./README_RU.md">Readme на русском</a>
+
 <img src="https://github.com/PojavLauncherTeam/PojavLauncher/blob/v3_openjdk/app_pojavlauncher/src/main/assets/pojavlauncher.png" align="left" width="130" height="150" alt="PojavLauncher logo">
 
 [![Android CI](https://github.com/TeamPojavLauncher/PojavLauncher/workflows/Android%20CI/badge.svg)](https://github.com/TeamPojavLauncher/PojavLauncher/actions)
-<img src="https://img.shields.io/badge/platform-Android-green" alt="Platform"/>
-<img src="https://img.shields.io/badge/minSdk-23-blue" alt="Min SDK"/>
-[![Project Status](https://img.shields.io/badge/status-active-brightgreen.svg?style=flat)](https://github.com/TeamPojavLauncher/PojavLauncher/commits)
-[![Monthly commit activity for PojavLauncher](https://img.shields.io/github/commit-activity/m/TeamPojavLauncher/PojavLauncher.svg?style=flat)](https://github.com/TeamPojavLauncher/PojavLauncher/graphs/commit-activity)
-[![GitHub issues](https://img.shields.io/github/issues/TeamPojavLauncher/PojavLauncher.svg?style=flat&color=%23FFA500)](https://github.com/TeamPojavLauncher/PojavLauncher/issues)
+[![Github commit activity](https://img.shields.io/github/commit-activity/m/TeamPojavLauncher/PojavLauncher.svg?style=flat)](https://github.com/TeamPojavLauncher/PojavLauncher/graphs/commit-activity)
 [![Crowdin](https://badges.crowdin.net/pojavlauncher/localized.svg)](https://crowdin.com/project/pojavlauncher)
-[![GitHub contributors](https://img.shields.io/github/contributors/TeamPojavLauncher/PojavLauncher.svg?style=flat)](https://github.com/TeamPojavLauncher/PojavLauncher/graphs/contributors)
-<a href="https://discord.gg/2HYpzs4gZT"><img src="https://img.shields.io/discord/1355213558631366897?color=5865F2&logo=discord&logoColor=white&label=&style=flat" alt="Discord"></a>
-<a href="https://github.com/TeamPojavLauncher"><img src="https://img.shields.io/badge/github-PojavLauncher-green?logo=github" alt="GitHub"></a>
-[![Latest Release](https://img.shields.io/github/v/tag/TeamPojavLauncher/PojavLauncher?sort=semver)](https://github.com/TeamPojavLauncher/PojavLauncher/releases "View latest release")
+[![Discord](https://img.shields.io/discord/1355213558631366897?color=5865F2&logo=discord&logoColor=white&label=&style=flat)](https://discord.gg/2HYpzs4gZT)
 [![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue)](https://github.com/PojavLauncherTeam/PojavLauncher/blob/v3_openjdk/LICENSE)
 [![Twitter Follow](https://img.shields.io/twitter/follow/PLaunchTeam.svg?style=social)](https://x.com/PLaunchTeam)
 
@@ -23,7 +20,7 @@ PojavLauncher হল একটি লঞ্চার যা আপনাকে �
 বিস্তারিত তথ্যের জন্য আমাদের [উইকি](https://pojavlauncher.app/) দেখুন!
 
 > [!IMPORTANT]
-> এটি মূল PojavLauncher নয়। এই প্রকল্পটি [MojoLauncher](https://github.com/MojoLauncher/MojoLauncher)। আরও তথ্যের জন্য দয়া করে [DISCLAIMER.md](DISCLAIMER.md) দেখুন।
+> এটি মূল PojavLauncher নয়। এই প্রকল্পটি [MojoLauncher](https://github.com/MojoLauncher/MojoLauncher)-এর উপর ভিত্তি করে তৈরি। আরও তথ্যের জন্য দয়া করে [DISCLAIMER.md](DISCLAIMER.md) দেখুন।
 
 ## বিষয়সূচি
 
@@ -38,14 +35,7 @@ PojavLauncher হল একটি লঞ্চার যা আপনাকে �
 * [অবদান](#অবদান)
 * [সহায়তা](#সহায়তা)
 * [লাইসেন্স](#লাইসেন্স)
-* [ক্রেডিট এবং নির্ভরতা](#ক্রেডিট--তৃতীয়-পক্ষের-উপাদান-এবং-তাদের-লাইসেন্স)
-    * [মূল উপাদান](#মূল-উপাদান)
-    * [ফ্রেমওয়ার্ক এবং লাইব্রেরি সাপোর্ট](#ফ্রেমওয়ার্ক-এবং-লাইব্রেরি-সাপোর্ট)
-    * [গ্রাফিক্স এবং রেন্ডারিং](#গ্রাফিক্স-এবং-রেন্ডারিং)
-    * [Java এবং গেম লাইব্রেরি](#java-এবং-গেম-লাইব্রেরি)
-    * [নিরাপত্তা এবং সিস্টেম](#নিরাপত্তা-এবং-সিস্টেম)
-    * [অডিও](#অডিও)
-    * [অন্যান্য সেবা](#অন্যান্য-সেবা)
+* [ক্রেডিট এবং নির্ভরতা](#ক্রেডিট--নির্ভরতা)
 * [রোডম্যাপ](#রোডম্যাপ)
 
 ## পরিচিতি
@@ -80,8 +70,10 @@ PojavLauncher বিল্ড করার সবচেয়ে সহজ উ�
 
 যদি আপনি বিল্ড প্রক্রিয়ার উপর আরও নিয়ন্ত্রণ চান, এই ধাপগুলি অনুসরণ করুন:
 
-1. **Java Runtime Environment (JRE):** আমাদের [CI অটো বিল্ডস](https://github.com/TeamPojavLauncher/android-openjdk-build-multiarch/actions) থেকে `jre8-pojav` আর্টিফ্যাক্ট ডাউনলোড করুন। এই প্যাকেজে সমস্ত সমর্থিত আর্কিটেকচারের প্রি-বিল্ট JRE রয়েছে। নিজেই JRE বিল্ড করতে চাইলে [android-openjdk-build-multiarch](https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch) রেপোজিটরির নির্দেশিকা অনুসরণ করুন।
-2. **LWJGL:** কাস্টম LWJGL-এর বিল্ড নির্দেশিকা পাওয়া যাবে [LWJGL রেপোজিটরি](https://github.com/PojavLauncherTeam/lwjgl3)-এ।
+1. **Java Runtime Environment (JRE):** আমাদের [CI অটো বিল্ডস](https://github.com/MojoLauncher/android-openjdk-build-multiarch/actions) থেকে `jre8-pojav` আর্টিফ্যাক্ট ডাউনলোড করুন। এই প্যাকেজে সমস্ত সমর্থিত আর্কিটেকচারের প্রি-বিল্ট JRE রয়েছে। নিজেই JRE বিল্ড করতে চাইলে [android-openjdk-build-multiarch](https://github.com/MojoLauncher/android-openjdk-build-multiarch) রেপোজিটরির নির্দেশিকা অনুসরণ করুন।
+
+2. **LWJGL:** কাস্টম LWJGL-এর বিল্ড নির্দেশিকা পাওয়া যাবে [LWJGL রেপোজিটরি](https://github.com/MojoLauncher/lwjgl3)-এ।
+
 3. **ভাষার তালিকা:** Crowdin দ্বারা ভাষা স্বয়ংক্রিয়ভাবে যোগ হওয়ায়, বিল্ডের আগে ভাষার তালিকা জেনারেটর চালাতে হবে। প্রজেক্ট ডিরেক্টরিতে চালান:
    * Linux/macOS:
      ```bash
@@ -92,8 +84,13 @@ PojavLauncher বিল্ড করার সবচেয়ে সহজ উ�
      ```batch
      scripts\languagelist_updater.bat
      ```
+
 4. **GLFW স্টাব বিল্ড করুন:** `./gradlew :jre_lwjgl3glfw:build`
-5. **লঞ্চার বিল্ড করুন:** `./gradlew :app_pojavlauncher:assembleDebug` (Windows-এ `gradlew.bat` ব্যবহার করুন)।
+
+5. **লঞ্চার বিল্ড করুন:** `./gradlew :app_pojavlauncher:assembleDebug`
+   * Windows-এ বিল্ড করার সময়:
+     * `./gradlew` কে `.\gradlew.bat` দিয়ে প্রতিস্থাপন করুন
+     * নিশ্চিত করুন যে `mojoexec`, `sdl`, `glfw` `app_pojavlauncher/src/main/jni/`-এ symlink করা আছে
 
 ## বর্তমান অবস্থা
 
@@ -116,12 +113,13 @@ PojavLauncher বিল্ড করার সবচেয়ে সহজ উ�
 - [x] প্রোফাইলের পরিবর্তে ইনস্ট্যান্স সিস্টেম
 - [x] বাক্সের বাইরে থেকে 1.21.5 সমর্থন
 - [x] mrpack/CurseForge জিপ আমদানি
+- [x] LTW: কম্পিউট শেডার/ইমেজ এক্সটেনশন সক্ষম করুন
 - [ ] LTW: Create এর সাথে সমস্যা সমাধান করুন
-- [ ] LTW: কম্পিউট শেডার/ইমেজ এক্সটেনশন সক্ষম করুন
 - [ ] LTW: ফ্রেমবাফারের জন্য রঙ-রেন্ডারযোগ্য ফর্ম্যাটে স্যুইচ করুন
 - [ ] Mali ডিভাইসের জন্য [MobileGL](https://github.com/MobileGL-Dev/MobileGL) যোগ করুন
 - [ ] মডপ্যাক/মড ম্যানেজমেন্ট টুল
 - [ ] MMC-সামঞ্জস্যপূর্ণ ইনস্ট্যান্স আমদানি
+- [ ] Vintage Story সমর্থন
 - [ ] সাধারণ নেটিভ লাইব্রেরি মান প্রয়োগ করুন
 - [ ] মড নেটিভ লাইব্রেরির জন্য Patch-on-dlopen
 - [ ] আরও অনেক কিছু আসছে!
@@ -132,65 +130,56 @@ PojavLauncher বিল্ড করার সবচেয়ে সহজ উ�
 
 ## প্রায়শই জিজ্ঞাসিত প্রশ্ন
 
-বিস্তারিত তথ্যের জন্য আমাদের [উইকি](https://pojavlauncherteam.github.io/) দেখুন।
+বিস্তারিত তথ্যের জন্য আমাদের [উইকি](https://pojavlauncher.app/) দেখুন।
 
 ## অবদান
 
-অবদান স্বাগত! আমরা কেবল কোড নয়, যেকোন ধরনের অবদানকে স্বাগত জানাই। উদাহরণস্বরূপ, আপনি [উইকি](https://pojavlauncherteam.github.io/) উন্নত করতে সাহায্য করতে পারেন, [অনুবাদে](https://crowdin.com/project/pojavlauncher) অবদান রাখতে পারেন, অথবা বাগ রিপোর্ট ও ফিচার রিকোয়েস্ট পাঠাতে পারেন।
+অবদান স্বাগত! আমরা কেবল কোড নয়, যেকোনো ধরনের অবদানকে স্বাগত জানাই। উদাহরণস্বরূপ, আপনি [উইকি](https://pojavlauncherteam.github.io/) উন্নত করতে সাহায্য করতে পারেন, [অনুবাদে](https://crowdin.com/project/pojavlauncher) অবদান রাখতে পারেন, অথবা বাগ রিপোর্ট ও ফিচার রিকোয়েস্ট পাঠাতে পারেন।
 
 যেকোনো কোড পরিবর্তন একটি পুল রিকোয়েস্ট হিসেবে জমা দিন। বর্ণনায় কোডের কাজ এবং এটি চালানোর ধাপ ব্যাখ্যা করতে হবে।
 
 ## সহায়তা
 
-সহায়তার জন্য আমাদের [Discord সার্ভারে](https://discord.com/invite/aenk3EUvER) যোগ দিন।
+সহায়তার জন্য আমাদের [Discord সার্ভারে](https://discord.gg/2HYpzs4gZT) যোগ দিন।
 
 ## লাইসেন্স
 
 PojavLauncher [GNU LGPLv3](https://github.com/PojavLauncherTeam/PojavLauncher/blob/v3_openjdk/LICENSE) লাইসেন্সের অধীনে লাইসেন্সকৃত।
 
-## ক্রেডিট এবং তৃতীয় পক্ষের উপাদান এবং তাদের লাইসেন্স
+## ক্রেডিট এবং নির্ভরতা
 
-### মূল উপাদান
-- [PojavLauncher](https://github.com/PojavLauncherTeam/PojavLauncher): [GNU LGPLv3 লাইসেন্স](https://github.com/PojavLauncherTeam/PojavLauncher/blob/v3_openjdk/LICENSE)
-- [Boardwalk](https://github.com/zhuowei/Boardwalk) (JVM লঞ্চার): অজানা লাইসেন্স / [Apache লাইসেন্স 2.0](https://github.com/zhuowei/Boardwalk/blob/master/LICENSE) অথবা [GNU GPLv2](https://github.com/zhuowei/Boardwalk/blob/master/LICENSE)
-- [MojoLauncher](https://github.com/MojoLauncher/MojoLauncher): [GNU LGPLv3 লাইসেন্স](https://github.com/MojoLauncher/MojoLauncher/blob/v3_openjdk/LICENSE)
-
-### ফ্রেমওয়ার্ক এবং লাইব্রেরি সমর্থন
-- Android সাপোর্ট লাইব্রেরি: [Apache লাইসেন্স 2.0](https://android.googlesource.com/platform/prebuilts/maven_repo/android/+/master/NOTICE.txt)
-- [OpenJDK](https://github.com/PojavLauncherTeam/openjdk-multiarch-jdk8u): [GNU GPLv2 লাইসেন্স](https://openjdk.java.net/legal/gplv2+ce.html)
-
-### গ্রাফিক্স এবং রেন্ডারিং
-- [GL4ES](https://github.com/PojavLauncherTeam/gl4es): [MIT লাইসেন্স](https://github.com/ptitSeb/gl4es/blob/master/LICENSE)
-- [Holy GL4ES](https://github.com/PojavLauncherTeam/holy-gl4es): [MIT লাইসেন্স](https://github.com/PojavLauncherTeam/holy-gl4es/blob/main/LICENSE)
-- [MobileGlues](https://github.com/MobileGL-Dev/MobileGlues): [LGPL-2.1 লাইসেন্স](https://github.com/MobileGL-Dev/MobileGlues/blob/dev-es/LICENSE)
-- [Krypton Wrapper](https://github.com/BZLZHH/NG-GL4ES): [MIT লাইসেন্স](https://github.com/BZLZHH/NG-GL4ES/blob/main/LICENSE)
-- [Mesa 3D গ্রাফিক্স লাইব্রেরি](https://gitlab.freedesktop.org/mesa/mesa): [MIT লাইসেন্স](https://docs.mesa3d.org/license.html)
-
-### Java এবং গেম লাইব্রেরি
-- [LWJGL3](https://github.com/MojoLauncher/lwjgl3): [BSD-3 লাইসেন্স](https://github.com/LWJGL/lwjgl3/blob/master/LICENSE.md)
-- [GLFW](https://github.com/MojoLauncher/glfw): [জেডলিব (zlib) লাইসেন্স](https://github.com/MojoLauncher/glfw/blob/glfw34/LICENSE.md)
-- [LWJGL2-GLFW](https://github.com/MojoLauncher/lwjgl2-glfw): ৩-ক্লজ BSD লাইসেন্স
-
-### নিরাপত্তা এবং সিস্টেম
-- [pro-grade](https://github.com/pro-grade/pro-grade) (Java স্যান্ডবক্সিং সিকিউরিটি ম্যানেজার): [Apache লাইসেন্স 2.0](https://github.com/pro-grade/pro-grade/blob/master/LICENSE.txt)
-- [bhook](https://github.com/bytedance/bhook) (এক্সিট কোড ট্র্যাপিং): [MIT লাইসেন্স](https://github.com/bytedance/bhook/blob/main/LICENSE)
-- [Authlib-Injector](https://github.com/yushijinhun/authlib-injector) (ely.by এর মাধ্যমে অনুমোদন): [AGPL-3.0](https://github.com/yushijinhun/authlib-injector/blob/develop/LICENSE)
-
-### অডিও
+- [Boardwalk](https://github.com/zhuowei/Boardwalk) (JVM Launcher): Unknown License / [Apache License 2.0](https://github.com/zhuowei/Boardwalk/blob/master/LICENSE) অথবা [GNU GPLv2](https://github.com/zhuowei/Boardwalk/blob/master/LICENSE)
+- [PojavLauncher](https://github.com/PojavLauncherTeam/PojavLauncher): [GNU LGPLv3 License](https://github.com/PojavLauncherTeam/PojavLauncher/blob/v3_openjdk/LICENSE)
+- [MojoLauncher](https://github.com/MojoLauncher/MojoLauncher): [GNU LGPLv3 License](https://github.com/MojoLauncher/MojoLauncher/blob/v3_openjdk/LICENSE)
+- [Amethyst](https://github.com/AngelAuraMC/Amethyst-Android): [GNU LGPLv3 License](https://github.com/AngelAuraMC/Amethyst-Android/blob/v3_openjdk/LICENSE)
+- Android Support Libraries: [Apache License 2.0](https://android.googlesource.com/platform/prebuilts/maven_repo/android/+/master/NOTICE.txt)
+- [OpenJDK](https://github.com/PojavLauncherTeam/openjdk-multiarch-jdk8u): [GNU GPLv2 License](https://openjdk.java.net/legal/gplv2+ce.html)
+- [GL4ES](https://github.com/PojavLauncherTeam/gl4es): [MIT License](https://github.com/ptitSeb/gl4es/blob/master/LICENSE)
+- [Holy GL4ES](https://github.com/PojavLauncherTeam/holy-gl4es): [MIT License](https://github.com/PojavLauncherTeam/holy-gl4es/blob/main/LICENSE)
+- [MobileGlues](https://github.com/MobileGL-Dev/MobileGlues): [LGPL-2.1 License](https://github.com/MobileGL-Dev/MobileGlues/blob/dev-es/LICENSE)
+- [Krypton Wrapper](https://github.com/BZLZHH/NG-GL4ES): [MIT License](https://github.com/BZLZHH/NG-GL4ES/blob/main/LICENSE)
+- [Mesa 3D Graphics Library](https://gitlab.freedesktop.org/mesa/mesa): [MIT License](https://docs.mesa3d.org/license.html)
+- [LWJGL3](https://github.com/MojoLauncher/lwjgl3): [BSD-3 License](https://github.com/LWJGL/lwjgl3/blob/master/LICENSE.md)
+- [GLFW](https://github.com/MojoLauncher/glfw): [zlib license](https://github.com/MojoLauncher/glfw/blob/glfw34/LICENSE.md)
+- [SDL](https://github.com/MojoLauncher/MojoSDL): [zlib license](https://github.com/MojoLauncher/MojoSDL/blob/main/LICENSE.txt)
+- [LWJGL2-GLFW](https://github.com/MojoLauncher/lwjgl2-glfw): 3-Clause BSD license
+- [mojoexec](https://github.com/MojoLauncher/mojoexec): [MIT License](https://github.com/MojoLauncher/mojoexec/blob/master/LICENSE)
+- [pro-grade](https://github.com/pro-grade/pro-grade) (Java sandboxing security manager): [Apache License 2.0](https://github.com/pro-grade/pro-grade/blob/master/LICENSE.txt)
+- [bhook](https://github.com/bytedance/bhook) (Exit code trapping): [MIT License](https://github.com/bytedance/bhook/blob/main/LICENSE)
+- [Authlib-Injector](https://github.com/yushijinhun/authlib-injector) (Authorization via ely.by): [AGPL-3.0](https://github.com/yushijinhun/authlib-injector/blob/develop/LICENSE)
 - [OpenAL-Soft](https://github.com/kcat/openal-soft): [GNU LIBRARY GENERAL PUBLIC LICENSE](https://github.com/kcat/openal-soft/blob/master/COPYING) এবং [modified PFFFT](https://github.com/kcat/openal-soft/blob/master/LICENSE-pffft)
-- [oboe](https://github.com/google/oboe): [Apache লাইসেন্স 2.0](https://github.com/google/oboe/blob/main/LICENSE)
-
-### অন্যান্য সেবা
+- [oboe](https://github.com/google/oboe): [Apache License 2.0](https://github.com/google/oboe/blob/main/LICENSE)
 - [Mineskin](https://mineskin.eu/) এবং [MCHeads](https://mc-heads.net) কে Minecraft অবতার প্রদান করার জন্য ধন্যবাদ
 
 ## রোডম্যাপ
 
-আমরা বর্তমানে যে বিষয়গুলিতে মনোযোগ দিচ্ছি:  
-* নতুন রেন্ডারিং প্রযুক্তি অন্বেষণ করা।  
+আমরা বর্তমানে যে বিষয়গুলিতে মনোযোগ দিচ্ছি:
 
-ভবিষ্যতের পরিকল্পনায় রয়েছে:  
-* স্থিতিশীলতা এবং পারফরম্যান্স উন্নত করা।  
-* মড ইনস্টলেশনের অভিজ্ঞতা উন্নত করা।  
+* নতুন রেন্ডারিং প্রযুক্তি অন্বেষণ করা।
 
-আমরা আমাদের রোডম্যাপের জন্য সম্প্রদায়ের মতামত এবং পরামর্শকে স্বাগত জানাই।  
-আমাদের [ইস্যু ট্র্যাকার](https://github.com/TeamPojavLauncher/PojavLauncher/issues)-এ কোনো ফিচার রিকোয়েস্ট খুলতে দ্বিধা করবেন না।
+ভবিষ্যতের পরিকল্পনায় রয়েছে:
+
+* স্থিতিশীলতা এবং পারফরম্যান্স উন্নত করা।
+* মড ইনস্টলেশনের অভিজ্ঞতা উন্নত করা।
+
+আমরা আমাদের রোডম্যাপের জন্য সম্প্রদায়ের মতামত এবং পরামর্শকে স্বাগত জানাই। আমাদের [ইস্যু ট্র্যাকার](https://github.com/TeamPojavLauncher/PojavLauncher/issues)-এ কোনো ফিচার রিকোয়েস্ট খুলতে দ্বিধা করবেন না।

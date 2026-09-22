@@ -7,16 +7,9 @@
 <img src="https://github.com/PojavLauncherTeam/PojavLauncher/blob/v3_openjdk/app_pojavlauncher/src/main/assets/pojavlauncher.png" align="left" width="130" height="150" alt="PojavLauncher logo">
 
 [![Android CI](https://github.com/TeamPojavLauncher/PojavLauncher/workflows/Android%20CI/badge.svg)](https://github.com/TeamPojavLauncher/PojavLauncher/actions)
-<img src="https://img.shields.io/badge/platform-Android-green" alt="Platform"/>
-<img src="https://img.shields.io/badge/minSdk-23-blue" alt="Min SDK"/>
-[![Project Status](https://img.shields.io/badge/status-active-brightgreen.svg?style=flat)](https://github.com/TeamPojavLauncher/PojavLauncher/commits)
-[![Monthly commit activity for PojavLauncher](https://img.shields.io/github/commit-activity/m/TeamPojavLauncher/PojavLauncher.svg?style=flat)](https://github.com/TeamPojavLauncher/PojavLauncher/graphs/commit-activity)
-[![GitHub issues](https://img.shields.io/github/issues/TeamPojavLauncher/PojavLauncher.svg?style=flat&color=%23FFA500)](https://github.com/TeamPojavLauncher/PojavLauncher/issues)
+[![Github commit activity](https://img.shields.io/github/commit-activity/m/TeamPojavLauncher/PojavLauncher.svg?style=flat)](https://github.com/TeamPojavLauncher/PojavLauncher/graphs/commit-activity)
 [![Crowdin](https://badges.crowdin.net/pojavlauncher/localized.svg)](https://crowdin.com/project/pojavlauncher)
-[![GitHub contributors](https://img.shields.io/github/contributors/TeamPojavLauncher/PojavLauncher.svg?style=flat)](https://github.com/TeamPojavLauncher/PojavLauncher/graphs/contributors)
-<a href="https://discord.gg/2HYpzs4gZT"><img src="https://img.shields.io/discord/1355213558631366897?color=5865F2&logo=discord&logoColor=white&label=&style=flat" alt="Discord"></a>
-<a href="https://github.com/TeamPojavLauncher"><img src="https://img.shields.io/badge/github-PojavLauncher-green?logo=github" alt="GitHub"></a>
-[![Latest Release](https://img.shields.io/github/v/tag/TeamPojavLauncher/PojavLauncher?sort=semver)](https://github.com/TeamPojavLauncher/PojavLauncher/releases "View latest release")
+[![Discord](https://img.shields.io/discord/1355213558631366897?color=5865F2&logo=discord&logoColor=white&label=&style=flat)](https://discord.gg/2HYpzs4gZT)
 [![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue)](https://github.com/PojavLauncherTeam/PojavLauncher/blob/v3_openjdk/LICENSE)
 [![Twitter Follow](https://img.shields.io/twitter/follow/PLaunchTeam.svg?style=social)](https://x.com/PLaunchTeam)
 
@@ -42,14 +35,7 @@ For more details, check out our [wiki](https://pojavlauncher.app/)!
 * [Contributing](#contributing)
 * [Support](#support)
 * [License](#license)
-* [Credits & Dependencies](#credits--third-party-components-and-their-licenses)
-    * [Core Components](#core-components)
-    * [Framework & Library Support](#framework--library-support)
-    * [Graphics & Rendering](#graphics--rendering)
-    * [Java & Game Libraries](#java--game-libraries)
-    * [Security & System](#security--system)
-    * [Audio](#audio)
-    * [Other Services](#other-services)
+* [Credits & Dependencies](#credits--dependencies)
 * [Roadmap](#roadmap)
 
 ## Introduction
@@ -101,7 +87,10 @@ If you need more control over the build process, follow these steps:
 
 4. **Build GLFW stub:** `./gradlew :jre_lwjgl3glfw:build`
 
-5. **Build the launcher:** `./gradlew :app_pojavlauncher:assembleDebug` (Replace `gradlew` with `gradlew.bat` on Windows).
+5. **Build the launcher:** `./gradlew :app_pojavlauncher:assembleDebug`
+   * If you are building on Windows:
+     * Replace `./gradlew` with `.\gradlew.bat`
+     * Make sure `mojoexec`, `sdl`, `glfw` are symlinked into `app_pojavlauncher/src/main/jni/`
 
 ## Current Roadmap
 
@@ -124,12 +113,13 @@ If you need more control over the build process, follow these steps:
 - [x] Instance system in favor of profiles
 - [x] Out-of-the-box 1.21.5 support
 - [x] mrpack/CurseForge zip import
+- [x] LTW: enable compute shader/image extensions
 - [ ] LTW: resolve issues with Create
-- [ ] LTW: enable compute shader/image extensions
 - [ ] LTW: switch to a color-renderable format for framebuffers
 - [ ] Add [MobileGL](https://github.com/MobileGL-Dev/MobileGL) for Mali devices
 - [ ] Modpack/mod management tool
 - [ ] MMC-compatible instance import
+- [ ] Vintage Story support
 - [ ] Implement common native library standard
 - [ ] Patch-on-dlopen for mod native libraries
 - [ ] More to come!
@@ -156,42 +146,29 @@ For support, please join our [Discord server](https://discord.gg/2HYpzs4gZT).
 
 PojavLauncher is licensed under [GNU LGPLv3](https://github.com/PojavLauncherTeam/PojavLauncher/blob/v3_openjdk/LICENSE).
 
-## Credits & Third Party Components and Their Licenses
+## Credits & Dependencies
 
-### Core Components
 - [Boardwalk](https://github.com/zhuowei/Boardwalk) (JVM Launcher): Unknown License / [Apache License 2.0](https://github.com/zhuowei/Boardwalk/blob/master/LICENSE) or [GNU GPLv2](https://github.com/zhuowei/Boardwalk/blob/master/LICENSE)
 - [PojavLauncher](https://github.com/PojavLauncherTeam/PojavLauncher): [GNU LGPLv3 License](https://github.com/PojavLauncherTeam/PojavLauncher/blob/v3_openjdk/LICENSE)
 - [MojoLauncher](https://github.com/MojoLauncher/MojoLauncher): [GNU LGPLv3 License](https://github.com/MojoLauncher/MojoLauncher/blob/v3_openjdk/LICENSE)
 - [Amethyst](https://github.com/AngelAuraMC/Amethyst-Android): [GNU LGPLv3 License](https://github.com/AngelAuraMC/Amethyst-Android/blob/v3_openjdk/LICENSE)
-
-### Framework & Library Support
 - Android Support Libraries: [Apache License 2.0](https://android.googlesource.com/platform/prebuilts/maven_repo/android/+/master/NOTICE.txt)
 - [OpenJDK](https://github.com/PojavLauncherTeam/openjdk-multiarch-jdk8u): [GNU GPLv2 License](https://openjdk.java.net/legal/gplv2+ce.html)
-
-### Graphics & Rendering
 - [GL4ES](https://github.com/PojavLauncherTeam/gl4es): [MIT License](https://github.com/ptitSeb/gl4es/blob/master/LICENSE)
 - [Holy GL4ES](https://github.com/PojavLauncherTeam/holy-gl4es): [MIT License](https://github.com/PojavLauncherTeam/holy-gl4es/blob/main/LICENSE)
 - [MobileGlues](https://github.com/MobileGL-Dev/MobileGlues): [LGPL-2.1 License](https://github.com/MobileGL-Dev/MobileGlues/blob/dev-es/LICENSE)
 - [Krypton Wrapper](https://github.com/BZLZHH/NG-GL4ES): [MIT License](https://github.com/BZLZHH/NG-GL4ES/blob/main/LICENSE)
 - [Mesa 3D Graphics Library](https://gitlab.freedesktop.org/mesa/mesa): [MIT License](https://docs.mesa3d.org/license.html)
-
-### Java & Game Libraries
 - [LWJGL3](https://github.com/MojoLauncher/lwjgl3): [BSD-3 License](https://github.com/LWJGL/lwjgl3/blob/master/LICENSE.md)
 - [GLFW](https://github.com/MojoLauncher/glfw): [zlib license](https://github.com/MojoLauncher/glfw/blob/glfw34/LICENSE.md)
 - [SDL](https://github.com/MojoLauncher/MojoSDL): [zlib license](https://github.com/MojoLauncher/MojoSDL/blob/main/LICENSE.txt)
 - [LWJGL2-GLFW](https://github.com/MojoLauncher/lwjgl2-glfw): 3-Clause BSD license
 - [mojoexec](https://github.com/MojoLauncher/mojoexec): [MIT License](https://github.com/MojoLauncher/mojoexec/blob/master/LICENSE)
-
-### Security & System
 - [pro-grade](https://github.com/pro-grade/pro-grade) (Java sandboxing security manager): [Apache License 2.0](https://github.com/pro-grade/pro-grade/blob/master/LICENSE.txt)
 - [bhook](https://github.com/bytedance/bhook) (Exit code trapping): [MIT License](https://github.com/bytedance/bhook/blob/main/LICENSE)
 - [Authlib-Injector](https://github.com/yushijinhun/authlib-injector) (Authorization via ely.by): [AGPL-3.0](https://github.com/yushijinhun/authlib-injector/blob/develop/LICENSE)
-
-### Audio
 - [OpenAL-Soft](https://github.com/kcat/openal-soft): [GNU LIBRARY GENERAL PUBLIC LICENSE](https://github.com/kcat/openal-soft/blob/master/COPYING) and [modified PFFFT](https://github.com/kcat/openal-soft/blob/master/LICENSE-pffft)
 - [oboe](https://github.com/google/oboe): [Apache License 2.0](https://github.com/google/oboe/blob/main/LICENSE)
-
-### Other Services
 - Thanks to [Mineskin](https://mineskin.eu/) and [MCHeads](https://mc-heads.net) for providing Minecraft avatars
 
 ## Roadmap

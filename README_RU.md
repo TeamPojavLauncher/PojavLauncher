@@ -2,29 +2,20 @@
 
 <a href="./README.md">Readme in English</a>
 
+<a href="./README_BN.md">Readme বাংলা ভাষায়</a>
+
 <img src="https://github.com/PojavLauncherTeam/PojavLauncher/blob/v3_openjdk/app_pojavlauncher/src/main/assets/pojavlauncher.png" align="left" width="130" height="150" alt="Логотип PojavLauncher">
 
 [![Android CI](https://github.com/TeamPojavLauncher/PojavLauncher/workflows/Android%20CI/badge.svg)](https://github.com/TeamPojavLauncher/PojavLauncher/actions)
-<img src="https://img.shields.io/badge/platform-Android-green" alt="Платформа"/>
-<img src="https://img.shields.io/badge/minSdk-23-blue" alt="Min SDK"/>
-[![Статус проекта](https://img.shields.io/badge/status-active-brightgreen.svg?style=flat)](https://github.com/TeamPojavLauncher/PojavLauncher/commits)
-[![Активность коммитов GitHub](https://img.shields.io/github/commit-activity/m/TeamPojavLauncher/PojavLauncher.svg?style=flat)](https://github.com/TeamPojavLauncher/PojavLauncher/graphs/commit-activity)
-[![Проблемы на GitHub](https://img.shields.io/github/issues/TeamPojavLauncher/PojavLauncher.svg?style=flat&color=%23FFA500)](https://github.com/TeamPojavLauncher/PojavLauncher/issues)
+[![Github commit activity](https://img.shields.io/github/commit-activity/m/TeamPojavLauncher/PojavLauncher.svg?style=flat)](https://github.com/TeamPojavLauncher/PojavLauncher/graphs/commit-activity)
 [![Crowdin](https://badges.crowdin.net/pojavlauncher/localized.svg)](https://crowdin.com/project/pojavlauncher)
-[![Контрибьютеры GitHub](https://img.shields.io/github/contributors/TeamPojavLauncher/PojavLauncher.svg?style=flat)](https://github.com/TeamPojavLauncher/PojavLauncher/graphs/contributors)
-<a href="https://discord.gg/2HYpzs4gZT"><img src="https://img.shields.io/discord/1355213558631366897?color=5865F2&logo=discord&logoColor=white&label=&style=flat" alt="Discord"></a>
-<a href="https://github.com/TeamPojavLauncher"><img src="https://img.shields.io/badge/github-PojavLauncher-green?logo=github" alt="GitHub"></a>
-[![Последний выпуск](https://img.shields.io/github/v/tag/TeamPojavLauncher/PojavLauncher?sort=semver)](https://github.com/TeamPojavLauncher/PojavLauncher/releases "Посмотреть последний выпуск")
-[![Лицензия: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue)](https://github.com/PojavLauncherTeam/PojavLauncher/blob/v3_openjdk/LICENSE)
+[![Discord](https://img.shields.io/discord/1355213558631366897?color=5865F2&logo=discord&logoColor=white&label=&style=flat)](https://discord.gg/2HYpzs4gZT)
+[![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue)](https://github.com/PojavLauncherTeam/PojavLauncher/blob/v3_openjdk/LICENSE)
 [![Twitter Follow](https://img.shields.io/twitter/follow/PLaunchTeam.svg?style=social)](https://x.com/PLaunchTeam)
 
 *Из пепла [Boardwalk](https://github.com/zhuowei/Boardwalk) рождается PojavLauncher!*
 
 PojavLauncher — это лаунчер, позволяющий вам играть в Minecraft: Java Edition на вашем Android и [iOS](https://github.com/PojavLauncherTeam/PojavLauncher_iOS) устройстве.
-
-* Этот лаунчер может запускать почти все доступные версии Minecraft в диапазоне от rd-132211 до снапшотов 26.x (включая версии Combat Test).
-* Моддинг через Forge и Fabric так же поддерживается.
-* Этот репозиторий содержит исходный код для Android. Для iOS/iPadOS посетите [PojavLauncher_iOS](https://github.com/PojavLauncherTeam/PojavLauncher_iOS).
 
 Для получения дополнительной информации посетите наш [вики](https://pojavlauncher.app/)!
 
@@ -38,20 +29,13 @@ PojavLauncher — это лаунчер, позволяющий вам игра�
 * [Сборка](#сборка)
     * [Быстрая сборка (рекомендуется)](#быстрая-сборка-рекомендуется)
     * [Подробная сборка](#подробная-сборка)
-* [Текущий статус](#текущий-статус)
+* [Текущая дорожная карта](#текущая-дорожная-карта)
 * [Известные проблемы](#известные-проблемы)
 * [Часто задаваемые вопросы](#часто-задаваемые-вопросы)
 * [Участие в разработке](#участие-в-разработке)
 * [Поддержка](#поддержка)
 * [Лицензия](#лицензия)
-* [Благодарности и компоненты от третьих сторон и их лицензии](#благодарности-и-компоненты-третьих-сторон-и-их-лицензии)
-    * [Основные компоненты](#основные-компоненты)
-    * [Фреймворк и библиотеки поддержки](#фреймворк-и-библиотеки-поддержки)
-    * [Графика и отрисовка](#графика-и-отрисовка)
-    * [Java и игровые библиотеки](#java-и-игровые-библиотеки)
-    * [Безопасность и система](#безопасность-и-система)
-    * [Звук](#звук)
-    * [Другие сервисы](#другие-сервисы)
+* [Благодарности и компоненты](#благодарности-и-компоненты)
 * [Дорожная карта](#дорожная-карта)
 
 ## Введение
@@ -66,8 +50,7 @@ PojavLauncher — это лаунчер, позволяющий вам игра�
 Вы можете получить PojavLauncher пятью способами:
 
 1. **Релизы:** Загрузите последний release.apk из наших [стабильных релизов](https://github.com/TeamPojavLauncher/PojavLauncher/releases).
-2. **Google Play (устаревший):** Загрузите из Google Play, нажав на эту кнопку:
-[![Google Play](https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=net.kdt.pojavlaunch)
+2. **Google Play (устаревший):** Загрузите из Google Play, нажав на эту кнопку: [![Google Play](https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=net.kdt.pojavlaunch)
 3. **Nightly.link:** Получите последний готовый билд с [nightly.link](https://nightly.link/TeamPojavLauncher/PojavLauncher/workflows/android/v3_openjdk?preview).
 4. **Автоматические сборки:** Загрузите последний debug.apk из [автоматических сборок](https://github.com/TeamPojavLauncher/PojavLauncher/actions).
 5. **Сборка из исходного кода:** Следуйте [инструкциям по сборке](#сборка) ниже.
@@ -87,9 +70,9 @@ PojavLauncher — это лаунчер, позволяющий вам игра�
 
 Если вам нужен больший контроль над процессом сборки, выполните следующие шаги:
 
-1. **Java Runtime Environment (JRE):** Загрузите артефакт `jre8-pojav` с наших [автоматических сборок CI](https://github.com/TeamPojavLauncher/android-openjdk-build-multiarch/actions). Этот пакет содержит предварительно собранные JRE для всех поддерживаемых архитектур. Если вам нужно собрать JRE самостоятельно, следуйте инструкциям в репозитории [android-openjdk-build-multiarch](https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch).
+1. **Java Runtime Environment (JRE):** Загрузите артефакт `jre8-pojav` с наших [автоматических сборок CI](https://github.com/MojoLauncher/android-openjdk-build-multiarch/actions).  Этот пакет содержит предварительно собранные JRE для всех поддерживаемых архитектур.  Если вам нужно собрать JRE самостоятельно, следуйте инструкциям в репозитории [android-openjdk-build-multiarch](https://github.com/MojoLauncher/android-openjdk-build-multiarch).
 
-2. **LWJGL:** Инструкции по сборке пользовательского LWJGL доступны в [репозитории LWJGL](https://github.com/PojavLauncherTeam/lwjgl3).
+2. **LWJGL:** Инструкции по сборке пользовательского LWJGL доступны в [репозитории LWJGL](https://github.com/MojoLauncher/lwjgl3).
 
 3. **Список языков:** Поскольку языки автоматически добавляются Crowdin, вам необходимо запустить генератор списка языков перед сборкой. В каталоге проекта выполните:
    * Linux/macOS:
@@ -104,7 +87,10 @@ PojavLauncher — это лаунчер, позволяющий вам игра�
 
 4. **Сборка GLFW stub:** `./gradlew :jre_lwjgl3glfw:build`
 
-5. **Сборка лаунчера:** `./gradlew :app_pojavlauncher:assembleDebug` (Замените `gradlew` на `gradlew.bat` на Windows).
+5. **Сборка лаунчера:** `./gradlew :app_pojavlauncher:assembleDebug`
+   * При сборке на Windows:
+     * Замените `./gradlew` на `.\gradlew.bat`
+     * Убедитесь, что у вас стоит symlink `mojoexec`, `sdl`, `glfw` в `app_pojavlauncher/src/main/jni/`
 
 ## Текущая дорожная карта
 
@@ -127,12 +113,13 @@ PojavLauncher — это лаунчер, позволяющий вам игра�
 - [x] Система экземпляров вместо профилей
 - [x] Поддержка 1.21.5 из коробки
 - [x] Импорт mrpack/CurseForge zip
+- [x] LTW: включить расширения вычислительных шейдеров/изображений
 - [ ] LTW: решить проблемы с Create
-- [ ] LTW: включить расширения вычислительных шейдеров/изображений
 - [ ] LTW: переключиться на цветопередающий формат для буферов кадров
 - [ ] Добавить [MobileGL](https://github.com/MobileGL-Dev/MobileGL) для устройств Mali
 - [ ] Инструмент управления модпаками/модами
 - [ ] Совместимый с MMC импорт экземпляров
+- [ ] Поддержка Vintage Story
 - [ ] Внедрить общий стандарт нативной библиотеки
 - [ ] Patch-on-dlopen для нативных библиотек модов
 - [ ] Еще многое предстоит!
@@ -143,9 +130,9 @@ PojavLauncher — это лаунчер, позволяющий вам игра�
 
 ## Часто задаваемые вопросы
 
-Больше информации можно найти в нашем [вики](https://pojavlauncherteam.github.io/).
+Больше информации можно найти в нашем [вики](https://pojav.ru/).
 
-## Внести свой вклад в проект
+## Участие в разработке
 
 Мы приветствуем желающих внести свой вклад в проект! Нам не помешает любая помощь, не только код. Например, вы можете помочь в разработке и формировании вики. Вы так же можете помочь [перевести проект](https://crowdin.com/project/pojavlauncher) на ваш язык!
 
@@ -159,40 +146,31 @@ PojavLauncher — это лаунчер, позволяющий вам игра�
 
 PojavLauncher лицензирован под [GNU LGPLv3](https://github.com/PojavLauncherTeam/PojavLauncher/blob/v3_openjdk/LICENSE).
 
-## Благодарности и компоненты от третьих сторон и их лицензии
+## Благодарности и компоненты
 
-### Основные компоненты
-- [PojavLauncher](https://github.com/PojavLauncherTeam/PojavLauncher): [Лицензия GNU LGPLv3](https://github.com/PojavLauncherTeam/PojavLauncher/blob/v3_openjdk/LICENSE)
 - [Boardwalk](https://github.com/zhuowei/Boardwalk) (JVM Launcher): Лицензия неизвестна / [Apache License 2.0](https://github.com/zhuowei/Boardwalk/blob/master/LICENSE) или [GNU GPLv2](https://github.com/zhuowei/Boardwalk/blob/master/LICENSE)
-- [MojoLauncher](https://github.com/MojoLauncher/MojoLauncher): [Лицензия GNU LGPLv3](https://github.com/MojoLauncher/MojoLauncher/blob/v3_openjdk/LICENSE)
-
-### Фреймворк и библиотеки поддержки
+- [PojavLauncher](https://github.com/PojavLauncherTeam/PojavLauncher): [GNU LGPLv3 License](https://github.com/PojavLauncherTeam/PojavLauncher/blob/v3_openjdk/LICENSE)
+- [MojoLauncher](https://github.com/MojoLauncher/MojoLauncher): [GNU LGPLv3 License](https://github.com/MojoLauncher/MojoLauncher/blob/v3_openjdk/LICENSE)
+- [Amethyst](https://github.com/AngelAuraMC/Amethyst-Android): [GNU LGPLv3 License](https://github.com/AngelAuraMC/Amethyst-Android/blob/v3_openjdk/LICENSE)
 - Android Support Libraries: [Apache License 2.0](https://android.googlesource.com/platform/prebuilts/maven_repo/android/+/master/NOTICE.txt)
-- [OpenJDK](https://github.com/PojavLauncherTeam/openjdk-multiarch-jdk8u): [Лицензия GNU GPLv2](https://openjdk.java.net/legal/gplv2+ce.html)
-
-### Графика и отрисовка
-- [GL4ES](https://github.com/PojavLauncherTeam/gl4es): [Лицензия MIT](https://github.com/ptitSeb/gl4es/blob/master/LICENSE)
-- [Holy GL4ES](https://github.com/PojavLauncherTeam/holy-gl4es): [Лицензия MIT](https://github.com/PojavLauncherTeam/holy-gl4es/blob/main/LICENSE)
-- [MobileGlues](https://github.com/MobileGL-Dev/MobileGlues): [Лицензия LGPL-2.1](https://github.com/MobileGL-Dev/MobileGlues/blob/dev-es/LICENSE)
-- [Krypton Wrapper](https://github.com/BZLZHH/NG-GL4ES): [Лицензия MIT](https://github.com/BZLZHH/NG-GL4ES/blob/main/LICENSE)
-- [Mesa 3D Graphics Library](https://gitlab.freedesktop.org/mesa/mesa): [Лицензия MIT](https://docs.mesa3d.org/license.html)
-
-### Java и игровые библиотеки
-- [LWJGL3](https://github.com/MojoLauncher/lwjgl3): [Лицензия BSD-3](https://github.com/LWJGL/lwjgl3/blob/master/LICENSE.md)
+- [OpenJDK](https://github.com/PojavLauncherTeam/openjdk-multiarch-jdk8u): [GNU GPLv2 License](https://openjdk.java.net/legal/gplv2+ce.html)
+- [GL4ES](https://github.com/PojavLauncherTeam/gl4es): [MIT License](https://github.com/ptitSeb/gl4es/blob/master/LICENSE)
+- [Holy GL4ES](https://github.com/PojavLauncherTeam/holy-gl4es): [MIT License](https://github.com/PojavLauncherTeam/holy-gl4es/blob/main/LICENSE)
+- [MobileGlues](https://github.com/MobileGL-Dev/MobileGlues): [LGPL-2.1 License](https://github.com/MobileGL-Dev/MobileGlues/blob/dev-es/LICENSE)
+- [Krypton Wrapper](https://github.com/BZLZHH/NG-GL4ES): [MIT License](https://github.com/BZLZHH/NG-GL4ES/blob/main/LICENSE)
+- [Mesa 3D Graphics Library](https://gitlab.freedesktop.org/mesa/mesa): [MIT License](https://docs.mesa3d.org/license.html)
+- [LWJGL3](https://github.com/MojoLauncher/lwjgl3): [BSD-3 License](https://github.com/LWJGL/lwjgl3/blob/master/LICENSE.md)
 - [GLFW](https://github.com/MojoLauncher/glfw): [zlib license](https://github.com/MojoLauncher/glfw/blob/glfw34/LICENSE.md)
+- [SDL](https://github.com/MojoLauncher/MojoSDL): [zlib license](https://github.com/MojoLauncher/MojoSDL/blob/main/LICENSE.txt)
 - [LWJGL2-GLFW](https://github.com/MojoLauncher/lwjgl2-glfw): 3-Clause BSD license
-
-### Безопасность и система
-- [pro-grade](https://github.com/pro-grade/pro-grade) (менеджер безопасности Java sandboxing): [Apache License 2.0](https://github.com/pro-grade/pro-grade/blob/master/LICENSE.txt)
-- [bhook](https://github.com/bytedance/bhook) (перехват кода выхода): [Лицензия MIT](https://github.com/bytedance/bhook/blob/main/LICENSE)
-- [Authlib-Injector](https://github.com/yushijinhun/authlib-injector) (авторизация через ely.by): [AGPL-3.0](https://github.com/yushijinhun/authlib-injector/blob/develop/LICENSE)
-
-### Аудио
+- [mojoexec](https://github.com/MojoLauncher/mojoexec): [MIT License](https://github.com/MojoLauncher/mojoexec/blob/master/LICENSE)
+- [Boardwalk](https://github.com/zhuowei/Boardwalk) (JVM Launcher): Unknown License / [Apache License 2.0](https://github.com/zhuowei/Boardwalk/blob/master/LICENSE) или [GNU GPLv2](https://github.com/zhuowei/Boardwalk/blob/master/LICENSE)
+- [pro-grade](https://github.com/pro-grade/pro-grade) (Java sandboxing security manager): [Apache License 2.0](https://github.com/pro-grade/pro-grade/blob/master/LICENSE.txt)
+- [bhook](https://github.com/bytedance/bhook) (Exit code trapping): [MIT License](https://github.com/bytedance/bhook/blob/main/LICENSE)
+- [Authlib-Injector](https://github.com/yushijinhun/authlib-injector) (Authorization via ely.by): [AGPL-3.0](https://github.com/yushijinhun/authlib-injector/blob/develop/LICENSE)
 - [OpenAL-Soft](https://github.com/kcat/openal-soft): [GNU LIBRARY GENERAL PUBLIC LICENSE](https://github.com/kcat/openal-soft/blob/master/COPYING) и [modified PFFFT](https://github.com/kcat/openal-soft/blob/master/LICENSE-pffft)
 - [oboe](https://github.com/google/oboe): [Apache License 2.0](https://github.com/google/oboe/blob/main/LICENSE)
-
-### Другие услуги
-- Спасибо [Mineskin](https://mineskin.eu/) и [MCHeads](https://mc-heads.net) за предоставления аватаров Minecraft
+- Спасибо [Mineskin](https://mineskin.eu/) и [MCHeads](https://mc-heads.net) за предоставление аватаров Minecraft
 
 ## Дорожная карта
 

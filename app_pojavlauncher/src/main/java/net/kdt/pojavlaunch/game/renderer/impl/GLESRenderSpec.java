@@ -13,6 +13,8 @@ import net.kdt.pojavlaunch.game.renderer.extra.GLESProvider;
 import net.kdt.pojavlaunch.prefs.LauncherPreferences;
 import net.kdt.pojavlaunch.utils.JREUtils;
 import net.kdt.pojavlaunch.utils.jre.GameRunner;
+import net.kdt.pojavlaunch.instances.Instance;
+import net.kdt.pojavlaunch.instances.Instances;
 
 import java.io.File;
 import java.util.Map;
@@ -163,7 +165,9 @@ public abstract class GLESRenderSpec implements RenderSpec {
 
        public void setupEnvironment(Context context, Map<String, String> envMap) {
          // Check if Angelica mod is present
-         boolean hasAngelica = GameRunner.hasAngelica(new File(Tools.DIR_DATA));
+         Instance instance = Instances.loadSelectedInstance();
+         File gamedir = instance.getGameDirectory();
+         boolean hasAngelica = GameRunner.hasAngelica(gamedir);
 
          if (!hasAngelica) {
            // SFPEW wraps MobileGlues for better stability but why not LTW? Idk
