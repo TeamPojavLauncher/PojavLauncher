@@ -69,7 +69,7 @@
     <string name="global_retry">Обновить</string>
     <string name="global_default">По умолчанию</string>
     <string name="mcn_exit_title">Произошёл собой приложения/игры с кодом %d. Проверьте latestlog.txt, чтобы получить больше информации.</string>
-    <string name="mcn_abort_title">Произошла аварийноая остановка приложения. Проверьте latestlog.txt для получения дополнительной информации</string>
+    <string name="mcn_abort_title">Произошла аварийная остановка приложения. Проверьте latestlog.txt для получения дополнительной информации</string>
     <string name="mcn_exit_confirm">Вы уверены, что хотите принудительно завершить игру?</string>
     <string name="mcn_check_fail_vulkan_support">Визуализатор Zink (Vulkan) не поддерживается на вашем устройстве!</string>
     <string name="control_chat">Чат</string>
