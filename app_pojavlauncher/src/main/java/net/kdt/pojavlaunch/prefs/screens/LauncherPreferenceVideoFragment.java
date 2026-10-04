@@ -44,8 +44,8 @@ public class LauncherPreferenceVideoFragment extends LauncherPreferenceFragment 
         }
 
         // Sustained performance is only available since Nougat
-        SwitchPreference sustainedPerfSwitch = requirePreference("sustainedPerformance",
-                SwitchPreference.class);
+        SwitchPreferenceCompat sustainedPerfSwitch = requirePreference("sustainedPerformance",
+                SwitchPreferenceCompat.class);
         sustainedPerfSwitch.setVisible(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N);
         sustainedPerfSwitch.setChecked(LauncherPreferences.PREF_SUSTAINED_PERFORMANCE);
 

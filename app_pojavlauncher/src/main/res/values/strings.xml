@@ -280,6 +280,7 @@
     <string name="preference_gyro_sample_rate_description">If you have performance issues with gyroscope controls, increase this.</string>
     <string name="microsoft_login_retry_later">Too many requests, please try again later.</string>
     <string name="storage_required">PojavLauncher requires external storage to be attached. Please reconnect it and restart the app.</string>
+    <string name="microsoft_login_generic">Error: %s</string>
     <string name="mcl_setting_title_buttonallcaps">Only use capital letters in button labels</string>
     <string name="mcl_setting_subtitle_buttonallcaps">Disable this if you want to use lowercase letters in your controls.</string>
     <string name="create_instance">Create new instance</string>
@@ -546,4 +547,21 @@
     <string name="local_login_buy_game_title">Buy Minecraft</string>
     <string name="local_login_buy_game">While local account is free, Minecraft is a paid game. We believe everyone should have a chance to try it, and hope that one day you will purchase it.</string>
     <string name="angelica_found_sfpew_notice">Angelica mod found, Simple FPE Wrapper not needed</string>
+    <string name="mjdl_submap_error_title">Launcher download data error</string>
+    <string name="mjdl_submap_error_subtitle">The data required for downloading the game was not loaded yet. Please try again.</string>
+    <string name="mjdl_json_error_title">Game metadata error</string>
+    <string name="mjdl_json_error_subtitle_1">The data for this version is not available. Check your Internet connection or reinstall it.</string>
+    <string name="mjdl_json_error_subtitle_3">The data for this version is corrupt. Turn on game manifest verification and try downloading again.</string>
+    <string name="mjdl_json_error_subtitle_2">The data for this version is malformed. Please report this on our GitHub or on the Discord. (%s)</string>
+    <string name="mjdl_native_error_title">Game library error</string>
+    <string name="mjdl_native_error_subtitle_1">The library %s requires code for %s, but it is not included.</string>
+    <string name="mjdl_native_error_subtitle_2">Failed to extract native libraries</string>
+    <string name="mjdl_disk_error_title">Disk access error</string>
+    <string name="mjdl_disk_error_subtitle_1">Failed to create folder %s. Make sure that you have enough free disk space.</string>
+    <string name="mjdl_disk_error_subtitle_4">The data for this version is not readable. Retry or reinstall the application.</string>
+    <string name="mjdl_disk_error_subtitle_3">Failed to copy game files for version %s. Make sure that you have enough free disk space.</string>
+    <string name="mjdl_disk_error_subtitle_2">Failed to save instance after updating the Java Runtime.</string>
+    <string name="mjdl_download_error_title">Download error</string>
+    <string name="mjdl_download_error_subtitle">Download failed. Check your internet connection and make sure that you have enough free disk space.</string>
+    <string name="mjdl_download_error_subtitle_2">File verification failed. Please try again. If this error keeps happening, contact us on GitHub or on Discord.</string>
 </resources>

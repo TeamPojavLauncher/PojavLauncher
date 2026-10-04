@@ -8,8 +8,7 @@
     <Preference
         android:title="@string/preference_edit_controls_title"
         android:summary="@string/preference_edit_controls_summary"
-        app2:icon="@drawable/ic_px_gamepad"
-        >
+        app2:icon="@drawable/ic_px_gamepad">
         <intent android:targetPackage="@string/application_package" android:targetClass="net.kdt.pojavlaunch.CustomControlsActivity" android:action=".CustomControlsActivity"/>
     </Preference>
 
@@ -69,7 +68,7 @@
             app2:seekBarIncrement="@integer/button_scale_seekbar_increment"
             android:icon="@drawable/ic_mat_opacity"
             />
-        <SwitchPreference
+        <androidx.preference.SwitchPreferenceCompat
             android:key="buttonAllCaps"
             android:defaultValue="true"
             android:title="@string/mcl_setting_title_buttonallcaps"
@@ -105,7 +104,7 @@
             android:max="@integer/mouse_speed_seekbar_max"
             app2:seekBarIncrement="@integer/mouse_speed_seekbar_increment"
             app2:showSeekBarValue="true" />
-        <SwitchPreference
+        <androidx.preference.SwitchPreferenceCompat
             android:key="mouse_start"
             android:title="@string/preference_mouse_start_title"
             android:summary="@string/preference_mouse_start_description"
@@ -116,7 +115,7 @@
         android:key="gyroCategory"
         android:title="@string/preference_category_gyro_controls"
         >
-        <SwitchPreference
+        <androidx.preference.SwitchPreferenceCompat
             android:key="enableGyro"
             android:title="@string/preference_enable_gyro_title"
             android:summary="@string/preference_enable_gyro_description"
@@ -140,19 +139,19 @@
             app2:selectable="false"
             app2:showSeekBarValue="true"
             android:icon="@drawable/ic_mat_gyro_samplerate"/>
-        <SwitchPreferenceCompat
+        <androidx.preference.SwitchPreferenceCompat
             android:key="gyroSmoothing"
             android:title="@string/preference_gyro_smoothing_title"
             android:summary="@string/preference_gyro_smoothing_description"
             android:defaultValue="true"
             android:icon="@drawable/ic_mat_gyro_smoothing"
             />
-        <SwitchPreference
+        <androidx.preference.SwitchPreferenceCompat
             android:key="gyroInvertX"
             android:title="@string/preference_gyro_invert_x_axis"
             android:summary="@string/preference_gyro_invert_x_axis_description"
             android:icon="@drawable/ic_mat_gyro_invert_x"/>
-        <SwitchPreference
+        <androidx.preference.SwitchPreferenceCompat
             android:key="gyroInvertY"
             android:title="@string/preference_gyro_invert_y_axis"
             android:summary="@string/preference_gyro_invert_y_axis_description"
@@ -187,7 +186,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/preference_category_keyboard">
-        <SwitchPreference
+        <androidx.preference.SwitchPreferenceCompat
             android:key="keyboardAutoPanning"
             android:title="@string/preference_keyboard_autopan_title"
             android:summary="@string/preference_keyboard_autopan_summary"
