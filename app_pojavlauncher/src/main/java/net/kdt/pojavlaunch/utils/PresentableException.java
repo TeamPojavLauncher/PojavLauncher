@@ -6,7 +6,7 @@ import android.content.Context;
 import net.kdt.pojavlaunch.Tools;
 import net.kdt.pojavlaunch.lifecycle.ContextExecutorTask;
 
-import git.artdeell.mojo.R;
+import net.kdt.pojavlaunch.R;
 
 public class PresentableException extends Exception implements ContextExecutorTask {
     // Do not change. Android really hates when this value changes for some reason.

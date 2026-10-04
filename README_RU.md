@@ -107,9 +107,6 @@ PojavLauncher — это лаунчер, позволяющий вам игра�
 - [x] Масштабирование игровой поверхности
 - [x] Переписанная система входных потоков в нативный код
 - [x] Полностью переписанная система управления
-- [x] Добавлен рендерер MobileGlues
-- [x] Добавлен рендерер NG_GL4ES (Krypton Wrapper) как бэкенд GL4ES
-- [x] Добавлен Freedreno для устройств Adreno
 - [x] Система экземпляров вместо профилей
 - [x] Поддержка 1.21.5 из коробки
 - [x] Импорт mrpack/CurseForge zip
@@ -158,6 +155,7 @@ PojavLauncher лицензирован под [GNU LGPLv3](https://github.com/Po
 - [Holy GL4ES](https://github.com/PojavLauncherTeam/holy-gl4es): [MIT License](https://github.com/PojavLauncherTeam/holy-gl4es/blob/main/LICENSE)
 - [MobileGlues](https://github.com/MobileGL-Dev/MobileGlues): [LGPL-2.1 License](https://github.com/MobileGL-Dev/MobileGlues/blob/dev-es/LICENSE)
 - [Krypton Wrapper](https://github.com/BZLZHH/NG-GL4ES): [MIT License](https://github.com/BZLZHH/NG-GL4ES/blob/main/LICENSE)
+- [SimpleFPEWrapper](https://github.com/MobileGL-Dev/SimpleFPEWrapper): [GNU LGPLv3 License](https://github.com/MobileGL-Dev/SimpleFPEWrapper/blob/main/LICENSE)
 - [Mesa 3D Graphics Library](https://gitlab.freedesktop.org/mesa/mesa): [MIT License](https://docs.mesa3d.org/license.html)
 - [LWJGL3](https://github.com/MojoLauncher/lwjgl3): [BSD-3 License](https://github.com/LWJGL/lwjgl3/blob/master/LICENSE.md)
 - [GLFW](https://github.com/MojoLauncher/glfw): [zlib license](https://github.com/MojoLauncher/glfw/blob/glfw34/LICENSE.md)

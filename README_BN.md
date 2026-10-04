@@ -107,9 +107,6 @@ PojavLauncher বিল্ড করার সবচেয়ে সহজ উ�
 - [x] গেম সারফেস জুম করা
 - [x] নেটিভ কোডে নতুন ইনপুট পাইপ পুনর্লিখিত
 - [x] সম্পূর্ণ নিয়ন্ত্রণ ব্যবস্থা পুনর্লিখিত
-- [x] MobileGlues রেন্ডারার যোগ করা হয়েছে
-- [x] GL4ES ব্যাকএন্ড হিসাবে NG_GL4ES (Krypton Wrapper) রেন্ডারার যোগ করা হয়েছে
-- [x] Adreno ডিভাইসের জন্য Freedreno যোগ করা হয়েছে
 - [x] প্রোফাইলের পরিবর্তে ইনস্ট্যান্স সিস্টেম
 - [x] বাক্সের বাইরে থেকে 1.21.5 সমর্থন
 - [x] mrpack/CurseForge জিপ আমদানি
@@ -158,6 +155,7 @@ PojavLauncher [GNU LGPLv3](https://github.com/PojavLauncherTeam/PojavLauncher/bl
 - [Holy GL4ES](https://github.com/PojavLauncherTeam/holy-gl4es): [MIT License](https://github.com/PojavLauncherTeam/holy-gl4es/blob/main/LICENSE)
 - [MobileGlues](https://github.com/MobileGL-Dev/MobileGlues): [LGPL-2.1 License](https://github.com/MobileGL-Dev/MobileGlues/blob/dev-es/LICENSE)
 - [Krypton Wrapper](https://github.com/BZLZHH/NG-GL4ES): [MIT License](https://github.com/BZLZHH/NG-GL4ES/blob/main/LICENSE)
+- [SimpleFPEWrapper](https://github.com/MobileGL-Dev/SimpleFPEWrapper): [GNU LGPLv3 License](https://github.com/MobileGL-Dev/SimpleFPEWrapper/blob/main/LICENSE)
 - [Mesa 3D Graphics Library](https://gitlab.freedesktop.org/mesa/mesa): [MIT License](https://docs.mesa3d.org/license.html)
 - [LWJGL3](https://github.com/MojoLauncher/lwjgl3): [BSD-3 License](https://github.com/LWJGL/lwjgl3/blob/master/LICENSE.md)
 - [GLFW](https://github.com/MojoLauncher/glfw): [zlib license](https://github.com/MojoLauncher/glfw/blob/glfw34/LICENSE.md)
