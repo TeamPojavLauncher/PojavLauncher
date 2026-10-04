@@ -149,7 +149,6 @@
     </application>
     <queries>
         <package android:name="net.kdt.pojavlaunch.ffmpeg"/>
-        <package android:name="git.mojo.angle"/>
         <package android:name="git.mojo.zink"/>
         <package android:name="git.mojo.mesa"/>
         <package android:name="net.kdt.pojavlaunch"/>

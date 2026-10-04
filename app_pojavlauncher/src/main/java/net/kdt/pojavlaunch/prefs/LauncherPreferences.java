@@ -57,6 +57,7 @@ public class LauncherPreferences {
     public static boolean PREF_FORCE_VSYNC = false;
 
     public static boolean PREF_USE_ANGLE = false;
+    public static boolean PREF_USE_SYSTEM_ANGLE = false;
 
     public static boolean PREF_BUTTON_ALL_CAPS = true;
     public static boolean PREF_DUMP_SHADERS = false;
@@ -106,6 +107,7 @@ public class LauncherPreferences {
         PREF_GYRO_INVERT_Y = DEFAULT_PREF.getBoolean("gyroInvertY", false);
         PREF_FORCE_VSYNC = DEFAULT_PREF.getBoolean("force_vsync", isDevicePowerful);
         PREF_USE_ANGLE = DEFAULT_PREF.getBoolean("use_angle", false);
+        PREF_USE_SYSTEM_ANGLE = DEFAULT_PREF.getBoolean("use_system_angle", false);
         PREF_BUTTON_ALL_CAPS = DEFAULT_PREF.getBoolean("buttonAllCaps", true);
         PREF_DUMP_SHADERS = DEFAULT_PREF.getBoolean("dump_shaders", false);
         PREF_DEADZONE_SCALE = ((float) DEFAULT_PREF.getInt("gamepad_deadzone_scale", 100))/100f;

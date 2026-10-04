@@ -11,7 +11,6 @@ import android.content.Context;
 
 import net.kdt.pojavlaunch.Architecture;
 import net.kdt.pojavlaunch.game.renderer.impl.GLESRenderSpec;
-import net.kdt.pojavlaunch.plugins.LibraryPlugin;
 
 import java.io.File;
 import java.util.Map;
@@ -27,16 +26,18 @@ public interface GLESProvider {
      * @param preferAngle Whether the ANGLE provider should be selected
      * @return OpenGL ES provider
      */
-    static GLESProvider getGlesProvider(Context context, boolean preferAngle) {
-        if (!preferAngle) return new NativeGLESProvider();
+    static GLESProvider getGlesProvider(Context context, boolean preferAngle, boolean preferSystemAngle) {
         GLESProvider provider;
-        // External ANGLE takes priority over system ANGLE so we can override it easily
-        LibraryPlugin anglePlugin = LibraryPlugin.discoverPlugin(context, LibraryPlugin.ID_ANGLE_PLUGIN);
-        provider = new GLESProvider.ExternalAngleProvider(anglePlugin);
-        if (provider.supported()) {
-            return provider;
+        if (preferSystemAngle) {
+            provider = new GLESProvider.SystemAngleProvider();
+            if (provider.supported()) {
+                return provider;
+            }
+            return new NativeGLESProvider();
         }
-        provider = new GLESProvider.SystemAngleProvider();
+        if (!preferAngle) return new NativeGLESProvider();
+        // External ANGLE takes priority over system ANGLE so we can override it easily
+        provider = new GLESProvider.ExternalAngleProvider(context);
         if (provider.supported()) {
             return provider;
         }
@@ -137,12 +138,12 @@ public interface GLESProvider {
      * System ANGLE provider. Android 15+ devices often have ANGLE libraries located in their system partition, so we can take advantage of them
      */
     class SystemAngleProvider implements GLESProvider {
-        private static final String BASE_PATH = Architecture.is64BitsDevice() ? "/system/lib64/" : "/system/lib";
+        private static final String BASE_PATH = Architecture.is64BitsDevice() ? "/system/lib64/" : "/system/lib/";
         public String type() {
             return "System ANGLE";
         }
         public String eglPath() {
-            return gles().getAbsolutePath();
+            return egl().getAbsolutePath();
         }
         public String glesPath() {
             return gles().getAbsolutePath();
@@ -151,7 +152,7 @@ public interface GLESProvider {
             return new File(BASE_PATH, ANGLE_EGL);
         }
         public File gles() {
-            return new File(BASE_PATH, ANGLE_EGL);
+            return new File(BASE_PATH, ANGLE_GLES);
         }
         public boolean supported() {
             return egl().exists() && gles().exists();
@@ -166,27 +167,30 @@ public interface GLESProvider {
      * Useful for using newer ANGLE, patching ANGLE to overcome OpenGL ES restrictions or when nsbypass misbehaves on this device
      */
     class ExternalAngleProvider implements GLESProvider {
-        private final LibraryPlugin plugin;
-        public ExternalAngleProvider(LibraryPlugin plugin) {
-            this.plugin = plugin;
+        private final File egl;
+        private final File gles;
+        public ExternalAngleProvider(Context context) {
+            String nativeLibDir = context.getApplicationInfo().nativeLibraryDir;
+            this.egl = new File(nativeLibDir, ANGLE_EGL);
+            this.gles = new File(nativeLibDir, ANGLE_GLES);
         }
         public String type() {
             return "External ANGLE";
         }
         public String eglPath() {
-            return plugin.resolve(ANGLE_EGL).getAbsolutePath();
+            return egl.getAbsolutePath();
         }
         public String glesPath() {
-            return gles().getAbsolutePath();
+            return gles.getAbsolutePath();
         }
         public File egl() {
-            return plugin.resolve(ANGLE_EGL);
+            return egl;
         }
         public File gles() {
-            return plugin.resolve(ANGLE_GLES);
+            return gles;
         }
         public boolean supported() {
-            return plugin != null && plugin.checkLibraries(ANGLE_EGL, ANGLE_GLES);
+            return egl.exists() && gles.exists();
         }
         public boolean requiresNamespace() {
             return false;

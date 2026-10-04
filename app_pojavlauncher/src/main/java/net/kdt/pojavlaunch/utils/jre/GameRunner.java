@@ -120,7 +120,7 @@ public class GameRunner {
      */
 
     private static boolean affectedByRenderDistanceIssue(JVersionList.Version version) throws ParseException {
-        if(LauncherPreferences.PREF_USE_ANGLE) return false;
+        if(LauncherPreferences.PREF_USE_ANGLE || LauncherPreferences.PREF_USE_SYSTEM_ANGLE) return false;
         GpuUtils.GLInfo info = GpuUtils.getGlInfo();
         return info.isAdreno() &&
                 info.glesMajorVersion >= 3 &&
