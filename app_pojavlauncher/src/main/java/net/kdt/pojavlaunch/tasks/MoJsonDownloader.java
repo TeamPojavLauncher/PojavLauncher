@@ -144,9 +144,9 @@ public class MoJsonDownloader extends Downloader {
             runDownloads(mScheduledDownloadTasks);
 
         } catch (VerificationException e) {
-            throw new PresentableException(R.string.mjdl_download_error_title, R.string.mjdl_download_error_subtitle_2);
+            throw new PresentableException(e, R.string.mjdl_download_error_title, R.string.mjdl_download_error_subtitle_2);
         } catch (IOException e) {
-            throw new PresentableException(R.string.mjdl_download_error_title, R.string.mjdl_download_error_subtitle);
+            throw new PresentableException(e, R.string.mjdl_download_error_title, R.string.mjdl_download_error_subtitle);
         }
 
         try {
@@ -332,7 +332,7 @@ public class MoJsonDownloader extends Downloader {
 
     private void scheduleDownload(File targetFile, int downloadClass, String url, String sha1,
                                   long size) throws PresentableException {
-
+        checkedCreateDirectory(targetFile);
 
         if(!Tools.isValidString(sha1)) sha1 = null;
         URL urlObject = null;
