@@ -194,8 +194,8 @@ public class Downloader {
 
     protected boolean tryContinueDownload(File file, long wantedLength, URL url, BytesCopiedListener listener) throws IOException {
         HttpURLConnection connection = openConnection(url);
-        String range = String.format(Locale.ENGLISH,"bytes %d-%d/%d", file.length(), wantedLength-1, wantedLength);
-        connection.setRequestProperty("Content-Range", range);
+        String range = String.format(Locale.ENGLISH,"bytes=%d-%d", file.length(), wantedLength-1);
+        connection.setRequestProperty("Range", range);
         try {
             connection.connect();
             int responseCode = connection.getResponseCode();

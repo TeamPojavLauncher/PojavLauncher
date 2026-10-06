@@ -76,6 +76,7 @@ public class LauncherPreferences {
     public static boolean PREF_ALSOFT_FORCE_OPENSL = false;
     public static boolean PREF_SHOW_MEMORY_WARNING_DIALOG = true;
     public static short PREF_BUTTON_TRANSPARENCY = 100;
+    public static boolean PREF_UBWC_WORKAROUND = false;
 
     public static void loadPreferences(Context ctx) {
         //Required for CTRLDEF_FILE and MultiRT
@@ -124,6 +125,7 @@ public class LauncherPreferences {
         PREF_ALSOFT_FORCE_OPENSL = DEFAULT_PREF.getBoolean("alsoftForceOpenSL", false);
         PREF_SHOW_MEMORY_WARNING_DIALOG = DEFAULT_PREF.getBoolean("showMemoryWarning", true);
         PREF_BUTTON_TRANSPARENCY = (short) DEFAULT_PREF.getInt("buttonTransparency", 100);
+        PREF_UBWC_WORKAROUND = DEFAULT_PREF.getBoolean("ubwcWorkaround", false);
 
         String argLwjglLibname = "-Dorg.lwjgl.opengl.libname=";
         for (String arg : JREUtils.parseJavaArguments(PREF_CUSTOM_JAVA_ARGS)) {

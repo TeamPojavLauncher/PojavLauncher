@@ -56,6 +56,7 @@ public class TouchCharInput extends androidx.appcompat.widget.AppCompatEditText 
     public boolean onKeyPreIme(final int keyCode, final KeyEvent event) {
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
             disable();
+            return true;
         }
         return super.onKeyPreIme(keyCode, event);
     }
@@ -117,6 +118,7 @@ public class TouchCharInput extends androidx.appcompat.widget.AppCompatEditText 
 
     /** Lose ability to exist, take focus and have some text being input */
     public void disable(){
+        Thread.dumpStack();
         clear();
         setVisibility(GONE);
         clearFocus();

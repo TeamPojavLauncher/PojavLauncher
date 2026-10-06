@@ -547,6 +547,8 @@
     <string name="local_login_buy_game_title">Buy Minecraft</string>
     <string name="local_login_buy_game">While local account is free, Minecraft is a paid game. We believe everyone should have a chance to try it, and hope that one day you will purchase it.</string>
     <string name="angelica_found_sfpew_notice">Angelica mod found, Simple FPE Wrapper not needed</string>
+    <string name="preference_ubwc_title">Enable UBWC compression workaround</string>
+    <string name="preference_ubwc_summary">Enables \"tp_ubwc_flag_hint\" flag needed for select Adreno GPUs (Adreno 740). Enable if you see rendering issues on freedreno or Turnip</string>
     <string name="mjdl_submap_error_title">Launcher download data error</string>
     <string name="mjdl_submap_error_subtitle">The data required for downloading the game was not loaded yet. Please try again.</string>
     <string name="mjdl_json_error_title">Game metadata error</string>
