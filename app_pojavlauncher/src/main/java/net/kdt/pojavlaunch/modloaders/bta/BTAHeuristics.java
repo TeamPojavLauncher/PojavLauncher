@@ -13,7 +13,7 @@ import java.io.InputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import git.artdeell.mojo.R;
+import net.kdt.pojavlaunch.R;
 
 public class BTAHeuristics {
     private static final String LWJGL_VERSION_CLASS = "org/lwjgl/Version.class";
