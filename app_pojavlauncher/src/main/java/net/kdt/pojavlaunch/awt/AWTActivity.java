@@ -33,9 +33,12 @@ import net.kdt.pojavlaunch.prefs.LauncherPreferences;
 import net.kdt.pojavlaunch.utils.JREUtils;
 import net.kdt.pojavlaunch.utils.MathUtils;
 import net.kdt.pojavlaunch.utils.jre.JavaRunner;
+import net.kdt.pojavlaunch.utils.jre.classfile.ClassFormatException;
+import net.kdt.pojavlaunch.utils.jre.classfile.ClassVersionReader;
 
 import org.apache.commons.io.IOUtils;
 
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -415,25 +418,17 @@ public class AWTActivity extends BaseActivity implements View.OnTouchListener {
         CallbackBridge.setModifiers(KeyEvent.KEYCODE_CTRL_LEFT, false);
     }
 
-    private static int getJavaVersion(JarFile jarFile, String mainClass) throws IOException{
+    private static int getJavaVersion(JarFile jarFile, String mainClass) throws IOException {
         mainClass = mainClass.trim().replace('.', '/') + ".class";
         ZipEntry mainClassFile = jarFile.getEntry(mainClass);
-        if(mainClassFile == null) return -1;
+        if (mainClassFile == null) return -1;
 
-        byte[] bytesWeNeed = new byte[8];
-        try(InputStream classStream = jarFile.getInputStream(mainClassFile)) {
-            int readCount = classStream.read(bytesWeNeed);
-            if(readCount < bytesWeNeed.length) return -1;
+        try (InputStream classStream = jarFile.getInputStream(mainClassFile)) {
+            int majorVersion = ClassVersionReader.readClassMajorVersion(classStream);
+            return ClassVersionReader.classMajorToVMMajor(majorVersion);
+        } catch (ClassFormatException | EOFException ignored) {
+            return -1;
         }
-        ByteBuffer byteBuffer = ByteBuffer.wrap(bytesWeNeed);
-        if(byteBuffer.getInt() != 0xCAFEBABE) return -1;
-        short minorVersion = byteBuffer.getShort();
-        short majorVersion = byteBuffer.getShort();
-        Log.i("JavaGUILauncher", majorVersion+","+minorVersion);
-        return classVersionToJavaVersion(majorVersion);
-    }
-    public static int classVersionToJavaVersion(int majorVersion) {
-        if(majorVersion < 46) return 2; // there isn't even an arm64 port of jre 1.1 (or anything before 1.8 in fact)
-        return majorVersion - 44;
+
     }
 }

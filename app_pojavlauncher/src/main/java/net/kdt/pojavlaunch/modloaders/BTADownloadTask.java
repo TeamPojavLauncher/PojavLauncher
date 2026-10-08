@@ -8,17 +8,25 @@ import com.kdt.mcgui.ProgressLayout;
 
 import net.kdt.pojavlaunch.R;
 import net.kdt.pojavlaunch.Tools;
+import net.kdt.pojavlaunch.game.renderer.def.Renderers;
 import net.kdt.pojavlaunch.instances.Instance;
 import net.kdt.pojavlaunch.instances.Instances;
+import net.kdt.pojavlaunch.modloaders.bta.BTAHeuristics;
+import net.kdt.pojavlaunch.utils.jre.classfile.ClassFormatException;
+import net.kdt.pojavlaunch.progresskeeper.DownloaderProgressWrapper;
 import net.kdt.pojavlaunch.progresskeeper.ProgressKeeper;
+import net.kdt.pojavlaunch.utils.DownloadUtils;
 import net.kdt.pojavlaunch.utils.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Locale;
 
 public class BTADownloadTask implements Runnable {
-    private static final String BASE_JSON = "{\"inheritsFrom\":\"b1.7.3\",\"mainClass\":\"net.minecraft.client.Minecraft\",\"libraries\":[{\"name\":\"bta-client:bta-client:%1$s\",\"downloads\":{\"artifact\":{\"path\":\"bta-client/bta-client-%1$s.jar\",\"url\":\"%2$s\"}}}],\"id\":\"%3$s\"}";
+    private static final String BASE_JSON = "{\"inheritsFrom\":\"b1.7.3\",\"mainClass\":\"net.minecraft.client.Minecraft\",\"libraries\":[{\"name\":\"bta-client:bta-client:%1$s\",\"downloads\":{\"artifact\":{\"path\":\"bta-client/bta-client-%1$s.jar\",\"url\":\"%2$s\"}}}],\"id\":\"%3$s\",\"javaVersion\":{\"majorVersion\":%4$d}}";
+    private static final String BASE_JSON_LWJGL3 = "{\"inheritsFrom\": \"b1.7.3\", \"mainClass\": \"net.minecraft.client.Minecraft\", \"libraries\": [ { \"name\": \"org.lwjgl.lwjgl:lwjgl:*\", \"rules\": [ { \"action\": \"disallow\" } ] }, { \"name\": \"org.lwjgl.lwjgl:lwjgl_util:*\", \"rules\": [ { \"action\": \"disallow\" } ] }, { \"name\": \"org.lwjgl.lwjgl:lwjgl-platform:*\", \"rules\": [ { \"action\": \"disallow\" } ] }, { \"name\": \"bta-client:bta-client:%1$s\", \"downloads\": { \"artifact\": { \"path\": \"bta-client/bta-client-%1$s.jar\", \"url\": \"%2$s\" } } }, { \"name\": \"org.lwjgl:lwjgl:%4$s\" }, { \"name\": \"org.lwjgl:lwjgl-glfw:%4$s\" }, { \"name\": \"org.lwjgl:lwjgl-openal:%4$s\" }, { \"name\": \"org.lwjgl:lwjgl-opengl:%4$s\" }, { \"name\": \"org.lwjgl:lwjgl-stb:%4$s\" }, { \"name\": \"org.lwjgl:lwjgl-tinyfd:%4$s\" } ], \"id\": \"%3$s\", \"javaVersion\":{\"majorVersion\":%5$d}}";
+    private static final String BASE_JSON_LWJGL3_GLCORE = "{\"inheritsFrom\": \"b1.7.3\", \"mainClass\": \"net.minecraft.client.Minecraft\", \"disableRendererChecks\": true, \"environment\": { \"MESA_GL_VERSION_OVERRIDE\": \"4.1\" }, \"libraries\": [ { \"name\": \"org.lwjgl.lwjgl:lwjgl:*\", \"rules\": [ { \"action\": \"disallow\" } ] }, { \"name\": \"org.lwjgl.lwjgl:lwjgl_util:*\", \"rules\": [ { \"action\": \"disallow\" } ] }, { \"name\": \"org.lwjgl.lwjgl:lwjgl-platform:*\", \"rules\": [ { \"action\": \"disallow\" } ] }, { \"name\": \"bta-client:bta-client:%1$s\", \"downloads\": { \"artifact\": { \"path\": \"bta-client/bta-client-%1$s.jar\", \"url\": \"%2$s\" } } }, { \"name\": \"org.lwjgl:lwjgl:%4$s\" }, { \"name\": \"org.lwjgl:lwjgl-glfw:%4$s\" }, { \"name\": \"org.lwjgl:lwjgl-openal:%4$s\" }, { \"name\": \"org.lwjgl:lwjgl-opengl:%4$s\" }, { \"name\": \"org.lwjgl:lwjgl-stb:%4$s\" }, { \"name\": \"org.lwjgl:lwjgl-tinyfd:%4$s\" } ], \"id\": \"%3$s\", \"javaVersion\":{\"majorVersion\":%5$d}}";
     private final ModloaderDownloadListener mListener;
     private final BTAUtils.BTAVersion mBtaVersion;
 
@@ -33,7 +41,7 @@ public class BTADownloadTask implements Runnable {
         try {
             runCatching() ;
             mListener.onDownloadFinished(null);
-        }catch (IOException e) {
+        }catch (IOException | ClassFormatException e) {
             mListener.onDownloadError(e);
         }
         ProgressLayout.clearProgress(ProgressLayout.INSTALL_MODPACK);
@@ -48,35 +56,56 @@ public class BTADownloadTask implements Runnable {
         }
     }
 
-    private void createJson(String btaVersionId) throws IOException {
-        String btaJson = String.format(BASE_JSON, mBtaVersion.versionName, mBtaVersion.downloadUrl, btaVersionId);
+    private void createJson(String btaVersionId, BTAHeuristics heuristics, boolean requiresCore) throws IOException {
+        String btaJson;
+        if(heuristics.lwjglVersion == null) {
+            btaJson = String.format(Locale.US, BASE_JSON, mBtaVersion.versionName, mBtaVersion.downloadUrl, btaVersionId, heuristics.runtimeMajorVersion);
+        }else {
+            btaJson = String.format(Locale.US,
+                    requiresCore ? BASE_JSON_LWJGL3_GLCORE : BASE_JSON_LWJGL3,
+                    mBtaVersion.versionName, mBtaVersion.downloadUrl, btaVersionId, heuristics.lwjglVersion, heuristics.runtimeMajorVersion
+            );
+        }
         File jsonDir = new File(Tools.DIR_HOME_VERSION, btaVersionId);
         File jsonFile = new File(jsonDir, btaVersionId+".json");
         FileUtils.ensureDirectory(jsonDir);
         Tools.write(jsonFile, btaJson);
     }
 
-    // BTA doesn't have SHA1 checksums in its repositories, so the user may try to reinstall it
-    // if it didn't work due to a broken download. So, for reinstalls like that to work,
-    // we need to delete the old client jar to force the download of a new one.
-    private void removeOldClient() throws IOException{
+    private BTAHeuristics installClient() throws IOException, ClassFormatException {
         File btaClientPath = new File(Tools.DIR_HOME_LIBRARY, String.format("bta-client/bta-client-%1$s.jar", mBtaVersion.versionName));
         if(btaClientPath.exists() && !btaClientPath.delete())
             throw new IOException("Failed to delete old client jar");
+
+        FileUtils.ensureParentDirectory(btaClientPath);
+
+        DownloaderProgressWrapper progressWrapper = new DownloaderProgressWrapper(R.string.mcl_launch_downloading_progress, ProgressLayout.INSTALL_MODPACK);
+        progressWrapper.extraString = "BTA "+mBtaVersion.versionName;
+        DownloadUtils.downloadFileMonitored(mBtaVersion.downloadUrl, btaClientPath, null, progressWrapper);
+
+        BTAHeuristics heuristics = BTAHeuristics.detect(btaClientPath);
+
+        Log.i("BTADownloadTask", "Detected LWJGL3 version: "+ heuristics.lwjglVersion);
+        Log.i("BTADownloadTask", "Detected java version: "+ heuristics.runtimeMajorVersion);
+
+        return heuristics;
     }
 
     private void createProfile(String btaVersionId) throws IOException {
+        // BTA 8.0+ uses Core context
+        final boolean core = BTAUtils.isNightlyVersion(mBtaVersion) || BTAUtils.parseBTAVersion(mBtaVersion)[0] >= 8;
         Instance instance = Instances.createInstance(i -> {
             i.versionId = btaVersionId;
+            if(core) i.renderer = Renderers.LTW_RENDERER;
             i.name = "Better than Adventure!";
         }, "BTA-"+btaVersionId);
         tryDownloadIcon(instance);
     }
 
-    public void runCatching() throws IOException {
-        removeOldClient();
+    public void runCatching() throws IOException, ClassFormatException {
+        BTAHeuristics heuristics = installClient();
         String btaVersionId = "bta-"+mBtaVersion.versionName;
-        createJson(btaVersionId);
+        createJson(btaVersionId, heuristics, heuristics.runtimeMajorVersion >= 17);
         createProfile(btaVersionId);
     }
 }

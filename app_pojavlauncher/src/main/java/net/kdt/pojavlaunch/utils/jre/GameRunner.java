@@ -220,22 +220,24 @@ public class GameRunner {
 
         RenderSpec renderer = gameRenderer.getCurrentRenderer();
 
-        // Switch renderer to GL4ES when running a compat context version on LTW
-        if(isCompatContext(versionInfo) && !hasAngelica(gamedir) && renderer instanceof GLESRenderSpec.LTWRenderSpec) {
-            switchRendererIfSupported(true, GameRenderer.getKnownRenderer(Renderers.GL4ES_RENDERER), gameRenderer, instance, activity, 0);
-        }
+        if(!versionInfo.disableRendererChecks) {
+            // Switch renderer to GL4ES when running a compat context version on LTW
+            if(isCompatContext(versionInfo) && !hasAngelica(gamedir) && renderer instanceof GLESRenderSpec.LTWRenderSpec) {
+                switchRendererIfSupported(true, GameRenderer.getKnownRenderer(Renderers.GL4ES_RENDERER), gameRenderer, instance, activity, 0);
+            }
 
-        boolean isGl4es = renderer instanceof GLESRenderSpec.GL4ESRenderSpec;
-        RenderSpec ltw = GameRenderer.getKnownRenderer(Renderers.LTW_RENDERER);
-        boolean ltwSupported = ltw != null && ltw.compatibleDevice(activity);
-        // Block Sodium from running with GL4ES on 1.17+
-        if(!isCompatContext(versionInfo) && isGl4es && hasSodium(gamedir)) {
-            switchRendererIfSupported(ltwSupported, ltw, gameRenderer, instance, activity, R.string.compat_sodium_not_supported);
-        }
+            boolean isGl4es = renderer instanceof GLESRenderSpec.GL4ESRenderSpec;
+            RenderSpec ltw = GameRenderer.getKnownRenderer(Renderers.LTW_RENDERER);
+            boolean ltwSupported = ltw != null && ltw.compatibleDevice(activity);
+            // Block Sodium from running with GL4ES on 1.17+
+            if(!isCompatContext(versionInfo) && isGl4es && hasSodium(gamedir)) {
+                switchRendererIfSupported(ltwSupported, ltw, gameRenderer, instance, activity, R.string.compat_sodium_not_supported);
+            }
 
-        // Switch renderer to LTW when running 1.21.5
-        if(!isGl4esCompatible(versionInfo) && isGl4es) {
-            switchRendererIfSupported(ltwSupported, ltw, gameRenderer, instance, activity, R.string.compat_sodium_not_supported);
+            // Switch renderer to LTW when running 1.21.5
+            if(!isGl4esCompatible(versionInfo) && isGl4es) {
+                switchRendererIfSupported(ltwSupported, ltw, gameRenderer, instance, activity, R.string.compat_sodium_not_supported);
+            }
         }
 
         boolean isLtw = renderer instanceof GLESRenderSpec.LTWRenderSpec;
@@ -318,9 +320,11 @@ public class GameRunner {
 
         javaArgList.addAll(JREUtils.parseJavaArguments(instance.getLaunchArgs()));
 
+        Map<String, String> versionEnvMap = versionInfo.environment;
+
         // TODO: this should be decoupled from GameRunner completely
         gameRenderer.setupEnvironment(activity);
-        JREUtils.setGameEnvironment(activity);
+        JREUtils.setGameEnvironment(activity, versionEnvMap);
         JREUtils.chdir(instance.getGameDirectory().getAbsolutePath());
 
         if(!gameRenderer.maybeSetupRenderer()) {

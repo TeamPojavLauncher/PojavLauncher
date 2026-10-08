@@ -78,8 +78,9 @@ public class JREUtils {
         if(ffmpeg == null) return;
         envMap.put("POJAV_FFMPEG_PATH", ffmpeg.resolveAbsolutePath("libffmpeg.so"));
     }
-    public static void setGameEnvironment(Context context) throws Throwable {
+    public static void setGameEnvironment(Context context, Map<String, String> versionSpecificEnv) throws Throwable {
         Map<String, String> envMap = new ArrayMap<>();
+        if(versionSpecificEnv != null) envMap.putAll(versionSpecificEnv);
 		// This is currently required for YSM mod to function
 		File modRuntimeDir = new File(Tools.DIR_CACHE, "app_runtime_mod");
 		envMap.put("MOD_ANDROID_RUNTIME", modRuntimeDir.getAbsolutePath());
