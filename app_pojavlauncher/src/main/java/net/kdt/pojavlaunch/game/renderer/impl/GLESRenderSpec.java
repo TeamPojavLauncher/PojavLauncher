@@ -172,6 +172,7 @@ public abstract class GLESRenderSpec implements RenderSpec {
          if (!hasAngelica) {
            // SFPEW wraps MobileGlues for better stability but why not LTW? Idk
            envMap.put("SFPEW_EGL", "libmobileglues.so");
+           envMap.put("MG_DIR_PATH", Tools.DIR_DATA + "/MobileGlues");
          }
          // If Angelica is present, don't set SFPEW_EGL (Angelica provides its own FPE)
        }
