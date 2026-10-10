@@ -13,7 +13,7 @@ static void writeVersionFile(File jarFile, File versionFile) {
 }
 
 subprojects {subproject ->
-    if (subproject.name.contains("lwjgl")) return
+    if (subproject.name.contains("lwjgl") || subproject.name == "MioLibPatcher") return
     tasks.withType(Jar).configureEach {jar ->
         System.out.println("Subproject $subproject configuring jar task destination to app_pojavlauncher/src/main/assets/components/$subproject.name/")
         destinationDirectory.set(
