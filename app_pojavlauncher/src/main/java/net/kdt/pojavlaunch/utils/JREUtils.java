@@ -14,6 +14,8 @@ import net.kdt.pojavlaunch.plugins.LibraryPlugin;
 import net.kdt.pojavlaunch.prefs.*;
 import net.kdt.pojavlaunch.game.renderer.GameRenderer;
 
+import static net.kdt.pojavlaunch.Tools.sAsmVersion;
+
 public class JREUtils {
     public static void redirectAndPrintJRELog() {
         Log.v("jrelog","Log starts here");
@@ -108,6 +110,27 @@ public class JREUtils {
         // Force LWJGL to use the Freetype library intended for it, instead of using the one
         // that we ship with Java (since it may be older than what's needed)
         //
+
+        // MioLibPatcher configuration
+        JVMArgs.add("-javaagent:"+new File(Tools.DIR_DATA,"MioLibPatcher/MioLibPatcher.jar").getAbsolutePath());
+
+        // Only needed for lwjgl3 <= 299 (LWJGL 2.x / lwjglx)
+        if (Tools.iLwjglVersion <= 299) JVMArgs.add("-Dmiolibpatcher.alc10=true");
+
+        // ASM 5.0.4 backport for AE1 compatibility
+        if (sAsmVersion != null) {
+            if (Integer.parseInt(sAsmVersion[0]) == 5 &&
+                    Integer.parseInt(sAsmVersion[1]) == 0 &&
+                    Integer.parseInt(sAsmVersion[2]) == 4) {
+                JVMArgs.add("-Dmiolibpatcher.asmBackport=true");
+            }
+        }
+
+        // Arc_dns_injector (if you use it) - only after MioLibPatcher to prevent agent conflicts
+        if(LauncherPreferences.PREF_ARC_CAPES) {
+            JVMArgs.add("-javaagent:"+new File(Tools.DIR_DATA,"arc_dns_injector/arc_dns_injector.jar").getAbsolutePath()+"=23.95.137.176");
+        }
+
         Tools.fullyExit();
     }
 

@@ -107,6 +107,7 @@ public final class Tools {
     public static File DIR_CACHE;
     public static String MULTIRT_HOME;
     public static int DEVICE_ARCHITECTURE;
+    public static String[] sAsmVersion = null;
 
     // New since 3.3.1
     public static String DIR_ACCOUNT_NEW;
@@ -499,6 +500,10 @@ public final class Tools {
             libItem.downloads.artifact.url = MAVEN_CENTRAL+"com/github/oshi/oshi-core/6.3.0/oshi-core-6.3.0.jar";
             libItem.downloads.artifact.size = 957945;
             libItem.replaced = true;
+        }
+        // Capture ASM version for MioLibPatcher asmBackport flag
+        if (sAsmVersion == null && libName.module.startsWith("asm") && libName.provider.equals("org.ow2.asm")) {
+            sAsmVersion = version;
         }
     }
 

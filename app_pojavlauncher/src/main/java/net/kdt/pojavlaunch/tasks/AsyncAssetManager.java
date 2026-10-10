@@ -82,6 +82,7 @@ public class AsyncAssetManager {
             tryUnpackComponent(ctx, "caciocavallo17", false);
 
             tryUnpackComponent(ctx, "security", true);
+            tryUnpackComponent(ctx, "MioLibPatcher", true);
             tryUnpackComponent(ctx, "forge_installer", true);
             tryUnpackComponent(ctx, "authlib-injector", true);
             ProgressLayout.clearProgress(ProgressLayout.EXTRACT_COMPONENTS);

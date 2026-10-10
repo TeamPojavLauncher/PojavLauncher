@@ -323,6 +323,7 @@ afterEvaluate {
     android.applicationVariants.configureEach { variant ->
         registrar.setVariant(variant)
 
+        registrar.projectJarDependency project(":MioLibPatcher"), "components/MioLibPatcher"
         registrar.projectJarDependency project(":forge_installer"), "components/forge_installer"
 
 		if (variant.getName().toLowerCase().contains("full")) {
