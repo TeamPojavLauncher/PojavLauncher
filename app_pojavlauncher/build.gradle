@@ -21,15 +21,39 @@ static def getDateSeconds() {
 }
 
 def getVersionName = {
+    String semVer = "1.2"
+
+    def taskNames = project.gradle.startParameter.taskNames
+            .collect { it.toLowerCase() }
+            .join(" ")
+
+    def buildLabel
+
+    if (taskNames.contains("pubrelease")) {
+        buildLabel = "pub"
+    } else if (taskNames.contains("gplay")) {
+        buildLabel = "gplay"
+    } else if (taskNames.contains("release")) {
+        buildLabel = "release"
+    } else if (taskNames.contains("proguardnodebug")) {
+        buildLabel = "proguardNoDebug"
+    } else if (taskNames.contains("proguard")) {
+        buildLabel = "proguard"
+    } else {
+        buildLabel = "debug"
+    }
+
     def currentBranch = grgit.branch.current()
     def latestCommit = grgit.log(maxCommits: 1)
     def dateToday = getDate()
-    if(currentBranch == null || latestCommit == null) {
-        return "LOCAL-${dateToday}"
-    }else {
+
+    if (currentBranch == null || latestCommit == null) {
+        return "LOCAL-${dateToday}-${buildLabel}-${semVer}"
+    } else {
         def branchName = currentBranch.getName()
         def commitAbbreviation = latestCommit.abbreviatedId
-        return "pojav-legacy-${dateToday}-${commitAbbreviation}-${branchName}"
+
+        return "pojav-legacy-${dateToday}-${commitAbbreviation}-${branchName}-${buildLabel}-${semVer}"
     }
 }
 
