@@ -56,6 +56,7 @@
             android:summary="@string/preference_show_memory_warning_summary"/>
         <SwitchPreferenceCompat
             android:defaultValue="true"
+            android:icon="@drawable/ic_disable_server_blocklist"
             android:key="disableServerBlocklist"
             android:title="@string/pref_blocklist_disable_title"
             android:summary="@string/pref_blocklist_disable_description"/>
