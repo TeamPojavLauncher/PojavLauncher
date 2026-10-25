@@ -22,9 +22,12 @@ import net.kdt.pojavlaunch.game.renderer.impl.GLESRenderSpec;
 import net.kdt.pojavlaunch.game.renderer.impl.MesaRenderSpec;
 import net.kdt.pojavlaunch.prefs.LauncherPreferences;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.kdt.pojavlaunch.vulkan.DriverManager;
+import net.kdt.pojavlaunch.vulkan.driver.Driver;
 import git.artdeell.mojoexec.MojoExec;
 
 /*
@@ -168,6 +171,9 @@ public class GameRenderer {
         // In most cases we load Turnip so use Turnip environment variables
         if(LauncherPreferences.PREF_FREEDRENO_SYSMEM) environment.put("TU_DEBUG", "sysmem");
         if(LauncherPreferences.PREF_UBWC_WORKAROUND) environment.put("FD_DEV_FEATURES", "enable_tp_ubwc_flag_hint=1");
-        MojoExec.setUseTurnip(true);
+
+        Driver driver = DriverManager.getPreferredDriver();
+        File root = DriverManager.getDriverRoot(driver);
+        MojoExec.configureCustomVulkanDriver(driver.getMainLibrary(), root == null ? null : root.getAbsolutePath());
     }
 }

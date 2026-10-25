@@ -11,12 +11,13 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.Preference;
 
+import com.kdt.mcgui.ProgressLayout;
+
 import net.kdt.pojavlaunch.R;
 
 import net.kdt.pojavlaunch.LauncherActivity;
 import net.kdt.pojavlaunch.PojavApplication;
 import net.kdt.pojavlaunch.Tools;
-import net.kdt.pojavlaunch.progresskeeper.ProgressKeeper;
 import net.kdt.pojavlaunch.tasks.DataMigrator;
 
 import org.apache.commons.io.FileUtils;
@@ -45,10 +46,7 @@ public class LauncherPreferenceMiscellaneousFragment extends LauncherPreferenceF
         addPreferencesFromResource(R.xml.pref_misc);
         Preference importPreference = requirePreference("runDataMigration");
         importPreference.setOnPreferenceClickListener(preference -> {
-            if(ProgressKeeper.getTaskCount() > 0) {
-                Toast.makeText(getContext(), R.string.tasks_ongoing, Toast.LENGTH_SHORT).show();
-                return true;
-            }
+            if(!ProgressLayout.ensureNoOngoingTasks(getContext())) return true;
             mMigrateLauncher.launch(null);
             return true;
         });
@@ -82,10 +80,7 @@ public class LauncherPreferenceMiscellaneousFragment extends LauncherPreferenceF
     private void setupCacheClearPreference() {
         Preference clearPreference = requirePreference("clearMetadataCache");
         clearPreference.setOnPreferenceClickListener(preference -> {
-            if(ProgressKeeper.getTaskCount() > 0) {
-                Toast.makeText(getContext(), R.string.tasks_ongoing, Toast.LENGTH_SHORT).show();
-                return true;
-            }
+            if(!ProgressLayout.ensureNoOngoingTasks(getContext())) return true;
             PojavApplication.sExecutorService.submit(() -> {
                 try {
                     FileUtils.deleteDirectory(new File(Tools.DIR_CACHE, "string_cache"));

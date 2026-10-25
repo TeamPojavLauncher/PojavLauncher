@@ -129,7 +129,7 @@ public class GameActivity extends BaseActivity implements ControlButtonMenuListe
         }
         mGameRenderer = new GameRenderer(instance.getLaunchRenderer());
 
-        if(GpuUtils.getGlInfo().isAdreno() && !PREF_ZINK_PREFER_SYSTEM_DRIVER) {
+        if(!PREF_ZINK_PREFER_SYSTEM_DRIVER) {
             mGameRenderer.overrideVulkanDriver();
         }
 
@@ -414,7 +414,7 @@ public class GameActivity extends BaseActivity implements ControlButtonMenuListe
 
     private void runCraft(String versionId, File[] classpath) throws Throwable {
         Logger.appendToLog("--------- Starting game with Launcher Debug!");
-        Tools.printLauncherInfo(versionId, instance.getLaunchArgs(), mGameRenderer.getCurrentRenderer(), this);
+        Tools.printLauncherInfo(versionId, instance.getLaunchArgs(), mGameRenderer.getCurrentRenderer(), instance.selectedRuntime, this);
         JREUtils.redirectAndPrintJRELog();
 
         // Show Angelica + SFPEW notice

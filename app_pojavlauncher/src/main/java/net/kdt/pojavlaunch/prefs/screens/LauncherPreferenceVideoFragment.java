@@ -6,14 +6,18 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.SwitchPreference;
 import androidx.preference.SwitchPreferenceCompat;
 
+import net.kdt.pojavlaunch.Architecture;
+import net.kdt.pojavlaunch.BuildConfig;
 import net.kdt.pojavlaunch.R;
 
-import net.kdt.pojavlaunch.Architecture;
+import net.kdt.pojavlaunch.contracts.OpenDocumentWithExtension;
 import net.kdt.pojavlaunch.mobileglues.MainActivity;
 import net.kdt.pojavlaunch.game.renderer.RendererCache;
 import net.kdt.pojavlaunch.game.renderer.extra.GLESProvider;
@@ -21,12 +25,23 @@ import net.kdt.pojavlaunch.prefs.CustomSeekBarPreference;
 import net.kdt.pojavlaunch.prefs.LauncherPreferences;
 import net.kdt.pojavlaunch.game.renderer.GameRenderer;
 import net.kdt.pojavlaunch.utils.GpuUtils;
+import net.kdt.pojavlaunch.vulkan.DriverInstaller;
+import net.kdt.pojavlaunch.vulkan.DriverManager;
+import net.kdt.pojavlaunch.vulkan.driver.BuiltinDriver;
+import net.kdt.pojavlaunch.vulkan.driver.Driver;
+import net.kdt.pojavlaunch.vulkan.ui.DriverConfigDialog;
 
 /**
  * Fragment for any settings video related
  */
 public class LauncherPreferenceVideoFragment extends LauncherPreferenceFragment {
     private Boolean hasAngle = null;
+
+    private DriverConfigDialog mDialogScreen;
+    private final ActivityResultLauncher<Object> mInstallDriver =
+            registerForActivityResult(new OpenDocumentWithExtension("zip"), data -> {
+                if(data != null) DriverInstaller.installDriverFromUri(getContext(), data, this::openDriverDialog);
+            });
     @Override
     public void onCreatePreferences(Bundle b, String str) {
         addPreferencesFromResource(R.xml.pref_video);
@@ -52,15 +67,11 @@ public class LauncherPreferenceVideoFragment extends LauncherPreferenceFragment 
         requirePreference("alternate_surface", SwitchPreferenceCompat.class).setChecked(LauncherPreferences.PREF_USE_ALTERNATE_SURFACE);
         requirePreference("force_vsync", SwitchPreferenceCompat.class).setChecked(LauncherPreferences.PREF_FORCE_VSYNC);
 
-        Preference driverPreference = requirePreference("zinkPreferSystemDriver");
-        PackageManager packageManager = driverPreference.getContext().getPackageManager();
-        boolean supportsTurnip = GpuUtils.checkVulkanSupport(packageManager) && GpuUtils.getGlInfo().isAdreno();
-        driverPreference.setVisible(supportsTurnip);
-
         // Show ANGLE switch only if AnglePlugin is available
         if(hasAngle == null) {
             hasAngle = new GLESProvider.ExternalAngleProvider(requireContext()).supported();
         }
+
         SwitchPreferenceCompat angleSwitch = requirePreference("use_angle", SwitchPreferenceCompat.class);
         SwitchPreferenceCompat systemAngleSwitch = requirePreference("use_system_angle", SwitchPreferenceCompat.class);
         angleSwitch.setVisible(hasAngle);
@@ -87,6 +98,18 @@ public class LauncherPreferenceVideoFragment extends LauncherPreferenceFragment 
             return true;
         });
 
+        Preference drivers = requirePreference("manageDrivers");
+        drivers.setOnPreferenceClickListener(pref -> {
+            openDriverDialog();
+            return true;
+        });
+        SwitchPreferenceCompat customVk = requirePreference("zinkPreferSystemDriver", SwitchPreferenceCompat.class);
+        boolean gplay = BuildConfig.BUILD_TYPE.equals("gplay");
+        boolean isAdreno = GpuUtils.getGlInfo().isAdreno();
+        boolean hasSupport = DriverManager.isSupportedByDevice();
+        customVk.setVisible(hasSupport && (!gplay || isAdreno));
+        customVk.setChecked(LauncherPreferences.PREF_ZINK_PREFER_SYSTEM_DRIVER);
+
         computeVisibility();
     }
 
@@ -111,5 +134,31 @@ public class LauncherPreferenceVideoFragment extends LauncherPreferenceFragment 
        String currentRenderer = LauncherPreferences.DEFAULT_PREF.getString("renderer", "opengles2");
        boolean isMobileGluesRenderer = "opengles_mobileglues".equals(currentRenderer);
        requirePreference("renderer_settings", Preference.class).setVisible(isMobileGluesRenderer);
+        updateDriversPref();
+    }
+
+    private void openDriverDialog(){
+        if(mDialogScreen == null) {
+            mDialogScreen = new DriverConfigDialog();
+            mDialogScreen.prepare(getContext(), mInstallDriver);
+            mDialogScreen.onDismiss(this::updateDriversPref);
+        }
+        mDialogScreen.show();
+    }
+    private void updateDriversPref(){
+
+        Preference preference = requirePreference("manageDrivers");
+        boolean hasSupport = DriverManager.isSupportedByDevice();
+        boolean gplay = BuildConfig.BUILD_TYPE.equals("gplay");
+        if(LauncherPreferences.PREF_ZINK_PREFER_SYSTEM_DRIVER || gplay || !hasSupport){
+            preference.setVisible(false);
+            return;
+        }
+        Driver driver = DriverManager.getPreferredDriver();
+        if(driver instanceof BuiltinDriver)
+            preference.setSummary(BuiltinDriver.deviceHasDriver() ? R.string.driver_default_name : R.string.driver_config_pref_subtitle);
+        else
+            preference.setSummary(driver.getName());
+        preference.setVisible(true);
     }
 }

@@ -14,7 +14,6 @@ public class InGameEventProcessor extends TouchEventProcessor {
     private final Handler mGestureHandler = new Handler(Looper.getMainLooper());
     private final double mSensitivity;
     private boolean mEventTransitioned = true;
-    private final PointerTracker mTracker = new PointerTracker();
     private final LeftClickGesture mLeftClickGesture = new LeftClickGesture(mGestureHandler);
     private final RightClickGesture mRightClickGesture = new RightClickGesture(mGestureHandler);
 
@@ -52,7 +51,8 @@ public class InGameEventProcessor extends TouchEventProcessor {
     }
 
     @Override
-    public void cancelPendingActions() {
+    public void prepareForSwitching() {
+        super.prepareForSwitching();
         cancelGestures(true);
     }
 

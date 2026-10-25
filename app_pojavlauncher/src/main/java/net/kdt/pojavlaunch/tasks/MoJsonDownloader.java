@@ -463,6 +463,8 @@ public class MoJsonDownloader extends Downloader {
 
         if(hashed) preCreateAssetDirs(basePath);
 
+        Set<String> hashedAssets = new HashSet<>((int) Math.ceil(assetObjects.size() / 0.75f) + 1);
+
         for(Map.Entry<String, JAssetInfo> asset : assetObjects) {
             JAssetInfo assetInfo = asset.getValue();
             if(assetInfo == null) {
@@ -477,13 +479,14 @@ public class MoJsonDownloader extends Downloader {
 
             File targetFile = hashed ? new File(basePath, hashedPath) : new File(basePath, asset.getKey());
 
-            scheduleDownload(targetFile,
+            if(!hashed || hashedAssets.add(assetInfo.hash)) scheduleDownload(targetFile,
                     !hashed,
                     DownloadMirror.DOWNLOAD_CLASS_ASSETS,
                     MC_RES + hashedPath,
                     assetInfo.hash,
                     assetInfo.size);
         }
+        hashedAssets.clear();
     }
 
     private void scheduleLoggingAssetDownloadIfNeeded(JVersionList.LoggingConfig loggingConfig) throws PresentableException {

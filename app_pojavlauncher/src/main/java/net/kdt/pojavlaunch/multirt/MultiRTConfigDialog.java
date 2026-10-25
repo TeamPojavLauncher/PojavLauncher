@@ -1,59 +1,29 @@
 package net.kdt.pojavlaunch.multirt;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.widget.Button;
 
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import net.kdt.pojavlaunch.R;
+import net.kdt.pojavlaunch.dialogs.PackageSelector;
+import net.kdt.pojavlaunch.dialogs.PackageAdapter;
 
-public class MultiRTConfigDialog {
-    private AlertDialog mDialog;
-    private RecyclerView mDialogView;
-    private RTRecyclerViewAdapter mAdapter;
-
-    /** Show the dialog, refreshes the adapter data before showing it */
+public class MultiRTConfigDialog extends PackageSelector {
     public void show(){
         refresh();
         mDialog.show();
     }
-
     @SuppressLint("NotifyDataSetChanged") //only used to completely refresh the list, it is necessary
     public void refresh() {
         RecyclerView.Adapter<?> adapter = mDialogView.getAdapter();
         if(adapter != null) adapter.notifyDataSetChanged();
     }
-
-    /** Build the dialog behavior and style */
-    public void prepare(Context activity, ActivityResultLauncher<Object> installJvmLauncher) {
-        mDialogView = new RecyclerView(activity);
-        mDialogView.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false));
-        mAdapter = new RTRecyclerViewAdapter();
-        if(activity instanceof Activity) {
-            mAdapter.setActivity((Activity) activity);
-        }
-        mDialogView.setAdapter(mAdapter);
-
-        mDialog = new AlertDialog.Builder(activity)
-                .setTitle(R.string.multirt_config_title)
-                .setView(mDialogView)
-                .setPositiveButton(R.string.multirt_config_add, (dialog, which) -> installJvmLauncher.launch(null))
-                .setNeutralButton(R.string.multirt_delete_runtime, null)
-                .create();
-
-        // Custom button behavior without dismiss
-        mDialog.setOnShowListener(dialog -> {
-            Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_NEUTRAL);
-            button.setOnClickListener(view -> {
-                boolean isEditing = !mAdapter.getIsEditing();
-                mAdapter.setIsEditing(isEditing);
-                button.setText(isEditing ? R.string.multirt_config_setdefault : R.string.multirt_delete_runtime);
-            });
-        });
-    }
+    protected int getTitleRes() { return R.string.multirt_config_title; }
+    protected int getPositiveButtonText() { return R.string.multirt_config_add; }
+    protected int getNeutralButtonText() { return R.string.multirt_delete_runtime; }
+    protected int getEditingButtonLabel() { return R.string.multirt_config_setdefault; }
+    protected PackageAdapter<?> createAdapter(Context context, PackageSelector dialog) { return new RTRecyclerViewAdapter(dialog); }
+    protected void onPositive(Context context, ActivityResultLauncher<Object> launcher) { launcher.launch(null); }
 }

@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.kdt.mcgui.ProgressLayout;
 import com.kdt.mcgui.mcVersionSpinner;
 
 import net.kdt.pojavlaunch.CustomControlsActivity;
@@ -127,8 +128,7 @@ public class MainMenuFragment extends Fragment {
     }
 
     private void runInstallerWithConfirmation() {
-        if (ProgressKeeper.getTaskCount() == 0) {
-            mModInstallerLauncher.launch(null);
-        } else Toast.makeText(requireContext(), R.string.tasks_ongoing, Toast.LENGTH_LONG).show();
+        if(!ProgressLayout.ensureNoOngoingTasks(requireContext())) return;
+        mModInstallerLauncher.launch(null);
     }
 }

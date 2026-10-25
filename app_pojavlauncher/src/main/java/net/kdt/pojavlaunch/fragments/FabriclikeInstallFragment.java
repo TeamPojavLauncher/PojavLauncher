@@ -12,11 +12,12 @@ import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.kdt.mcgui.ProgressLayout;
 
 import net.kdt.pojavlaunch.PojavApplication;
 import net.kdt.pojavlaunch.R;
@@ -96,10 +97,7 @@ public abstract class FabriclikeInstallFragment extends Fragment implements Modl
     }
 
     private void onClickStart(View v) {
-        if(ProgressKeeper.hasOngoingTasks()) {
-            Toast.makeText(v.getContext(), R.string.tasks_ongoing, Toast.LENGTH_LONG).show();
-            return;
-        }
+        if(!ProgressLayout.ensureNoOngoingTasks(getContext())) return;
         ModloaderListenerProxy proxy = new ModloaderListenerProxy();
         proxy.attachListener(this);
         setListenerProxy(proxy);

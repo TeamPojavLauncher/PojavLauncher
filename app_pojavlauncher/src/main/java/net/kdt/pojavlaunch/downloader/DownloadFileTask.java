@@ -2,6 +2,7 @@ package net.kdt.pojavlaunch.downloader;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InterruptedIOException;
 
 import net.kdt.pojavlaunch.utils.HashUtils;
 
@@ -61,7 +62,9 @@ public class DownloadFileTask extends DownloaderTask implements BytesCopiedListe
                 rangeAllowed = mDownloader.tryContinueDownload(mPartFile, mMetadata.size, mMetadata.url, this);
                 if(!rangeAllowed) performRetry(attempt, false);
             }
-        }catch (IOException e) {
+        }catch (InterruptedIOException e) {
+            throw e;
+        } catch (IOException e) {
             if(attempt == 5) throw e;
             performRetry(attempt, rangeAllowed);
         }
