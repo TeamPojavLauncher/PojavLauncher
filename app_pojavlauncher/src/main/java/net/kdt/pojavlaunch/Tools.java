@@ -184,7 +184,7 @@ public final class Tools {
      */
     public static void initStorageConstants(Context ctx){
         initEarlyConstants(ctx);
-        File appStorageRoot = getAppStorageRoot(ctx);
+        File appStorageRoot = getPojavStorageRoot(ctx);
         if(appStorageRoot == null) throw new RuntimeException("Whoops! You have to put the SD into your phone.");
         DIR_GAME_HOME = appStorageRoot.getAbsolutePath();
         DIR_GAME_NEW = DIR_GAME_HOME + "/.minecraft";

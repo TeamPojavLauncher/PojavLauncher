@@ -1,6 +1,6 @@
 package net.kdt.pojavlaunch.vulkan;
 
-import static net.kdt.pojavlaunch.MojoApplication.sExecutorService;
+import static net.kdt.pojavlaunch.PojavApplication.sExecutorService;
 import static net.kdt.pojavlaunch.Tools.runOnUiThread;
 
 import android.content.Context;

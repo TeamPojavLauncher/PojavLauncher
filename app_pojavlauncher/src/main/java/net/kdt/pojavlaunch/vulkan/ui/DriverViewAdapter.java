@@ -1,7 +1,7 @@
 package net.kdt.pojavlaunch.vulkan.ui;
 
 
-import static net.kdt.pojavlaunch.MojoApplication.sExecutorService;
+import static net.kdt.pojavlaunch.PojavApplication.sExecutorService;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;

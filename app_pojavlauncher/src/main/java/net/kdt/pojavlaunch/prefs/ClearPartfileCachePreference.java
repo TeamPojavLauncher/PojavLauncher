@@ -12,7 +12,7 @@ import com.kdt.mcgui.ProgressLayout;
 import java.io.IOException;
 import java.util.concurrent.Future;
 
-import net.kdt.pojavlaunch.MojoApplication;
+import net.kdt.pojavlaunch.PojavApplication;
 import net.kdt.pojavlaunch.R;
 import net.kdt.pojavlaunch.Tools;
 import net.kdt.pojavlaunch.downloader.Downloader;
@@ -26,7 +26,7 @@ public class ClearPartfileCachePreference extends Preference {
     public ClearPartfileCachePreference(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         setSummary(R.string.pref_clean_partfiles_subtitle_wait);
-        mSizeCalcFuture = MojoApplication.sExecutorService.submit(this::calculateSizeBackground);
+        mSizeCalcFuture = PojavApplication.sExecutorService.submit(this::calculateSizeBackground);
     }
 
 
@@ -58,6 +58,6 @@ public class ClearPartfileCachePreference extends Preference {
     @Override
     protected void onClick() {
         if(!ProgressLayout.ensureNoOngoingTasks(getContext())) return;
-        MojoApplication.sExecutorService.execute(this::clearCacheBackground);
+        PojavApplication.sExecutorService.execute(this::clearCacheBackground);
     }
 }

@@ -48,7 +48,7 @@
             android:icon="@drawable/ic_mat_clear_cache"
             android:title="@string/preference_metadata_clear"
             android:summary="@string/preference_metadata_clear_summary" />
-        <git.artdeell.mojo.prefs.ClearPartfileCachePreference
+        <net.kdt.pojavlaunch.prefs.ClearPartfileCachePreference
             android:title="@string/pref_clean_partfiles_title"/>
         <SwitchPreferenceCompat
             android:defaultValue="true"
