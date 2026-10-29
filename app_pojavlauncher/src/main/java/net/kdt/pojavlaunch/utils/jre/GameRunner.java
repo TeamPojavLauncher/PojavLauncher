@@ -2,6 +2,7 @@ package net.kdt.pojavlaunch.utils.jre;
 
 import static net.kdt.pojavlaunch.prefs.LauncherPreferences.PREF_ZINK_PREFER_SYSTEM_DRIVER;
 
+import android.content.Context;
 import android.util.ArrayMap;
 import android.content.Context;
 import android.util.Log;
@@ -12,11 +13,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import net.kdt.pojavlaunch.Architecture;
 import net.kdt.pojavlaunch.JVersionList;
+import net.kdt.pojavlaunch.Logger;
 import net.kdt.pojavlaunch.Tools;
 import net.kdt.pojavlaunch.authenticator.accounts.Account;
 import net.kdt.pojavlaunch.game.renderer.def.Renderers;
 import net.kdt.pojavlaunch.game.renderer.impl.GLESRenderSpec;
 import net.kdt.pojavlaunch.instances.Instance;
+import net.kdt.pojavlaunch.utils.DownloadUtils;
 import net.kdt.pojavlaunch.lifecycle.LifecycleAwareAlertDialog;
 import net.kdt.pojavlaunch.multirt.MultiRTUtils;
 import net.kdt.pojavlaunch.multirt.Runtime;
@@ -178,6 +181,8 @@ public class GameRunner {
 
     public static void launchGame(final AppCompatActivity activity, Account account,
                                   Instance instance, String versionId, File[] classpath, GameRenderer gameRenderer) throws Throwable {
+        if(!performAuthPing(activity, account)) account = account.toLocal();
+
         int freeDeviceMemory = Tools.getFreeDeviceMemory(activity);
         int localeString;
         int freeAddressSpace = Architecture.is32BitsDevice() ? Tools.getMaxContinuousAddressSpaceSize() : -1;
@@ -376,6 +381,16 @@ public class GameRunner {
         } else {
             Log.w(Tools.APP_NAME, "Failed to create the configuration directory");
         }
+    }
+
+    private static boolean performAuthPing(Context context, Account account) {
+        String injectorUrl = account.authType.injectorUrl;
+        if(injectorUrl == null) return true;
+        Logger.appendToLog("Pinging authentication service...");
+        if(DownloadUtils.pingInjectorUrl(injectorUrl)) return true;
+        Logger.appendToLog("Authentication service did not respond, disabling");
+        Tools.runOnUiThread(()-> Toast.makeText(context, context.getString(R.string.warn_auth_type_missing, injectorUrl), Toast.LENGTH_SHORT).show());
+        return false;
     }
 
     private static void addAuthlibInjectorArgs(List<String> javaArgList, Account account) {
