@@ -28,6 +28,8 @@ public class Instance extends DisplayInstance {
     public String selectedRuntime;
     public String controlLayout;
     public boolean sharedData;
+    /** Per-instance ANGLE override. null means "follow the global ANGLE preferences" */
+    public Boolean useAngle;
 
     protected Instance() {
     }
@@ -89,6 +91,25 @@ public class Instance extends DisplayInstance {
     public String getLaunchRenderer() {
         if(Tools.isValidString(renderer)) return renderer;
         return LauncherPreferences.PREF_RENDERER;
+    }
+
+    /**
+     * Whether ANGLE should be used as the OpenGL ES driver for this instance.
+     * Follows the global launcher preferences unless the instance overrides them.
+     * @return true if ANGLE is requested for this instance
+     */
+    public boolean shouldUseAngle() {
+        if(useAngle != null) return useAngle;
+        return LauncherPreferences.PREF_USE_ANGLE || LauncherPreferences.PREF_USE_SYSTEM_ANGLE;
+    }
+
+    /**
+     * Whether the system ANGLE should be preferred over the external one for this instance.
+     * Only applies if ANGLE is requested for this instance at all.
+     * @return true if system ANGLE is requested for this instance
+     */
+    public boolean shouldUseSystemAngle() {
+        return shouldUseAngle() && LauncherPreferences.PREF_USE_SYSTEM_ANGLE;
     }
 
     public String getLaunchArgs() {

@@ -29,7 +29,10 @@ public abstract class GLESRenderSpec implements RenderSpec {
     private boolean nsBypass = false;
     protected abstract int glesVersion();
     public void setupEnvironment(Context context, Map<String, String> envMap) {
-        GLESProvider provider = GLESProvider.getGlesProvider(context, LauncherPreferences.PREF_USE_ANGLE, LauncherPreferences.PREF_USE_SYSTEM_ANGLE);
+        Instance instance = Instances.loadSelectedInstance();
+        boolean preferAngle = instance != null ? instance.shouldUseAngle() : LauncherPreferences.PREF_USE_ANGLE;
+        boolean preferSystemAngle = instance != null ? instance.shouldUseSystemAngle() : LauncherPreferences.PREF_USE_SYSTEM_ANGLE;
+        GLESProvider provider = GLESProvider.getGlesProvider(context, preferAngle, preferSystemAngle);
         Log.i("GLESRenderSpec", "Using GLESProvider: " + provider.type());
         provider.setEnvironment(envMap);
         this.nsBypass = provider.requiresNamespace();
