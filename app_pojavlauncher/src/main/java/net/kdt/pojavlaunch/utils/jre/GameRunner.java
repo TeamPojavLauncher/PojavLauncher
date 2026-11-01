@@ -122,8 +122,8 @@ public class GameRunner {
      * @return whether the GPU is affected by the Large Thin Wrapper render distance issue on vanilla
      */
 
-    private static boolean affectedByRenderDistanceIssue(JVersionList.Version version) throws ParseException {
-        if(LauncherPreferences.PREF_USE_ANGLE || LauncherPreferences.PREF_USE_SYSTEM_ANGLE) return false;
+    private static boolean affectedByRenderDistanceIssue(JVersionList.Version version, Instance instance) throws ParseException {
+        if(instance.shouldUseAngle()) return false;
         GpuUtils.GLInfo info = GpuUtils.getGlInfo();
         return info.isAdreno() &&
                 info.glesMajorVersion >= 3 &&
@@ -131,8 +131,8 @@ public class GameRunner {
                 DateUtils.dateBefore(DateUtils.getOriginalReleaseDate(version), 2025, 2, 25);
     }
 
-    private static boolean checkRenderDistance(JVersionList.Version version, File gamedir) throws ParseException {
-        if(!affectedByRenderDistanceIssue(version)) return false;
+    private static boolean checkRenderDistance(JVersionList.Version version, File gamedir, Instance instance) throws ParseException {
+        if(!affectedByRenderDistanceIssue(version, instance)) return false;
         if(hasSodium(gamedir)) return false;
         try {
             MCOptionUtils.load();
@@ -247,7 +247,7 @@ public class GameRunner {
 
         boolean isLtw = renderer instanceof GLESRenderSpec.LTWRenderSpec;
 
-        if(isLtw && checkRenderDistance(versionInfo, gamedir)) {
+        if(isLtw && checkRenderDistance(versionInfo, gamedir, instance)) {
             if(showDialog(activity, R.string.ltw_render_distance_warning_msg)) return;
             // If the code goes here, it means that the user clicked "OK". Fix the render distance.
             try {
