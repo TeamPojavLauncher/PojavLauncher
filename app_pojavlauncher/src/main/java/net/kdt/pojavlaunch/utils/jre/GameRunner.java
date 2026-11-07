@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import net.kdt.pojavlaunch.Architecture;
 import net.kdt.pojavlaunch.JVersionList;
 import net.kdt.pojavlaunch.Logger;
+import net.kdt.pojavlaunch.utils.maven.MavenName;
+import net.kdt.pojavlaunch.value.DependentLibrary;
 import net.kdt.pojavlaunch.Tools;
 import net.kdt.pojavlaunch.authenticator.accounts.Account;
 import net.kdt.pojavlaunch.game.renderer.def.Renderers;
@@ -122,8 +124,8 @@ public class GameRunner {
      * @return whether the GPU is affected by the Large Thin Wrapper render distance issue on vanilla
      */
 
-    private static boolean affectedByRenderDistanceIssue(JVersionList.Version version) throws ParseException {
-        if(LauncherPreferences.PREF_USE_ANGLE || LauncherPreferences.PREF_USE_SYSTEM_ANGLE) return false;
+    private static boolean affectedByRenderDistanceIssue(JVersionList.Version version, Instance instance) throws ParseException {
+        if(instance.shouldUseAngle()) return false;
         GpuUtils.GLInfo info = GpuUtils.getGlInfo();
         return info.isAdreno() &&
                 info.glesMajorVersion >= 3 &&
@@ -131,8 +133,8 @@ public class GameRunner {
                 DateUtils.dateBefore(DateUtils.getOriginalReleaseDate(version), 2025, 2, 25);
     }
 
-    private static boolean checkRenderDistance(JVersionList.Version version, File gamedir) throws ParseException {
-        if(!affectedByRenderDistanceIssue(version)) return false;
+    private static boolean checkRenderDistance(JVersionList.Version version, File gamedir, Instance instance) throws ParseException {
+        if(!affectedByRenderDistanceIssue(version, instance)) return false;
         if(hasSodium(gamedir)) return false;
         try {
             MCOptionUtils.load();
@@ -220,6 +222,9 @@ public class GameRunner {
         File gamedir = instance.getGameDirectory();
         JVersionList.Version versionInfo = Tools.getVersionInfo(versionId);
         // We don't need the library list, the asset index, client download info for the code below
+        // Needed for MioLibPatcher flags, read before the library list is dropped
+        final boolean usesLwjgl2 = isLwjgl2(versionInfo.libraries);
+        final String[] asmVersion = findAsmVersion(versionInfo.libraries);
         versionInfo.libraries = null;
         versionInfo.downloads = null;
 
@@ -247,7 +252,7 @@ public class GameRunner {
 
         boolean isLtw = renderer instanceof GLESRenderSpec.LTWRenderSpec;
 
-        if(isLtw && checkRenderDistance(versionInfo, gamedir)) {
+        if(isLtw && checkRenderDistance(versionInfo, gamedir, instance)) {
             if(showDialog(activity, R.string.ltw_render_distance_warning_msg)) return;
             // If the code goes here, it means that the user clicked "OK". Fix the render distance.
             try {
@@ -314,6 +319,7 @@ public class GameRunner {
         FileUtils.ensureDirectory(lwjglExtractDir);
         javaArgList.add("-Dorg.lwjgl.system.SharedLibraryExtractPath="+lwjglExtractDir.getAbsolutePath());
 
+        addMioLibPatcherArgs(javaArgList, usesLwjgl2, asmVersion);
         addAuthlibInjectorArgs(javaArgList, account);
         addNoBlocklistArgs(javaArgList);
 
@@ -397,6 +403,64 @@ public class GameRunner {
         String injectorUrl = account.authType.injectorUrl;
         if(injectorUrl == null) return;
         javaArgList.add("-javaagent:"+Tools.DIR_DATA+"/authlib-injector/authlib-injector.jar="+injectorUrl);
+    }
+
+    private static void addMioLibPatcherArgs(List<String> javaArgList, boolean usesLwjgl2, String[] asmVersion) {
+        // Adds/changes methods for compatibility
+        // FIXME: May fail if not the first agent
+        javaArgList.add("-javaagent:" + new File(Tools.DIR_DATA, "MioLibPatcher/MioLibPatcher.jar").getAbsolutePath());
+        // Only needed for lwjglx
+        if (usesLwjgl2) javaArgList.add("-Dmiolibpatcher.alc10=true");
+
+        if (asmVersion != null && asmVersion.length >= 3) {
+            // Some mods (AE1) break with asm-all 5.0.4, no forge version ever used 5.0.4, only 5.0.3
+            // If any other buggy mods come up, let's enable it for them too.
+            if (parseVersionPart(asmVersion[0]) == 5 &&
+                    parseVersionPart(asmVersion[1]) == 0 &&
+                    parseVersionPart(asmVersion[2]) == 4) {
+                javaArgList.add("-Dmiolibpatcher.asmBackport=true");
+            }
+        }
+    }
+
+    private static boolean isLwjgl2(DependentLibrary[] libraries) {
+        if (libraries == null) return false;
+        for (DependentLibrary library : libraries) {
+            MavenName name = library.name;
+            if (name == null || name.version == null || !"lwjgl".equals(name.module)) continue;
+            if (!"org.lwjgl.lwjgl".equals(name.provider) && !"org.lwjgl".equals(name.provider)) continue;
+            // The first LWJGL core library decides the major version
+            return parseVersionPart(name.version.split("\\.")[0]) == 2;
+        }
+        return false;
+    }
+
+    private static String[] findAsmVersion(DependentLibrary[] libraries) {
+        if (libraries == null) return null;
+        String[] asmVersion = null;
+        for (DependentLibrary library : libraries) {
+            MavenName name = library.name;
+            if (name == null || name.version == null || !"org.ow2.asm".equals(name.provider)) continue;
+            // asm-all takes priority, any other asm artifact is used only if nothing was found yet
+            if ("asm-all".equals(name.module)) {
+                asmVersion = name.version.split("\\.");
+            } else if (asmVersion == null && name.module.startsWith("asm")) {
+                asmVersion = name.version.split("\\.");
+            }
+        }
+        return asmVersion;
+    }
+
+    private static int parseVersionPart(String part) {
+        int value = 0;
+        boolean hasDigit = false;
+        for (int i = 0; i < part.length(); i++) {
+            char c = part.charAt(i);
+            if (c < '0' || c > '9') break;
+            value = value * 10 + (c - '0');
+            hasDigit = true;
+        }
+        return hasDigit ? value : -1;
     }
 
     private static void addNoBlocklistArgs(List<String> javaArgList) {

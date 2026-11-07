@@ -19,6 +19,7 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
 import net.kdt.pojavlaunch.R;
@@ -26,9 +27,11 @@ import net.kdt.pojavlaunch.Tools;
 import net.kdt.pojavlaunch.extra.ExtraConstants;
 import net.kdt.pojavlaunch.extra.ExtraCore;
 import net.kdt.pojavlaunch.game.renderer.RendererCache;
+import net.kdt.pojavlaunch.game.renderer.extra.GLESProvider;
 import net.kdt.pojavlaunch.instances.Instance;
 import net.kdt.pojavlaunch.instances.Instances;
 import net.kdt.pojavlaunch.multirt.MultiRTUtils;
+import net.kdt.pojavlaunch.prefs.LauncherPreferences;
 import net.kdt.pojavlaunch.multirt.RTSpinnerAdapter;
 import net.kdt.pojavlaunch.multirt.Runtime;
 import net.kdt.pojavlaunch.instances.InstanceIconProvider;
@@ -52,6 +55,8 @@ public class InstanceEditorFragment extends Fragment implements CropperUtils.Cro
     private TextView mDefaultVersion, mDefaultControl;
     private ImageView mInstanceIcon;
     private CheckBox mSharedDataCheckbox;
+    private SwitchCompat mUseAngleSwitch;
+    private View mUseAngleRow;
     private int mRecommendedIconSize;
     private final ActivityResultLauncher<?> mCropperLauncher = CropperUtils.registerCropper(this, this);
 
@@ -118,6 +123,8 @@ public class InstanceEditorFragment extends Fragment implements CropperUtils.Cro
             mSharedDataCheckbox.setText(text);
         });
 
+        view.findViewById(R.id.vprof_editor_instance_angle_label).setOnClickListener(v -> mUseAngleSwitch.toggle());
+
         Instance selectedInstance = Instances.loadSelectedInstance();
         Context context = view.getContext();
         if(selectedInstance == null) {
@@ -176,6 +183,22 @@ public class InstanceEditorFragment extends Fragment implements CropperUtils.Cro
         mDefaultName.setText(nullToEmpty(instance.name));
         mDefaultControl.setText(mSelectedControlLayout == null ? nullToEmpty(instance.controlLayout) : mSelectedControlLayout);
         mSharedDataCheckbox.setChecked(instance.sharedData);
+
+        // Show the ANGLE switch only if ANGLE can actually be used (plugin installed, or system ANGLE enabled globally).
+        // It is independent from the global ANGLE setting and starts out disabled.
+        boolean angleAvailable = LauncherPreferences.PREF_USE_SYSTEM_ANGLE
+                || new GLESProvider.ExternalAngleProvider(context).supported();
+        mUseAngleRow.setVisibility(angleAvailable ? View.VISIBLE : View.GONE);
+        // The listener is attached after the initial state is set, so loading the values does not store an override
+        mUseAngleSwitch.setOnCheckedChangeListener(null);
+        mUseAngleSwitch.setChecked(instance.shouldUseAngle());
+        mUseAngleSwitch.setOnCheckedChangeListener((button, checked) -> onAngleToggled(button.getContext(), checked));
+    }
+
+    private void onAngleToggled(Context context, boolean checked) {
+        mInstance.useAngle = checked;
+        int message = checked ? R.string.instance_angle_enabled : R.string.instance_angle_disabled;
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
     private void bindViews(@NonNull View view){
@@ -193,6 +216,8 @@ public class InstanceEditorFragment extends Fragment implements CropperUtils.Cro
         mVersionSelectButton = view.findViewById(R.id.vprof_editor_version_button);
         mInstanceIcon = view.findViewById(R.id.vprof_editor_instance_icon);
         mSharedDataCheckbox = view.findViewById(R.id.vprof_editor_data_checkbox_container);
+        mUseAngleRow = view.findViewById(R.id.vprof_editor_instance_angle_row);
+        mUseAngleSwitch = view.findViewById(R.id.vprof_editor_instance_angle);
     }
 
     private void save(){
