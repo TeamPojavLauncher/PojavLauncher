@@ -243,13 +243,29 @@
                 app:layout_constraintEnd_toEndOf="@id/vprof_editor_instance_renderer"
                 app:layout_constraintTop_toTopOf="@id/vprof_editor_instance_renderer" />
 
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/vprof_editor_instance_angle"
+            <LinearLayout
+                android:id="@+id/vprof_editor_instance_angle_row"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:text="@string/instance_use_angle"
-                app:layout_constraintTop_toBottomOf="@+id/vprof_editor_instance_renderer" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@+id/vprof_editor_instance_renderer">
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/vprof_editor_instance_angle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/vprof_editor_instance_angle_label"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="12dp"
+                    android:text="@string/instance_use_angle"
+                    android:textColor="@color/checkbox_text_color" />
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
