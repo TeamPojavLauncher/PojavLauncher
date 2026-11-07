@@ -347,6 +347,7 @@ afterEvaluate {
 
         registrar.projectJarDependency project(":forge_installer"), "components/forge_installer"
         registrar.projectJarDependency project(":NoBlocklist"), "components/noblocklist"
+        registrar.projectJarDependency project(":MioLibPatcher"), "components/MioLibPatcher"
 
 		if (variant.getName().toLowerCase().contains("full")) {
             registrar.jreRuntimeDependency 8, "components/jre"

@@ -19,6 +19,7 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
 import net.kdt.pojavlaunch.R;
@@ -53,7 +54,8 @@ public class InstanceEditorFragment extends Fragment implements CropperUtils.Cro
     private EditText mDefaultName, mDefaultJvmArgument;
     private TextView mDefaultVersion, mDefaultControl;
     private ImageView mInstanceIcon;
-    private CheckBox mSharedDataCheckbox, mUseAngleCheckbox;
+    private CheckBox mSharedDataCheckbox;
+    private SwitchCompat mUseAngleSwitch;
     private int mRecommendedIconSize;
     private final ActivityResultLauncher<?> mCropperLauncher = CropperUtils.registerCropper(this, this);
 
@@ -121,7 +123,7 @@ public class InstanceEditorFragment extends Fragment implements CropperUtils.Cro
         });
 
         // Only a user click stores an override, so untouched instances keep following the global setting
-        mUseAngleCheckbox.setOnClickListener(v -> mInstance.useAngle = mUseAngleCheckbox.isChecked());
+        mUseAngleSwitch.setOnClickListener(v -> mInstance.useAngle = mUseAngleSwitch.isChecked());
 
         Instance selectedInstance = Instances.loadSelectedInstance();
         Context context = view.getContext();
@@ -186,8 +188,8 @@ public class InstanceEditorFragment extends Fragment implements CropperUtils.Cro
         // It starts out with the global ANGLE setting and stays that way until the user overrides it.
         boolean angleAvailable = LauncherPreferences.PREF_USE_SYSTEM_ANGLE
                 || new GLESProvider.ExternalAngleProvider(context).supported();
-        mUseAngleCheckbox.setVisibility(angleAvailable ? View.VISIBLE : View.GONE);
-        mUseAngleCheckbox.setChecked(instance.shouldUseAngle());
+        mUseAngleSwitch.setVisibility(angleAvailable ? View.VISIBLE : View.GONE);
+        mUseAngleSwitch.setChecked(instance.shouldUseAngle());
     }
 
     private void bindViews(@NonNull View view){
@@ -205,7 +207,7 @@ public class InstanceEditorFragment extends Fragment implements CropperUtils.Cro
         mVersionSelectButton = view.findViewById(R.id.vprof_editor_version_button);
         mInstanceIcon = view.findViewById(R.id.vprof_editor_instance_icon);
         mSharedDataCheckbox = view.findViewById(R.id.vprof_editor_data_checkbox_container);
-        mUseAngleCheckbox = view.findViewById(R.id.vprof_editor_instance_angle);
+        mUseAngleSwitch = view.findViewById(R.id.vprof_editor_instance_angle);
     }
 
     private void save(){
