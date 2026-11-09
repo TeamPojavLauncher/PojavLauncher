@@ -1,11 +1,15 @@
 package net.kdt.pojavlaunch.prefs.screens;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
+
+import java.util.List;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.preference.ListPreference;
@@ -25,6 +29,9 @@ import net.kdt.pojavlaunch.prefs.CustomSeekBarPreference;
 import net.kdt.pojavlaunch.prefs.LauncherPreferences;
 import net.kdt.pojavlaunch.game.renderer.GameRenderer;
 import net.kdt.pojavlaunch.utils.GpuUtils;
+import net.kdt.pojavlaunch.utils.MinecraftGraphicsApi;
+import net.kdt.pojavlaunch.utils.VulkanCapabilities;
+import net.kdt.pojavlaunch.utils.VulkanChecker;
 import net.kdt.pojavlaunch.vulkan.DriverInstaller;
 import net.kdt.pojavlaunch.vulkan.DriverManager;
 import net.kdt.pojavlaunch.vulkan.driver.BuiltinDriver;
@@ -98,6 +105,24 @@ public class LauncherPreferenceVideoFragment extends LauncherPreferenceFragment 
             return true;
         });
 
+        ListPreference graphicsApiPreference = requirePreference("minecraft_graphics_api", ListPreference.class);
+        graphicsApiPreference.setEntries(new CharSequence[]{
+                getString(R.string.preference_graphics_api_default),
+                getString(R.string.preference_graphics_api_default_opengl),
+                getString(R.string.preference_graphics_api_opengl),
+                getString(R.string.preference_graphics_api_vulkan)});
+        graphicsApiPreference.setEntryValues(new CharSequence[]{
+                MinecraftGraphicsApi.DEFAULT,
+                MinecraftGraphicsApi.DEFAULT_OPENGL,
+                MinecraftGraphicsApi.OPENGL,
+                MinecraftGraphicsApi.VULKAN});
+        graphicsApiPreference.setValue(LauncherPreferences.PREF_MINECRAFT_GRAPHICS_API);
+
+        requirePreference("vulkan_compat_check", Preference.class).setOnPreferenceClickListener(preference -> {
+            showVulkanCompatibilityResult();
+            return true;
+        });
+
         Preference drivers = requirePreference("manageDrivers");
         drivers.setOnPreferenceClickListener(pref -> {
             openDriverDialog();
@@ -135,6 +160,39 @@ public class LauncherPreferenceVideoFragment extends LauncherPreferenceFragment 
        boolean isMobileGluesRenderer = "opengles_mobileglues".equals(currentRenderer);
        requirePreference("renderer_settings", Preference.class).setVisible(isMobileGluesRenderer);
         updateDriversPref();
+    }
+
+    private void showVulkanCompatibilityResult(){
+        VulkanCapabilities capabilities = VulkanChecker.checkCapabilities();
+        String message;
+        if (capabilities == null) {
+            message = getString(R.string.preference_vulkan_check_unsupported);
+        } else {
+            StringBuilder builder = new StringBuilder(
+                    getString(R.string.preference_vulkan_check_version, capabilities.getVersionString()));
+            if (!capabilities.isVersionSupported()) {
+                builder.append("\n\n").append(getString(R.string.preference_vulkan_check_unsupported));
+            }
+            List<String> missingExtensions = capabilities.getMissingExtensions();
+            if (!missingExtensions.isEmpty()) {
+                builder.append("\n\n").append(getString(R.string.preference_vulkan_check_missing_extensions))
+                        .append("\n").append(TextUtils.join("\n", missingExtensions));
+            }
+            List<String> missingFeatures = capabilities.getMissingFeatures();
+            if (!missingFeatures.isEmpty()) {
+                builder.append("\n\n").append(getString(R.string.preference_vulkan_check_missing_features))
+                        .append("\n").append(TextUtils.join("\n", missingFeatures));
+            }
+            if (capabilities.isAllSupported()) {
+                builder.append("\n\n").append(getString(R.string.preference_vulkan_check_supported));
+            }
+            message = builder.toString();
+        }
+        new AlertDialog.Builder(requireContext())
+                .setTitle(R.string.preference_vulkan_check_title)
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, null)
+                .show();
     }
 
     private void openDriverDialog(){

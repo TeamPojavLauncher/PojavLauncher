@@ -18,6 +18,21 @@
            android:icon="@drawable/ic_mg_renderer"
            />
 
+        <androidx.preference.ListPreference
+            android:key="minecraft_graphics_api"
+            android:title="@string/preference_graphics_api_title"
+            android:summary="@string/preference_graphics_api_summary"
+            android:defaultValue="default"
+            android:icon="@drawable/ic_px_image_renderer"
+            app2:useSimpleSummaryProvider="true"/>
+
+        <Preference
+            android:key="vulkan_compat_check"
+            android:title="@string/preference_vulkan_check_title"
+            android:summary="@string/preference_vulkan_check_summary"
+            android:icon="@drawable/ic_px_volcano"
+            />
+
         <androidx.preference.SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="ignoreNotch"

@@ -596,4 +596,20 @@
     <string name="pref_clean_partfiles_subtitle">Clear partially downloaded game files. %.2f MB of space in use</string>
     <string name="clean_partfiles_wait">Clearing download cache…</string>
     <string name="warn_auth_type_missing">%s is not available, using local account</string>
+
+    <string name="preference_graphics_api_title">Minecraft graphics API</string>
+    <string name="preference_graphics_api_summary">Graphics API used by Minecraft 26.2 and newer</string>
+    <string name="preference_graphics_api_default">Follow game settings</string>
+    <string name="preference_graphics_api_default_opengl">OpenGL on first launch</string>
+    <string name="preference_graphics_api_opengl">Force OpenGL</string>
+    <string name="preference_graphics_api_vulkan">Force Vulkan</string>
+    <string name="preference_vulkan_check_title">Vulkan compatibility check</string>
+    <string name="preference_vulkan_check_summary">Check whether this device can run Minecraft 26.2+ with Vulkan</string>
+    <string name="preference_vulkan_check_supported">This device supports Minecraft 26.2+ with Vulkan.</string>
+    <string name="preference_vulkan_check_unsupported">This device does not meet the requirements for Minecraft 26.2+ with Vulkan.</string>
+    <string name="preference_vulkan_check_version">Vulkan version: %s</string>
+    <string name="preference_vulkan_check_extensions">Required extensions:</string>
+    <string name="preference_vulkan_check_features">Required features:</string>
+    <string name="preference_vulkan_check_missing_extensions">Missing extensions:</string>
+    <string name="preference_vulkan_check_missing_features">Missing features:</string>
 </resources>

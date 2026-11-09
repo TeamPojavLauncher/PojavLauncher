@@ -79,6 +79,7 @@ public class LauncherPreferences {
     public static boolean PREF_UBWC_WORKAROUND = false;
     public static boolean PREF_DISABLE_BLOCKLIST = false;
     public static String PREF_VULKAN_DRIVER = null;
+    public static String PREF_MINECRAFT_GRAPHICS_API = "auto";
 
     public static void loadPreferences(Context ctx) {
         //Required for CTRLDEF_FILE and MultiRT
@@ -130,6 +131,7 @@ public class LauncherPreferences {
         PREF_UBWC_WORKAROUND = DEFAULT_PREF.getBoolean("ubwcWorkaround", false);
         PREF_DISABLE_BLOCKLIST = DEFAULT_PREF.getBoolean("disableServerBlocklist", true);
         PREF_VULKAN_DRIVER = DEFAULT_PREF.getString("customVulkanDriver", null);
+        PREF_MINECRAFT_GRAPHICS_API = DEFAULT_PREF.getString("minecraft_graphics_api", "auto");
 
         String argLwjglLibname = "-Dorg.lwjgl.opengl.libname=";
         for (String arg : JREUtils.parseJavaArguments(PREF_CUSTOM_JAVA_ARGS)) {

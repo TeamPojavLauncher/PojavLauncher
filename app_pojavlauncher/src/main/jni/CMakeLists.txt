@@ -107,3 +107,14 @@ target_link_libraries(mobileglues_info_getter
         ${log-lib}
         dl
 )
+
+# ------ Vulkan checker ------
+
+add_library(vulkan_checker SHARED
+        vulkan_checker.c
+)
+
+target_link_libraries(vulkan_checker
+        log
+        dl
+)
