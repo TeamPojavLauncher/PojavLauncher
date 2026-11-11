@@ -17,7 +17,7 @@ interface WireValue {
 /**
  * 会出现在 Spinner 里的取值。
  *
- * 选项列表直接由枚举生成（见 MainActivity.setupSpinners），因此不存在
+ * 选项列表直接由枚举生成（见 MobileGluesFragment），因此不存在
  * 「选项数量和取值范围对不上」的可能——新增一档只需要在枚举里加一行。
  * 也正因为如此，枚举的 `ordinal` 就是它在 Spinner 中的位置。
  */

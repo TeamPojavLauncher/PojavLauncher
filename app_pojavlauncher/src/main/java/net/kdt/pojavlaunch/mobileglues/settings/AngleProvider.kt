@@ -57,6 +57,25 @@ object AngleProvider {
     )
 
     /**
+     * The ANGLE bundled with this app itself, null when this build doesn't ship it.
+     *
+     * Nothing has to be borrowed from another launcher then, and since the libraries are our own
+     * there is nothing to ask the user to trust either, so callers use it without a prompt.
+     */
+    fun bundled(context: Context): AngleSource? {
+        val info = context.applicationInfo
+        val dir = info.nativeLibraryDir
+        if (!hasAngle(dir)) return null
+        val pm = context.packageManager
+        return AngleSource(
+            packageName = context.packageName,
+            label = runCatching { pm.getApplicationLabel(info).toString() }.getOrNull() ?: context.packageName,
+            versionName = runCatching { pm.getPackageInfo(context.packageName, 0).versionName }.getOrNull(),
+            libraryDir = dir,
+        )
+    }
+
+    /**
      * 装了、并且两个库都齐全可读的启动器。
      *
      * 少一个都不算数：EGL 那个负责建上下文，GLESv2 那个负责画，只有一个的话

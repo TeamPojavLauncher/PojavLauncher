@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <net.kdt.pojavlaunch.prefs.BackButtonPreference />
+
+    <PreferenceCategory android:title="@string/info_section_about">
+        <Preference
+            android:key="mg_about_author"
+            android:title="@string/mg_about_developers"
+            android:summary="@string/info_author"
+            android:icon="@drawable/ic_mat_mg_person"
+            android:persistent="false"
+            android:selectable="false" />
+
+        <Preference
+            android:key="mg_about_license"
+            android:title="@string/mg_about_license"
+            android:summary="@string/info_copyright"
+            android:icon="@drawable/ic_mat_mg_copyright"
+            android:persistent="false"
+            android:selectable="false" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/dialog_github">
+        <Preference
+            android:key="mg_repo_release"
+            android:title="@string/repo_release"
+            android:summary="https://github.com/MobileGL-Dev/MobileGlues-release"
+            android:icon="@drawable/ic_mat_mg_open_in_new"
+            android:persistent="false" />
+
+        <Preference
+            android:key="mg_repo_renderer"
+            android:title="@string/repo_renderer"
+            android:summary="https://github.com/MobileGL-Dev/MobileGlues"
+            android:icon="@drawable/ic_mat_mg_open_in_new"
+            android:persistent="false" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/mg_credits_title">
+        <Preference
+            android:key="mg_credits"
+            android:title="@string/mg_credits_title"
+            android:summary="@string/mg_credits_summary"
+            android:icon="@drawable/ic_mat_mg_open_in_new"
+            android:persistent="false" />
+    </PreferenceCategory>
+</PreferenceScreen>

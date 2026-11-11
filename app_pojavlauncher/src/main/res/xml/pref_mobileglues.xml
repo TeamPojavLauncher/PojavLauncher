@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <net.kdt.pojavlaunch.prefs.BackButtonPreference />
+
+    <PreferenceCategory android:title="@string/settings_group_render">
+        <androidx.preference.ListPreference
+            android:key="mg_angle"
+            android:title="@string/option_angle"
+            android:icon="@drawable/ic_mat_use_angle"
+            android:persistent="false"
+            app:useSimpleSummaryProvider="true" />
+
+        <androidx.preference.ListPreference
+            android:key="mg_no_error"
+            android:title="@string/option_no_error"
+            android:icon="@drawable/ic_mat_mg_report_off"
+            android:persistent="false"
+            app:useSimpleSummaryProvider="true" />
+
+        <androidx.preference.ListPreference
+            android:key="mg_depth_clear"
+            android:title="@string/option_angle_clear_workaround"
+            android:icon="@drawable/ic_mat_mg_layers_clear"
+            android:persistent="false"
+            app:useSimpleSummaryProvider="true" />
+
+        <androidx.preference.SwitchPreferenceCompat
+            android:key="mg_fsr1"
+            android:title="@string/option_enable_fsr1"
+            android:icon="@drawable/ic_mat_mg_high_quality"
+            android:persistent="false" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/settings_group_cache">
+        <Preference
+            android:key="mg_glsl_cache"
+            android:title="@string/option_glsl_cache"
+            android:icon="@drawable/ic_mat_mg_database"
+            android:persistent="false" />
+
+        <Preference
+            android:key="mg_glsl_cache_delete"
+            android:icon="@drawable/ic_mat_clear_cache"
+            android:persistent="false"
+            android:visible="false" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/settings_group_ext">
+        <androidx.preference.SwitchPreferenceCompat
+            android:key="mg_ext_cs"
+            android:title="@string/option_ext_cs"
+            android:icon="@drawable/ic_mat_mg_memory"
+            android:persistent="false" />
+
+        <androidx.preference.SwitchPreferenceCompat
+            android:key="mg_ext_timer_query"
+            android:title="@string/option_ext_timer_query"
+            android:icon="@drawable/ic_mat_mg_timer"
+            android:persistent="false" />
+
+        <androidx.preference.SwitchPreferenceCompat
+            android:key="mg_ext_dsa"
+            android:title="@string/option_ext_direct_state_access"
+            android:icon="@drawable/ic_mat_mg_tune"
+            android:persistent="false" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/settings_group_advanced">
+        <androidx.preference.ListPreference
+            android:key="mg_gl_version"
+            android:title="@string/option_custom_gl_version"
+            android:icon="@drawable/ic_mat_mg_numbers"
+            android:persistent="false"
+            app:useSimpleSummaryProvider="true" />
+
+        <Preference
+            android:key="mg_multidraw"
+            android:title="@string/option_multidraw"
+            android:icon="@drawable/ic_mat_mg_dynamic_feed"
+            android:fragment="net.kdt.pojavlaunch.prefs.screens.MobileGluesMultidrawFragment" />
+
+        <Preference
+            android:key="mg_reset"
+            android:title="@string/mg_reset_title"
+            android:summary="@string/mg_reset_summary"
+            android:icon="@drawable/ic_mat_mg_restart_alt"
+            android:persistent="false" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/info_section_details">
+        <Preference
+            android:key="mg_gl_info"
+            android:title="@string/info_mg_info"
+            android:icon="@drawable/ic_mat_mg_terminal"
+            android:fragment="net.kdt.pojavlaunch.prefs.screens.MobileGluesGlInfoFragment" />
+
+        <Preference
+            android:key="mg_about"
+            android:title="@string/menu_item_about"
+            android:icon="@drawable/ic_mat_mg_info"
+            android:fragment="net.kdt.pojavlaunch.prefs.screens.MobileGluesAboutFragment" />
+    </PreferenceCategory>
+</PreferenceScreen>

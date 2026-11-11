@@ -61,7 +61,7 @@ class MGConfigStore(
     private val gson = Gson()
 
     /**
-     * 当前生效的存储访问。授权方式（所有文件访问 / SAF）由外面的 AuthController 决定，
+     * 当前生效的存储访问。存储位置由 MgController 决定，
      * store 只关心「往哪里读写」；授权失效时外面会调 [detachStorage]。
      */
     @Volatile
@@ -197,7 +197,8 @@ class MGConfigStore(
         }.also { refreshGlslCacheFile() }
     }
 
-    private fun refreshGlslCacheFile() {
+    /** Re-reads the size of the GLSL cache file, a game session may have grown or created it. */
+    fun refreshGlslCacheFile() {
         mutableGlslCacheBytes.value = runCatching { storage?.glslCacheBytes() }.getOrNull()
     }
 

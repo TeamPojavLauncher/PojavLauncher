@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <net.kdt.pojavlaunch.prefs.BackButtonPreference />
+
+    <PreferenceCategory android:title="@string/option_multidraw">
+        <Preference
+            android:key="mg_md_global"
+            android:title="@string/md_global_order_title"
+            android:icon="@drawable/ic_mat_mg_reorder"
+            android:persistent="false"
+            android:fragment="net.kdt.pojavlaunch.prefs.screens.MobileGluesMultidrawOrderFragment" />
+
+        <Preference
+            android:key="mg_md_bench_all"
+            android:title="@string/md_bench_run_all"
+            android:summary="@string/md_home_untuned_desc"
+            android:icon="@drawable/ic_mat_mg_speed"
+            android:persistent="false" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="mg_md_entries"
+        android:title="@string/md_exceptions_group" />
+</PreferenceScreen>

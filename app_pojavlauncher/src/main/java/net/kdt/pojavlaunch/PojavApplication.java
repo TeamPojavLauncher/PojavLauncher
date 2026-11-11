@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
 import net.kdt.pojavlaunch.lifecycle.ContextExecutor;
-import net.kdt.pojavlaunch.mobileglues.MGApplication;
+import android.app.Application;
 import net.kdt.pojavlaunch.prefs.LauncherPreferences;
 import net.kdt.pojavlaunch.tasks.AsyncAssetManager;
 import net.kdt.pojavlaunch.tasks.MoJsonDownloader;
@@ -34,7 +34,7 @@ import java.util.concurrent.TimeUnit;
 import net.kdt.pojavlaunch.BuildConfig;
 import net.kdt.pojavlaunch.R;
 
-public class PojavApplication extends MGApplication {
+public class PojavApplication extends Application {
 	public static final String CRASH_REPORT_TAG = "PojavCrashReport";
 	public static final ExecutorService sExecutorService = new ThreadPoolExecutor(4, 4, 500, TimeUnit.MILLISECONDS,  new LinkedBlockingQueue<>());
 

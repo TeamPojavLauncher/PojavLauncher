@@ -1,7 +1,6 @@
 plugins {
     id 'com.android.application' version '8.11.1'
     id 'org.jetbrains.kotlin.android' version '2.2.10'
-    id 'org.jetbrains.kotlin.plugin.compose' version '2.2.10'
     id 'de.undercouch.download' version '5.6.0'
     id 'org.ajoberstar.grgit' version '5.3.2'
 }
@@ -221,7 +220,6 @@ android {
 
     buildFeatures {
         buildConfig true
-        compose true
         aidl true
     }
 }
@@ -364,13 +362,6 @@ afterEvaluate {
 
 dependencies {
     implementation 'androidx.documentfile:documentfile:1.1.0'
-    implementation platform('androidx.compose:compose-bom:2026.06.01')
-    implementation 'androidx.compose.ui:ui'
-    implementation 'androidx.compose.ui:ui-graphics'
-    implementation 'androidx.compose.ui:ui-tooling-preview'
-    implementation 'androidx.compose.material3:material3'
-    implementation 'androidx.activity:activity-compose:1.10.1'
-    implementation 'androidx.lifecycle:lifecycle-runtime-compose:2.8.7'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.8.7'
 

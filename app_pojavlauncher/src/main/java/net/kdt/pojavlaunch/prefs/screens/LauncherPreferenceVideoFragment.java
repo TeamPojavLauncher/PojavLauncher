@@ -1,7 +1,6 @@
 package net.kdt.pojavlaunch.prefs.screens;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -18,7 +17,6 @@ import net.kdt.pojavlaunch.BuildConfig;
 import net.kdt.pojavlaunch.R;
 
 import net.kdt.pojavlaunch.contracts.OpenDocumentWithExtension;
-import net.kdt.pojavlaunch.mobileglues.MainActivity;
 import net.kdt.pojavlaunch.game.renderer.RendererCache;
 import net.kdt.pojavlaunch.game.renderer.extra.GLESProvider;
 import net.kdt.pojavlaunch.prefs.CustomSeekBarPreference;
@@ -92,11 +90,6 @@ public class LauncherPreferenceVideoFragment extends LauncherPreferenceFragment 
         RendererCache list = RendererCache.getCompatibleRenderers(getContext());
         rendererListPreference.setEntries(list.rendererDisplayNames);
         rendererListPreference.setEntryValues(list.rendererIds.toArray(new String[0]));
-
-        requirePreference("renderer_settings", Preference.class).setOnPreferenceClickListener(preference -> {
-            startActivity(new Intent(getContext(), MainActivity.class));
-            return true;
-        });
 
         Preference drivers = requirePreference("manageDrivers");
         drivers.setOnPreferenceClickListener(pref -> {

@@ -14,4 +14,5 @@
 
     <color name="primary_text">#FFFFFF</color>
     <color name="secondary_text">#B2B2B2</color>
+    <color name="mg_error">#FF5449</color>
 </resources>
