@@ -477,8 +477,13 @@ public class GameRunner {
             }
         }
 
-        Tools.restartLauncherActivity(activity);
-        Tools.fullyExit();
+        // The game runs in its own process (AndroidManifest: android:process=":game"), so this is
+        // where that process ends. The launcher has to be asked back *before* the kill, and with a
+        // gap, or Android drops the request and the launcher never returns - see
+        // Tools.RELAUNCH_GRACE_MS. Every other exit path out of this process already waited
+        // (PojavLaunchBridge, GameActivity.switchAccount); this one, which is the path every normal
+        // game exit takes, did not.
+        Tools.restartLauncherActivityThenExit(activity);
     }
 
     private static void disableSplash(File dir) {
