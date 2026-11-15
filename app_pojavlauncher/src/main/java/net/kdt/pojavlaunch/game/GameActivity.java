@@ -414,7 +414,7 @@ public class GameActivity extends BaseActivity implements ControlButtonMenuListe
 
     private void runCraft(String versionId, File[] classpath) throws Throwable {
         Logger.appendToLog("--------- Starting game with Launcher Debug!");
-        Tools.printLauncherInfo(versionId, instance.getLaunchArgs(), mGameRenderer.getCurrentRenderer(), instance.selectedRuntime, this);
+        Tools.printLauncherInfo(versionId, instance.getLaunchArgs(), mGameRenderer.getCurrentRenderer(), this);
         JREUtils.redirectAndPrintJRELog();
 
         // Show Angelica + SFPEW notice

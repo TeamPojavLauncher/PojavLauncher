@@ -11,6 +11,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import net.kdt.pojavlaunch.Architecture;
+import net.kdt.pojavlaunch.Logger;
 import net.kdt.pojavlaunch.Tools;
 import net.kdt.pojavlaunch.awt.AWTView;
 import net.kdt.pojavlaunch.multirt.MultiRTUtils;
@@ -310,6 +311,8 @@ public class JavaRunner {
 
         if(javaArgsL == 0 || appArgsL == 0)
             throw new VMLoadException("Failed to transfer arguments", -1, -4);
+
+        Logger.appendToLog("About to load JVM runtime " + runtime.name + " (Java " + runtime.javaVersion + ")");
 
         System.gc();
 
