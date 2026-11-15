@@ -42,9 +42,6 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -65,7 +62,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -115,14 +111,12 @@ import net.kdt.pojavlaunch.R
 import net.kdt.pojavlaunch.Tools
 import net.kdt.pojavlaunch.aerix.bridge.AerixColorTheme
 import net.kdt.pojavlaunch.aerix.bridge.AerixPreferences
-import net.kdt.pojavlaunch.aerix.bridge.AerixRendererPlugin
 import net.kdt.pojavlaunch.aerix.bridge.AerixTransitionType
 import net.kdt.pojavlaunch.aerix.bridge.AssetPlatform
 import net.kdt.pojavlaunch.aerix.bridge.PojavNavigator
 import net.kdt.pojavlaunch.aerix.bridge.PojavPluginBridge
 import net.kdt.pojavlaunch.aerix.bridge.PojavSetting
 import net.kdt.pojavlaunch.aerix.bridge.PojavSettingCategory
-import net.kdt.pojavlaunch.aerix.bridge.AerixRendererBrands
 import net.kdt.pojavlaunch.aerix.bridge.PojavSettingsBridge
 import net.kdt.pojavlaunch.aerix.vulkan.VulkanDriverManager
 import net.kdt.pojavlaunch.aerix.components.AerixGhostButton
@@ -134,7 +128,6 @@ import net.kdt.pojavlaunch.aerix.components.DefaultSwitch
 import net.kdt.pojavlaunch.aerix.components.MiraiIntSliderSettingsCard
 import net.kdt.pojavlaunch.aerix.components.MiraiListSettingsCard
 import net.kdt.pojavlaunch.aerix.components.MiraiRendererSummaryLayout
-import net.kdt.pojavlaunch.aerix.components.ModrinthMetaPill
 import net.kdt.pojavlaunch.aerix.components.SettingsCardColumn
 import net.kdt.pojavlaunch.aerix.discord.DiscordPresenceSettingsCard
 import net.kdt.pojavlaunch.aerix.components.getMiraiGlobalRendererId
@@ -147,9 +140,6 @@ import net.kdt.pojavlaunch.aerix.theme.AerixMetrics
 import net.kdt.pojavlaunch.aerix.theme.AerixRadii
 import net.kdt.pojavlaunch.aerix.theme.AerixSpacing
 import net.kdt.pojavlaunch.aerix.theme.AerixSurface
-import net.kdt.pojavlaunch.aerix.theme.ThemeMotion
-import net.kdt.pojavlaunch.aerix.theme.accentGlow
-import net.kdt.pojavlaunch.aerix.theme.accentRing
 import net.kdt.pojavlaunch.aerix.theme.AerixThemeManager
 import net.kdt.pojavlaunch.aerix.ui.AerixNav
 import net.kdt.pojavlaunch.aerix.ui.LauncherSection
@@ -185,33 +175,6 @@ private val settingTabItems = listOf(
     SettingTabItem(AerixNav.TAB_ABOUT, R.drawable.aerix_ic_info_outlined, "About")
 )
 
-private data class RendererStackOption(
-    val keyMatch: String,
-    val title: String,
-    val badge: String,
-    val rendererId: String,
-    /** The stack's own mark, shown beside its name. */
-    @DrawableRes val logoRes: Int,
-    /** Artwork of the renderer itself: shown with its own colours instead of tinted. */
-    val brandedLogo: Boolean = false,
-    /** What the renderer is, shown under the grid while this tile is the chosen one. */
-    @StringRes val descriptionRes: Int = 0
-)
-
-/**
- * Tiles of the renderer grid. "AUTO" stands for the renderer the launcher uses by default,
- * every other tile names a backend renderer directly.
- */
-private fun defaultRendererStackOptions(defaultRendererId: String): List<RendererStackOption> = listOf(
-    RendererStackOption("AUTO", "Auto (Smart Pick)", "RECOMMENDED", defaultRendererId, R.drawable.aerix_logo_auto),
-    RendererStackOption("VGPU_FAST", "vgpu - (up to 1.16.5, fast)", "1.16.5 FAST", Renderers.NGGL4ES_RENDERER, R.drawable.aerix_logo_opengl),
-    RendererStackOption("VGPU_1368", "VGPU 1.3.6\u03B2", "SHADERCONV", Renderers.SFPEW_RENDERER, R.drawable.aerix_logo_opengl),
-    RendererStackOption("LTW", "LTW (1.17+ Core)", "1.17+", Renderers.LTW_RENDERER, R.drawable.aerix_logo_opengl),
-    RendererStackOption("Legacy", "LTW Legacy (1.8\u20131.16.5)", "1.8\u20131.16.5", Renderers.GL4ES_RENDERER, R.drawable.aerix_logo_opengl),
-    RendererStackOption("Zink", "Kopper Zink (Vulkan)", "VULKAN", Renderers.ZINK_RENDERER, R.drawable.aerix_logo_vulkan),
-    RendererStackOption("PROTON", "Proton (PowerVR)", "32-BIT ONLY", Renderers.PROTON_RENDERER, R.drawable.aerix_logo_proton, brandedLogo = true),
-    RendererStackOption("EMESIS", "Emesis Renderer", "ALL VERSIONS", Renderers.EMESIS_RENDERER, R.drawable.aerix_logo_emesis, brandedLogo = true, descriptionRes = R.string.mcl_setting_renderer_emesis_description)
-)
 
 /**
  * The name of an installed runtime, corrected against the Java version inside it.
@@ -232,35 +195,6 @@ private fun runtimeLabel(runtime: Runtime): String {
     return "Java " + if (actual > 0 && actual != declared) actual else declared
 }
 
-/**
- * One renderer's mark (Vulkan, OpenGL, vGPU, LTW, Emesis, Proton), sized to sit beside its name.
- * A wordmark is wider than it is tall, so [wide] gives it room instead of shrinking it to a dot.
- */
-@Composable
-private fun RendererLogo(@DrawableRes logoRes: Int, tint: Color, wide: Boolean = false) {
-    Icon(
-        painter = painterResource(logoRes),
-        contentDescription = null,
-        tint = tint,
-        modifier = if (wide) Modifier.size(width = 40.dp, height = 26.dp) else Modifier.size(20.dp)
-    )
-}
-
-/**
- * A renderer's own artwork, shown exactly as its author drew it. Brand images (the Emesis mark,
- * the PowerVR wordmark) carry their own colours, so they are never tinted or recoloured.
- */
-@Composable
-private fun BrandedRendererLogo(@DrawableRes logoRes: Int) {
-    // A wordmark is wide and short: fill the width of the slot instead of fitting it in a square,
-    // which would leave a few pixels of text beside the name.
-    Icon(
-        painter = painterResource(logoRes),
-        contentDescription = null,
-        tint = Color.Unspecified,
-        modifier = Modifier.size(width = 46.dp, height = 22.dp)
-    )
-}
 
 @Composable
 fun SettingsScreen(activity: FragmentActivity, tabKey: String, onTabChanged: (String) -> Unit) {
@@ -373,17 +307,11 @@ private fun RendererTabContent(activity: FragmentActivity) {
     if (showUpdateDialog) LauncherUpdateDialog(activity) { showUpdateDialog = false }
 
     val revision = PojavSettingsBridge.revision
-    val compatible = remember(revision) { PojavSettingsBridge.renderers(activity) }
-    // Always rescans: a plugin installed while the launcher was running has to appear without a
-    // restart, which is exactly when someone opens this tab.
-    val plugins = remember(revision) { PojavPluginBridge.loadPlugins(activity, force = true) }
     val currentRenderer = remember(revision) { LauncherPreferences.PREF_RENDERER ?: Renderers.GL4ES_RENDERER }
     // Renderer the launcher falls back to while nothing was picked in the settings.
     val defaultRendererId = remember(revision) { LauncherPreferences.defaultRendererId(activity) }
-    val rendererStackOptions = remember(revision) { defaultRendererStackOptions(defaultRendererId) }
     val rendererEntries = remember(revision) { miraiRendererEntries(activity, includeFollowGlobal = false) }
     var currentMiraiRendererId by remember(revision) { mutableStateOf(getMiraiGlobalRendererId(activity)) }
-    var autoSelected by remember(revision) { mutableStateOf(currentRenderer == defaultRendererId) }
     var globalVulkanDriver by remember(revision) {
         mutableStateOf(VulkanDriverManager.globalDriverId(activity))
     }
@@ -442,14 +370,6 @@ private fun RendererTabContent(activity: FragmentActivity) {
                 ?: "SCALE"
         )
     }
-
-    val runtimes = remember(revision) { runCatching { MultiRTUtils.getRuntimes() }.getOrDefault(emptyList()) }
-    val defaultJre = remember(revision) { LauncherPreferences.PREF_DEFAULT_RUNTIME ?: "" }
-    // Ceiling, not the device total: the old value let the slider be dragged into an OOM.
-    val maxAllocMb = remember { PojavSettingsBridge.safeMaxRam(activity).coerceAtLeast(256) }
-    val totalRamMb = remember { Tools.getTotalDeviceMemory(activity).coerceAtLeast(2048) }
-    var ramAlloc by remember(revision) { mutableIntStateOf(LauncherPreferences.PREF_RAM_ALLOCATION.coerceIn(256, maxAllocMb)) }
-
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -457,287 +377,7 @@ private fun RendererTabContent(activity: FragmentActivity) {
         contentPadding = PaddingValues(bottom = AerixSpacing.xxl),
         verticalArrangement = Arrangement.spacedBy(AerixSpacing.md)
     ) {
-        // 1. Renderer Backend 2-column grid (Mirai RendererSettingsScreen lines 210-322)
-        item {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(AerixSpacing.sm)
-            ) {
-                Text(
-                    text = "Renderer Backend",
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.ExtraBold,
-                    color = Color.White
-                )
-
-                // Installed renderer plugin APKs come first: they are renderer backends like the
-                // tiles below, and a freshly installed plugin has to be obvious without scrolling.
-                val skippedPlugins = remember(revision) { PojavPluginBridge.lastScanNotes }
-                Text(
-                    text = if (plugins.isEmpty()) {
-                        "No renderer plugin APK detected. Install the plugin APK, then reopen this tab."
-                    } else {
-                        "Renderer plugins (" + plugins.size + "): " +
-                            plugins.joinToString(" \u00B7 ") { it.displayName }
-                    },
-                    style = MaterialTheme.typography.labelSmall,
-                    color = AerixSurface.textSecondary,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
-                if (skippedPlugins.isNotEmpty()) {
-                    Text(
-                        text = "Skipped plugin APK: " + skippedPlugins.joinToString("; "),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = AerixSurface.textSecondary,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                }
-                if (plugins.isNotEmpty()) {
-                    plugins.chunked(2).forEach { rowPlugins ->
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(AerixSpacing.sm)
-                        ) {
-                            rowPlugins.forEach { plugin ->
-                                RendererPluginCard(
-                                    plugin = plugin,
-                                    selected = !autoSelected && currentRenderer == plugin.pluginTag,
-                                    onSelect = {
-                                        autoSelected = false
-                                        PojavSettingsBridge.writeString(activity, "renderer", plugin.pluginTag)
-                                    },
-                                    modifier = Modifier.weight(1f)
-                                )
-                            }
-                        }
-                    }
-                }
-
-                // Only the choices this launcher actually stands behind are shown as tiles: Auto
-                // and the two bundled renderers, Emesis and Proton. Each is offered only where it
-                // can run - Proton ships a 32-bit ARM build, Emesis ships every ABI, so a stripped
-                // build simply does not list it. Every other renderer stays available in the
-                // Global Renderer list and in the instance editor below.
-                val hasProton = compatible.any { it.first == Renderers.PROTON_RENDERER }
-                val hasEmesis = compatible.any { it.first == Renderers.EMESIS_RENDERER }
-                val offeredOptions = rendererStackOptions.filter { option ->
-                    when {
-                        option.keyMatch == "AUTO" -> true
-                        option.rendererId == Renderers.PROTON_RENDERER -> hasProton
-                        option.rendererId == Renderers.EMESIS_RENDERER -> hasEmesis
-                        else -> false
-                    }
-                }
-                offeredOptions.chunked(2).forEach { rowOptions ->
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(AerixSpacing.sm)
-                    ) {
-                        rowOptions.forEach { option ->
-                            val isSelected = when (option.keyMatch) {
-                                "AUTO" -> autoSelected || currentRenderer == option.rendererId
-                                else -> currentRenderer == option.rendererId
-                            }
-                            val selectOption = {
-                                autoSelected = option.keyMatch == "AUTO"
-                                val targetId = if (compatible.any { it.first == option.rendererId }) {
-                                    option.rendererId
-                                } else {
-                                    compatible.firstOrNull()?.first ?: Renderers.GL4ES_RENDERER
-                                }
-                                PojavSettingsBridge.writeString(activity, "renderer", targetId)
-                            }
-                            // The selected tile takes the accent as a pulsing glow; with the
-                            // animated theme off it is the same flat border as before, and no
-                            // animation is created at all.
-                            val motionOn = ThemeMotion.rememberEnabled()
-                            val accent = AerixThemeManager.currentAccent()
-                            val liveAccent = ThemeMotion.rememberPulse(accent, isSelected, motionOn)
-                            val borderColor by animateColorAsState(
-                                targetValue = if (isSelected) liveAccent else AerixSurface.panelRaised,
-                                animationSpec = tween(160),
-                                label = "rendererOptionBorder"
-                            )
-                            val cardBg by animateColorAsState(
-                                targetValue = if (isSelected) AerixSurface.accentContainer else AerixSurface.panel,
-                                animationSpec = tween(160),
-                                label = "rendererOptionBg"
-                            )
-
-                            val tileShape = RoundedCornerShape(AerixRadii.control)
-                            Surface(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .accentGlow(liveAccent, isSelected, motionOn)
-                                    .accentRing(liveAccent, tileShape, isSelected, motionOn, 1.5.dp),
-                                shape = tileShape,
-                                color = cardBg,
-                                border = BorderStroke(if (isSelected) 1.5.dp else AerixSpacing.hairline, borderColor),
-                                onClick = selectOption
-                            ) {
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(horizontal = AerixSpacing.smPlus, vertical = AerixSpacing.smPlus),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.spacedBy(AerixSpacing.smCompact)
-                                ) {
-                                    RadioButton(
-                                        selected = isSelected,
-                                        onClick = selectOption,
-                                        colors = RadioButtonDefaults.colors(
-                                            selectedColor = AerixThemeManager.currentAccent(),
-                                            unselectedColor = AerixSurface.textSecondary
-                                        ),
-                                        modifier = Modifier.size(20.dp)
-                                    )
-                                    if (option.brandedLogo) {
-                                        BrandedRendererLogo(logoRes = option.logoRes)
-                                    } else {
-                                        RendererLogo(
-                                            logoRes = option.logoRes,
-                                            tint = if (isSelected) AerixThemeManager.currentAccent() else Color.White
-                                        )
-                                    }
-                                    Text(
-                                        text = option.title,
-                                        style = MaterialTheme.typography.labelLarge,
-                                        fontWeight = FontWeight.Bold,
-                                        color = Color.White,
-                                        modifier = Modifier.weight(1f),
-                                        maxLines = 1,
-                                        overflow = TextOverflow.Ellipsis
-                                    )
-                                    ModrinthMetaPill(
-                                        text = option.badge,
-                                        highlighted = isSelected || option.keyMatch == "AUTO"
-                                    )
-                                }
-                            }
-                        }
-                    }
-                }
-
-                // What the chosen renderer is, right under the grid: a renderer that ships with the
-                // launcher says what it is for, the way the lists name their entries.
-                val describedOption = offeredOptions.firstOrNull {
-                    it.descriptionRes != 0 && !autoSelected && it.rendererId == currentRenderer
-                }
-                if (describedOption != null) {
-                    Text(
-                        text = stringResource(describedOption.descriptionRes),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = AerixSurface.textSecondary
-                    )
-                }
-            }
-        }
-
-        // 2. Memory Allocation & Java Runtime card (Mirai RendererSettingsScreen lines 325-425)
-        item {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(AerixSpacing.smCompact)
-            ) {
-                Text(
-                    text = "Memory Allocation & Java Runtime",
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.ExtraBold,
-                    color = Color.White
-                )
-
-                Surface(
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(AerixRadii.cardSmall),
-                    color = AerixSurface.panel,
-                    border = BorderStroke(AerixSpacing.hairline, AerixSurface.border)
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = AerixSpacing.mdPlus, vertical = AerixSpacing.smPlus),
-                        verticalArrangement = Arrangement.spacedBy(AerixSpacing.smCompact)
-                    ) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = "RAM Allocation",
-                                style = MaterialTheme.typography.labelLarge,
-                                fontWeight = FontWeight.Bold,
-                                color = Color.White
-                            )
-                            Text(
-                                text = "$ramAlloc MB / $totalRamMb MB",
-                                style = MaterialTheme.typography.labelLarge,
-                                fontWeight = FontWeight.ExtraBold,
-                                color = AerixThemeManager.currentAccent()
-                            )
-                        }
-
-                        Slider(
-                            value = ramAlloc.toFloat(),
-                            onValueChange = { ramAlloc = (it / 8f).roundToInt() * 8 },
-                            onValueChangeFinished = {
-                                PojavSettingsBridge.writeInt(activity, "allocation", ramAlloc)
-                            },
-                            valueRange = 256f..maxAllocMb.toFloat(),
-                            colors = SliderDefaults.colors(
-                                thumbColor = AerixThemeManager.currentAccent(),
-                                activeTrackColor = AerixThemeManager.currentAccent(),
-                                inactiveTrackColor = AerixSurface.panelTrack
-                            )
-                        )
-
-                        Column(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalArrangement = Arrangement.spacedBy(AerixSpacing.sm)
-                        ) {
-                            Text(
-                                text = "Default JRE:",
-                                style = MaterialTheme.typography.labelMedium,
-                                fontWeight = FontWeight.Bold,
-                                color = AerixSurface.textSecondary
-                            )
-
-                            AerixPillTabRow(modifier = Modifier.fillMaxWidth()) {
-                                AerixPillTab(
-                                    selected = defaultJre.isEmpty(),
-                                    onClick = {
-                                        LauncherPreferences.PREF_DEFAULT_RUNTIME = ""
-                                        PojavSettingsBridge.writeString(activity, "defaultRuntime", "")
-                                    }
-                                ) {
-                                    Text("Auto", style = MaterialTheme.typography.labelSmall)
-                                }
-                                runtimes.forEach { runtime ->
-                                    val selected = defaultJre == runtime.name
-                                    AerixPillTab(
-                                        selected = selected,
-                                        onClick = {
-                                            LauncherPreferences.PREF_DEFAULT_RUNTIME = runtime.name
-                                            PojavSettingsBridge.writeString(activity, "defaultRuntime", runtime.name)
-                                        }
-                                    ) {
-                                        Text(
-                                            text = if (runtime.javaVersion > 0) "JRE ${runtime.javaVersion}" else runtime.name,
-                                            style = MaterialTheme.typography.labelSmall
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-
-        // 3. Compact Footer Updater Card (Mirai RendererSettingsScreen lines 428-469)
+        // 1. Compact Footer Updater Card (Mirai RendererSettingsScreen lines 428-469)
         item {
             Surface(
                 modifier = Modifier.fillMaxWidth(),
@@ -780,7 +420,7 @@ private fun RendererTabContent(activity: FragmentActivity) {
             }
         }
 
-        // 4. Detailed Renderer, Vulkan Driver, Graphics API, Resolution & Fullscreen SettingsCardColumn (Mirai RendererSettingsScreen — Photos 1 & 2)
+        // 2. Detailed Renderer, Vulkan Driver, Graphics API, Resolution & Fullscreen SettingsCardColumn (Mirai RendererSettingsScreen — Photos 1 & 2)
         item {
             val showMgSettings = currentRenderer == Renderers.MOBILEGLUES_RENDERER ||
                 currentMiraiRendererId == Renderers.MOBILEGLUES_RENDERER
@@ -846,7 +486,6 @@ private fun RendererTabContent(activity: FragmentActivity) {
                         }
                     },
                     onValueChange = { entry ->
-                        autoSelected = false
                         currentMiraiRendererId = entry.uniqueId
                         setMiraiGlobalRenderer(entry)
                         PojavSettingsBridge.touch()
@@ -961,7 +600,7 @@ private fun RendererTabContent(activity: FragmentActivity) {
             }
         }
 
-        // 5. Switch cards group (Screenshot 4: Sustained Performance Mode, Use System Vulkan Driver, Zink Vsync, Use SurfaceView Rendering, Shader Dump)
+        // 3. Switch cards group (Screenshot 4: Sustained Performance Mode, Use System Vulkan Driver, Zink Vsync, Use SurfaceView Rendering, Shader Dump)
         item {
             SettingsCardColumn(modifier = Modifier.fillMaxWidth()) {
                 MiraiSwitchSettingsCard(
@@ -1027,79 +666,6 @@ private fun RendererTabContent(activity: FragmentActivity) {
     }
 }
 
-@Composable
-private fun RendererPluginCard(
-    plugin: AerixRendererPlugin,
-    selected: Boolean,
-    onSelect: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val borderColor by animateColorAsState(
-        targetValue = if (selected) AerixThemeManager.currentAccent() else AerixSurface.panelRaised,
-        animationSpec = tween(160),
-        label = "pluginBorder"
-    )
-    val cardBg by animateColorAsState(
-        targetValue = if (selected) AerixSurface.accentContainer else AerixSurface.panel,
-        animationSpec = tween(160),
-        label = "pluginBg"
-    )
-    Surface(
-        modifier = modifier,
-        shape = RoundedCornerShape(AerixRadii.control),
-        color = cardBg,
-        border = BorderStroke(if (selected) 1.5.dp else AerixSpacing.hairline, borderColor),
-        onClick = onSelect
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = AerixSpacing.smPlus, vertical = AerixSpacing.smPlus),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(AerixSpacing.smCompact)
-        ) {
-            RadioButton(
-                selected = selected,
-                onClick = onSelect,
-                colors = RadioButtonDefaults.colors(
-                    selectedColor = AerixThemeManager.currentAccent(),
-                    unselectedColor = AerixSurface.textSecondary
-                ),
-                modifier = Modifier.size(20.dp)
-            )
-            // The plugin's own mark when the launcher knows it, a puzzle piece otherwise.
-            val brandLogo = AerixRendererBrands.logoFor(plugin.packageName)
-            if (brandLogo != null) {
-                BrandedRendererLogo(logoRes = brandLogo)
-            } else {
-                RendererLogo(
-                    logoRes = R.drawable.aerix_logo_plugin,
-                    tint = if (selected) AerixThemeManager.currentAccent() else Color.White,
-                    wide = true
-                )
-            }
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = plugin.displayName,
-                    style = MaterialTheme.typography.labelLarge,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-                // A known plugin explains itself; an unknown one shows which APK it came from.
-                Text(
-                    text = AerixRendererBrands.descriptionFor(plugin.packageName) ?: plugin.packageName,
-                    style = MaterialTheme.typography.labelSmall,
-                    color = AerixSurface.textSecondary,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-            ModrinthMetaPill(text = "PLUGIN", highlighted = selected)
-        }
-    }
-}
 
 // ============================================================================================
 // 2. Game tab (Mirai GameSettingsScreen.kt: integrity checks, Java memory/args, log settings, experimental)
