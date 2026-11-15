@@ -109,10 +109,29 @@ private fun readLog(file: File): String {
     }
 }
 
+/**
+ * A readable tab title for an archived launch: `aerix-log-20261115-013045.txt` becomes
+ * "Previous launch 15/11 01:30:45". A name this cannot parse is shown as-is rather than dropped,
+ * because a title is never worth losing the log behind it.
+ */
+private fun previousLaunchLabel(file: File): String {
+    val stamp = file.name
+        .removePrefix(net.kdt.pojavlaunch.aerix.log.PreviousLaunchLog.ARCHIVE_PREFIX)
+        .removeSuffix(net.kdt.pojavlaunch.aerix.log.PreviousLaunchLog.ARCHIVE_SUFFIX)
+    val parsed = Regex("^(\\d{4})(\\d{2})(\\d{2})-(\\d{2})(\\d{2})(\\d{2})").find(stamp)
+        ?: return "Previous launch $stamp"
+    val (year, month, day, hour, minute, second) = parsed.destructured
+    return "Previous launch $day/$month/${year.takeLast(2)} $hour:$minute:$second"
+}
+
 /** latestlog.txt first, then the newest crash reports of the selected instance and the shared folder. */
 private fun collectSources(context: Context): List<LogSource> {
     val sources = ArrayList<LogSource>()
     sources.add(LogSource(context.getString(R.string.aerix_logs_latest), File(Tools.DIR_GAME_HOME, "latestlog.txt")))
+    // The launches before this one. `Logger.begin` truncates the live file, so without these the
+    // retry that every player makes after a startup crash has already destroyed its own evidence.
+    net.kdt.pojavlaunch.aerix.log.PreviousLaunchLog.list(File(Tools.DIR_GAME_HOME))
+        .forEach { sources.add(LogSource(previousLaunchLabel(it), it)) }
     File(context.filesDir, net.kdt.pojavlaunch.lifecycle.LaunchDiagnostics.FILE_NAME)
         .takeIf { it.isFile }?.let { sources.add(LogSource("Launch status", it)) }
     File(Tools.DIR_GAME_HOME, "latestcrash.txt")

@@ -61,6 +61,7 @@ import net.kdt.pojavlaunch.aerix.bridge.AerixAccount;
 import net.kdt.pojavlaunch.aerix.vulkan.VulkanDriverManager;
 import net.kdt.pojavlaunch.aerix.ui.game.GameMenuCallbacks;
 import net.kdt.pojavlaunch.aerix.ui.game.GameMenuOverlayView;
+import net.kdt.pojavlaunch.aerix.log.PreviousLaunchLog;
 import net.kdt.pojavlaunch.customcontrols.ControlButtonMenuListener;
 import net.kdt.pojavlaunch.customcontrols.ControlData;
 import net.kdt.pojavlaunch.customcontrols.ControlDrawerData;
@@ -153,10 +154,21 @@ public class GameActivity extends BaseActivity implements ControlButtonMenuListe
         // do not leave an old launch log behind. Native process death may still prevent a report.
         try {
             File latestLogFile = new File(Tools.DIR_GAME_HOME, "latestlog.txt");
+            // Logger.begin truncates this file, so the launch about to start would erase whatever the
+            // last one left. A game that dies on startup is retried at once, and that retry is what
+            // destroyed the trace - archive the old log first, then let the new one have the file.
+            File archived = PreviousLaunchLog.archive(latestLogFile.getParentFile());
+            if (archived != null) {
+                Log.i("GameActivity", "Previous launch log kept at " + archived.getAbsolutePath());
+            }
             if (!latestLogFile.exists() && !latestLogFile.createNewFile())
                 throw new IOException("Failed to create a new log file");
             Logger.begin(latestLogFile.getAbsolutePath());
             Logger.appendToLog("Aerix: game activity created; starting launch setup");
+            if (archived != null) {
+                Logger.appendToLog("Aerix: kept the log of the previous launch at " + archived.getName()
+                        + " (Settings -> Log, or " + PreviousLaunchLog.ARCHIVE_DIR_NAME + "/)");
+            }
         } catch (Throwable error) {
             LaunchDiagnostics.mark(this, "Could not open game log");
             Tools.showError(this, error, true);
