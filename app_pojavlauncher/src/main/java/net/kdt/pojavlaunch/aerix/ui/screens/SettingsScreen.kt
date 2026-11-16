@@ -127,18 +127,12 @@ import net.kdt.pojavlaunch.aerix.components.CardPosition
 import net.kdt.pojavlaunch.aerix.components.DefaultSwitch
 import net.kdt.pojavlaunch.aerix.components.MiraiIntSliderSettingsCard
 import net.kdt.pojavlaunch.aerix.components.MiraiListSettingsCard
-import net.kdt.pojavlaunch.aerix.components.MiraiRendererSummaryLayout
-import net.kdt.pojavlaunch.aerix.components.MiraiRendererEntry
 import net.kdt.pojavlaunch.aerix.components.SettingsCardColumn
 import net.kdt.pojavlaunch.aerix.discord.DiscordPresenceSettingsCard
-import net.kdt.pojavlaunch.aerix.components.getMiraiGlobalRendererId
 import net.kdt.pojavlaunch.aerix.components.liquidGlass
-import net.kdt.pojavlaunch.aerix.components.miraiRendererEntries
 import net.kdt.pojavlaunch.aerix.components.rememberSettingsCardShape
-import net.kdt.pojavlaunch.aerix.components.setMiraiGlobalRenderer
 import net.kdt.pojavlaunch.aerix.theme.AerixFonts
 import net.kdt.pojavlaunch.aerix.theme.AerixMetrics
-import net.kdt.pojavlaunch.game.renderer.MobileGluesWarning
 import net.kdt.pojavlaunch.aerix.theme.AerixRadii
 import net.kdt.pojavlaunch.aerix.theme.AerixSpacing
 import net.kdt.pojavlaunch.aerix.theme.AerixSurface
@@ -310,36 +304,9 @@ private fun RendererTabContent(activity: FragmentActivity) {
 
     val revision = PojavSettingsBridge.revision
     val currentRenderer = remember(revision) { LauncherPreferences.PREF_RENDERER ?: Renderers.GL4ES_RENDERER }
-    // Renderer the launcher falls back to while nothing was picked in the settings.
-    val defaultRendererId = remember(revision) { LauncherPreferences.defaultRendererId(activity) }
-    val rendererEntries = remember(revision) { miraiRendererEntries(activity, includeFollowGlobal = false) }
-    var currentMiraiRendererId by remember(revision) { mutableStateOf(getMiraiGlobalRendererId(activity)) }
-    // The Global Renderer list is the only renderer picker left on this tab, so it is the only place
-    // MobileGlues can be chosen here - and picking it is held until the warning has been read.
-    var pendingMobileGlues by remember { mutableStateOf<MiraiRendererEntry?>(null) }
-    pendingMobileGlues?.let { entry ->
-        val close = { pendingMobileGlues = null }
-        MobileGluesWarningDialog(
-            versionId = currentRenderer,
-            onConfirm = {
-                close()
-                currentMiraiRendererId = entry.uniqueId
-                setMiraiGlobalRenderer(entry)
-                PojavSettingsBridge.touch()
-            },
-            onRecommended = { recommended ->
-                close()
-                // The renderer this launcher version wants, taken from the list the device offers.
-                val replacement = rendererEntries.firstOrNull { it.uniqueId == recommended }
-                if (replacement != null) {
-                    currentMiraiRendererId = replacement.uniqueId
-                    setMiraiGlobalRenderer(replacement)
-                    PojavSettingsBridge.touch()
-                }
-            },
-            onDismiss = close
-        )
-    }
+    // The Global Renderer list is gone from this tab: a renderer is chosen per instance, where the
+    // choice belongs, and the launcher picks the one its version calls for when an instance has
+    // none. What is left here is everything that applies to the device rather than to one instance.
     var globalVulkanDriver by remember(revision) {
         mutableStateOf(VulkanDriverManager.globalDriverId(activity))
     }
@@ -450,8 +417,9 @@ private fun RendererTabContent(activity: FragmentActivity) {
 
         // 2. Detailed Renderer, Vulkan Driver, Graphics API, Resolution & Fullscreen SettingsCardColumn (Mirai RendererSettingsScreen — Photos 1 & 2)
         item {
-            val showMgSettings = currentRenderer == Renderers.MOBILEGLUES_RENDERER ||
-                currentMiraiRendererId == Renderers.MOBILEGLUES_RENDERER
+            // With no global picker on this tab, the MobileGlues settings only matter when the
+            // renderer in effect is the one chosen on an instance.
+            val showMgSettings = currentRenderer == Renderers.MOBILEGLUES_RENDERER
             val vulkanDrivers = remember(installedVulkanDrivers) {
                 buildList {
                     add(VulkanDriverManager.SYSTEM_DRIVER to "System Vulkan driver")
@@ -485,48 +453,11 @@ private fun RendererTabContent(activity: FragmentActivity) {
             )
 
             SettingsCardColumn(modifier = Modifier.fillMaxWidth()) {
-                MiraiListSettingsCard(
-                    position = CardPosition.Top,
-                    items = rendererEntries,
-                    currentId = currentMiraiRendererId,
-                    defaultId = rendererEntries.firstOrNull()?.uniqueId ?: defaultRendererId,
-                    title = "Global Renderer",
-                    summary = "Define the global renderer used by the game",
-                    getItemText = { it.displayName },
-                    getItemId = { it.uniqueId },
-                    getItemSummary = { item ->
-                        MiraiRendererSummaryLayout(renderer = item)
-                    },
-                    trailingIcon = {
-                        IconButton(
-                            onClick = {
-                                PojavNavigator.openUrl(
-                                    activity,
-                                    "https://github.com/Vera-Firefly/MobileGlues-release/releases"
-                                )
-                            }
-                        ) {
-                            Icon(
-                                painter = painterResource(R.drawable.aerix_ic_download_2_outlined),
-                                contentDescription = "Download Renderer Plugin",
-                                tint = Color.White
-                            )
-                        }
-                    },
-                    onValueChange = { entry ->
-                        if (MobileGluesWarning.applies(entry.backendRendererId)) {
-                            // Nothing is written until the warning is answered.
-                            pendingMobileGlues = entry
-                        } else {
-                            currentMiraiRendererId = entry.uniqueId
-                            setMiraiGlobalRenderer(entry)
-                            PojavSettingsBridge.touch()
-                        }
-                    }
-                )
                 if (showMgSettings) {
+                    // First in the column now that the Global Renderer list is gone, so it takes
+                    // the rounded top edge and the Vulkan card below becomes a middle segment.
                     MiraiActionSettingsCard(
-                        position = CardPosition.Middle,
+                        position = CardPosition.Top,
                         title = stringResource(R.string.mcl_setting_title_renderer_settings),
                         summary = stringResource(R.string.aerix_settings_renderer_settings_sub),
                         value = "Configure",
@@ -534,7 +465,7 @@ private fun RendererTabContent(activity: FragmentActivity) {
                     )
                 }
                 MiraiListSettingsCard(
-                    position = CardPosition.Middle,
+                    position = if (showMgSettings) CardPosition.Middle else CardPosition.Top,
                     items = vulkanDrivers,
                     currentId = globalVulkanDriver,
                     defaultId = VulkanDriverManager.TURNIP_DRIVER,

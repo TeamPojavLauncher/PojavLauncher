@@ -254,17 +254,17 @@ assert 'MOBILEGLUES_RENDERER' not in default_body, \
     'the automatic default must not be MobileGlues - it is the choice the launcher warns about'
 assert 'RendererDefaults.isBundled' in default_body
 
-# Every picker goes through the warning before it writes the preference. The renderer tile grid
-# and the plugin cards were removed from the tab, so the renderer picker is the Global Renderer
-# list: it is the only place left in Settings that can choose MobileGlues, and it must warn.
-pickers = settings.count('MobileGluesWarning.applies')
-assert pickers >= 1, 'the Global Renderer list must warn before it writes MobileGlues'
-# The writes that follow the warning (confirm, and "use the recommended one") are the only other
-# renderer writes on the page, and both are unreachable until the dialog has been answered.
-writes = settings.count('setMiraiGlobalRenderer(')
-assert writes <= 3, f'Settings gained an unwarned renderer write ({writes} total)'
-assert settings.count('pendingMobileGlues') >= 3, 'the pick must be held, not applied, until asked'
-assert 'MobileGluesWarningDialog(' in settings and 'MobileGluesWarningDialog(' in editor
+# Settings no longer offers a renderer picker at all: the Global Renderer list was removed, so the
+# only places a renderer is chosen are the per-instance editor and the classic instance editor, and
+# both must warn before they write MobileGlues.
+assert 'title = "Global Renderer"' not in settings, \
+    'the Global Renderer card was removed from Settings and must not come back'
+assert 'setMiraiGlobalRenderer(' not in settings, \
+    'Settings must not write the global renderer now that the picker is gone'
+assert 'MiraiListSettingsCard(' in settings, 'the Vulkan driver and API cards must stay'
+assert 'title = "Global Vulkan Driver"' in settings
+assert 'MobileGluesWarningDialog(' in editor
+assert 'MobileGluesWarning.applies(entry.backendRendererId)' in editor
 assert 'MobileGluesWarning.applies(entry.backendRendererId)' in editor
 assert 'setOnPreferenceChangeListener' in classic and 'showMobileGluesWarning' in classic
 assert 'return false;' in classic.split('showMobileGluesWarning(chosen);')[1][:80], \

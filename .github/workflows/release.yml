@@ -105,6 +105,7 @@ jobs:
           python3 tests/vulkan_driver_import_smoke.py
           python3 tests/fastclient_assets_smoke.py
           python3 tests/modpack_archives_test.py
+          python3 tests/cape_default_smoke.py
           python3 tests/fastclient_performance_download_test.py
           python3 tests/recorder_wiring_smoke.py
           mkdir -p "$RUNNER_TEMP/aerix-migration-smoke"

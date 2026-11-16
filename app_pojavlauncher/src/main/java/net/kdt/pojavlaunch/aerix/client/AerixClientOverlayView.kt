@@ -2375,7 +2375,7 @@ private fun ClientCapesSubPage(onSyncCape: () -> Unit) {
                 )
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
-                        text = "Equipped: ${activeCape.title}",
+                        text = "Equipped: ${activeCape?.title ?: "none"}",
                         color = LiquidCrystalPalette.CrimsonGlow,
                         fontSize = 11.sp,
                         fontWeight = FontWeight.Bold
@@ -2393,6 +2393,55 @@ private fun ClientCapesSubPage(onSyncCape: () -> Unit) {
                 Toast.makeText(context, AerixClientCosmetics.lastCapeSyncStatus, Toast.LENGTH_LONG).show()
             })
             Spacer(Modifier.height(6.dp))
+            // Taking a cape off has to be possible. Before this, the only way to stop wearing an
+            // Aerix cape was to import a custom one, and the default was an equipped cape nobody
+            // had chosen.
+            val noCapeSelected = activeCape == null &&
+                AerixClientStore.equippedCapeId != "custom"
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(
+                        if (noCapeSelected) LiquidCrystalPalette.CrimsonTintFill
+                        else LiquidCrystalPalette.DarkTile,
+                        RoundedCornerShape(10.dp)
+                    )
+                    .border(
+                        width = if (noCapeSelected) 1.4.dp else 1.dp,
+                        color = if (noCapeSelected) LiquidCrystalPalette.CrimsonGlow
+                        else LiquidCrystalPalette.DarkTileBorder,
+                        shape = RoundedCornerShape(10.dp)
+                    )
+                    .clickable {
+                        AerixClientStore.equippedCapeId = AerixClientStore.CAPE_NONE
+                        AerixClientStore.persist()
+                        onSyncCape()
+                    }
+                    .padding(horizontal = 10.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        "No cape",
+                        color = Color.White,
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        "Wear nothing, or the cape your own account has",
+                        color = Color(0xFFB8BCCA).copy(alpha = 0.75f),
+                        fontSize = 10.sp
+                    )
+                }
+                if (noCapeSelected) {
+                    Text("✓", color = LiquidCrystalPalette.CrimsonGlow, fontSize = 15.sp,
+                        fontWeight = FontWeight.Bold)
+                }
+            }
+            Spacer(Modifier.height(8.dp))
             val capeRows = AerixClientCosmetics.capes.chunked(3)
             Column(
                 modifier = Modifier
@@ -2406,7 +2455,7 @@ private fun ClientCapesSubPage(onSyncCape: () -> Unit) {
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         rowCapes.forEach { spec ->
-                            val selected = activeCape.id == spec.id
+                            val selected = activeCape?.id == spec.id
                             val unlocked = AerixClientCosmetics.canEquipCape(spec)
                             val cardShape = RoundedCornerShape(10.dp)
 

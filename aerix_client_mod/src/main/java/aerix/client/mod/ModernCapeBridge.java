@@ -275,7 +275,20 @@ final class ModernCapeBridge {
         File meta = new File(dir, "meta.properties");
         File first = new File(dir, "frame_00.png");
         long stamp = meta.isFile() ? meta.lastModified() : first.isFile() ? first.lastModified() : -1L;
-        if (stamp <= 0 || stamp == frameStamp) return;
+        if (stamp <= 0) {
+            // The launcher removed the frames because no cape is equipped any more. Dropping the
+            // ones held in memory is what makes the cape actually come off: the old code returned
+            // early here and kept drawing the removed cape until the game was restarted.
+            if (frameStamp != Long.MIN_VALUE) {
+                for (Object image : frameImages) close(image);
+                frameImages.clear();
+                frameBytes.clear();
+                frameIndex = 0;
+                frameStamp = Long.MIN_VALUE;
+            }
+            return;
+        }
+        if (stamp == frameStamp) return;
         List<byte[]> bytes = new ArrayList<byte[]>();
         List<Object> images = new ArrayList<Object>();
         try {
@@ -288,7 +301,17 @@ final class ModernCapeBridge {
                 bytes.add(frame);
                 images.add(decoded);
             }
-            if (images.isEmpty()) return;
+            if (images.isEmpty()) {
+                // A folder with no readable frame is the same as no folder: fall through to the
+                // empty list and record the stamp, so this is not re-read on every frame.
+                stamp = -1L;
+            }
+            if (stamp <= 0) {
+                for (Object image : frameImages) close(image);
+                frameImages.clear(); frameBytes.clear(); frameIndex = 0;
+                frameStamp = Long.MIN_VALUE;
+                return;
+            }
         } catch (Throwable error) {
             for (Object image : images) close(image);
             throw error;

@@ -201,11 +201,22 @@ object AerixClientCosmetics {
 
     fun canEquipCape(spec: ClientCapeSpec): Boolean = spec.isUnlockedFor(currentEmail())
 
-    fun effectiveCapeSpec(): ClientCapeSpec {
-        val wanted = capes.firstOrNull { it.id == AerixClientStore.equippedCapeId }
-        if (wanted != null && canEquipCape(wanted)) return wanted
-        return capes.first()
+    /**
+     * The cape this player actually wears, or null when they have chosen none.
+     *
+     * It returns null rather than falling back to a cape: an unequipped cape that silently becomes
+     * "Crimson Sovereign" is exactly the bug where a player saw a cape nobody had picked. A cape
+     * the account cannot equip (a co-owner cape on someone else's account) is likewise treated as
+     * unequipped instead of being swapped for a different one.
+     */
+    fun effectiveCapeSpec(): ClientCapeSpec? {
+        if (AerixClientStore.equippedCapeId == AerixClientStore.CAPE_NONE) return null
+        val wanted = capes.firstOrNull { it.id == AerixClientStore.equippedCapeId } ?: return null
+        return wanted.takeIf { canEquipCape(it) }
     }
+
+    /** Whether the player has picked an Aerix cape; a cape the account cannot equip does not count. */
+    fun hasEquippedCape(): Boolean = effectiveCapeSpec() != null
 
     private fun resolveImportedCapeBytes(): ByteArray? = runCatching {
         val account = net.kdt.pojavlaunch.aerix.bridge.PojavAccountBridge.current ?: return@runCatching null
@@ -228,8 +239,11 @@ object AerixClientCosmetics {
         if (AerixClientStore.equippedCapeId == "custom") {
             resolveImportedCapeBytes()?.let { return@runCatching it }
         }
+        // No Aerix cape equipped means no cape at all - not a generated one. The game falls back to
+        // whatever the account itself owns, which is the whole point.
+        val spec = effectiveCapeSpec() ?: return@runCatching null
 
-        val bmp = buildAnimatedCapeFrameBitmap(effectiveCapeSpec(), frameIndex = 0, totalFrames = 12)
+        val bmp = buildAnimatedCapeFrameBitmap(spec, frameIndex = 0, totalFrames = 12)
         ByteArrayOutputStream().use { out ->
             bmp.compress(Bitmap.CompressFormat.PNG, 100, out)
             out.toByteArray()
@@ -256,13 +270,23 @@ object AerixClientCosmetics {
             val configDir = File(instanceGameDir, "config").apply { mkdirs() }
             val framesDir = File(configDir, "aerix_cape_frames").apply { mkdirs() }
 
+            // Nothing equipped: clear the frames an earlier choice left behind. Leaving them would
+            // keep drawing a cape the player has since taken off, because the bridge mod reads the
+            // folder, not the launcher's preferences.
+            if (spec == null && importedCape == null) {
+                framesDir.listFiles()?.forEach { it.delete() }
+                File(configDir, "waveycapes.json").delete()
+                lastCapeSyncStatus = "No cape equipped; removed the frames of the previous one"
+                return@runCatching
+            }
+
             val total = 12
             for (i in 0 until total) {
                 val outFile = File(framesDir, String.format(java.util.Locale.ROOT, "frame_%02d.png", i))
                 if (importedCape != null) {
                     FileOutputStream(outFile).use { it.write(importedCape) }
                 } else {
-                    val bmp = buildAnimatedCapeFrameBitmap(spec, frameIndex = i, totalFrames = total)
+                    val bmp = buildAnimatedCapeFrameBitmap(spec!!, frameIndex = i, totalFrames = total)
                     FileOutputStream(outFile).use { fos -> bmp.compress(Bitmap.CompressFormat.PNG, 100, fos) }
                 }
             }
@@ -270,7 +294,7 @@ object AerixClientCosmetics {
             val metaFile = File(framesDir, "meta.properties")
             metaFile.writeText(
                 buildString {
-                    appendLine("capeId=${if (importedCape != null) "custom" else spec.id}")
+                    appendLine("capeId=${if (importedCape != null) "custom" else spec?.id ?: AerixClientStore.CAPE_NONE}")
                     appendLine("frames=$total")
                     appendLine("waving=${AerixClientStore.wavingCapeEnabled}")
                     appendLine("updatedAtMs=$now")
@@ -296,7 +320,7 @@ object AerixClientCosmetics {
             waveyFile.setLastModified(now)
             val bytes = framesDir.listFiles()?.sumOf { it.length() } ?: 0L
             lastCapeSyncStatus = "Wrote $total frames (${bytes} B) for " +
-                "${if (importedCape != null) "your imported cape" else spec.id} into ${framesDir.name}; " +
+                "${if (importedCape != null) "your imported cape" else spec?.id} into ${framesDir.name}; " +
                 "bridge mod: ${AerixClientModBridge.lastStatus}"
         }.onFailure { error ->
             lastCapeSyncStatus = "Could not write cape frames: ${error.message ?: error.javaClass.simpleName}"
