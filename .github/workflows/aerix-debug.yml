@@ -106,6 +106,7 @@ jobs:
           python3 tests/aerix_account_setup_smoke.py
           python3 tests/world_invite_chat_smoke.py
           python3 tests/servers_ui_smoke.py
+          python3 tests/modpacks_smoke.py
           mkdir -p "$RUNNER_TEMP/aerix-migration-test"
           javac -d "$RUNNER_TEMP/aerix-migration-test" \
             app_pojavlauncher/src/main/java/net/kdt/pojavlaunch/tasks/DataMigrationPolicy.java \

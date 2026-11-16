@@ -128,6 +128,7 @@ import net.kdt.pojavlaunch.aerix.components.DefaultSwitch
 import net.kdt.pojavlaunch.aerix.components.MiraiIntSliderSettingsCard
 import net.kdt.pojavlaunch.aerix.components.MiraiListSettingsCard
 import net.kdt.pojavlaunch.aerix.components.MiraiRendererSummaryLayout
+import net.kdt.pojavlaunch.aerix.components.MiraiRendererEntry
 import net.kdt.pojavlaunch.aerix.components.SettingsCardColumn
 import net.kdt.pojavlaunch.aerix.discord.DiscordPresenceSettingsCard
 import net.kdt.pojavlaunch.aerix.components.getMiraiGlobalRendererId
@@ -137,6 +138,7 @@ import net.kdt.pojavlaunch.aerix.components.rememberSettingsCardShape
 import net.kdt.pojavlaunch.aerix.components.setMiraiGlobalRenderer
 import net.kdt.pojavlaunch.aerix.theme.AerixFonts
 import net.kdt.pojavlaunch.aerix.theme.AerixMetrics
+import net.kdt.pojavlaunch.game.renderer.MobileGluesWarning
 import net.kdt.pojavlaunch.aerix.theme.AerixRadii
 import net.kdt.pojavlaunch.aerix.theme.AerixSpacing
 import net.kdt.pojavlaunch.aerix.theme.AerixSurface
@@ -312,6 +314,32 @@ private fun RendererTabContent(activity: FragmentActivity) {
     val defaultRendererId = remember(revision) { LauncherPreferences.defaultRendererId(activity) }
     val rendererEntries = remember(revision) { miraiRendererEntries(activity, includeFollowGlobal = false) }
     var currentMiraiRendererId by remember(revision) { mutableStateOf(getMiraiGlobalRendererId(activity)) }
+    // The Global Renderer list is the only renderer picker left on this tab, so it is the only place
+    // MobileGlues can be chosen here - and picking it is held until the warning has been read.
+    var pendingMobileGlues by remember { mutableStateOf<MiraiRendererEntry?>(null) }
+    pendingMobileGlues?.let { entry ->
+        val close = { pendingMobileGlues = null }
+        MobileGluesWarningDialog(
+            versionId = currentRenderer,
+            onConfirm = {
+                close()
+                currentMiraiRendererId = entry.uniqueId
+                setMiraiGlobalRenderer(entry)
+                PojavSettingsBridge.touch()
+            },
+            onRecommended = { recommended ->
+                close()
+                // The renderer this launcher version wants, taken from the list the device offers.
+                val replacement = rendererEntries.firstOrNull { it.uniqueId == recommended }
+                if (replacement != null) {
+                    currentMiraiRendererId = replacement.uniqueId
+                    setMiraiGlobalRenderer(replacement)
+                    PojavSettingsBridge.touch()
+                }
+            },
+            onDismiss = close
+        )
+    }
     var globalVulkanDriver by remember(revision) {
         mutableStateOf(VulkanDriverManager.globalDriverId(activity))
     }
@@ -486,9 +514,14 @@ private fun RendererTabContent(activity: FragmentActivity) {
                         }
                     },
                     onValueChange = { entry ->
-                        currentMiraiRendererId = entry.uniqueId
-                        setMiraiGlobalRenderer(entry)
-                        PojavSettingsBridge.touch()
+                        if (MobileGluesWarning.applies(entry.backendRendererId)) {
+                            // Nothing is written until the warning is answered.
+                            pendingMobileGlues = entry
+                        } else {
+                            currentMiraiRendererId = entry.uniqueId
+                            setMiraiGlobalRenderer(entry)
+                            PojavSettingsBridge.touch()
+                        }
                     }
                 )
                 if (showMgSettings) {
