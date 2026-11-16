@@ -95,6 +95,7 @@ jobs:
           python3 tests/background_display_smoke.py
           python3 tests/error_dialog_smoke.py
           python3 tests/startup_runtime_smoke.py
+          python3 tests/release_signing_smoke.py
           python3 tests/previous_launch_log_smoke.py
           python3 tests/game_exit_relaunch_smoke.py
           python3 tests/rust_removed_smoke.py

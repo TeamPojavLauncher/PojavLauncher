@@ -14,7 +14,7 @@ APK is only built when the owner asks for a release and confirms it.
 | Build info | `https://github.com/entitybrian69-bit/Aerix-launcher/releases/download/debug-latest/NIGHTLY_BUILD.txt` (commit, versionCode, sha256) |
 | CI workflow | **Aerix Nightly (testing)** (`aerix-debug.yml`) |
 | CI artifact | `aerix-nightly-apk` |
-| Source | this branch (`version.properties` = `2.3.2`) |
+| Source | this branch (`version.properties` = `2.3.3`) |
 | Variant | `noruntimeNightly` |
 | applicationId | `net.al.aerixlauncher.debug` |
 | Label | Aerix Nightly |
@@ -69,6 +69,61 @@ initialised submodules (`git submodule update --init --recursive`).
 The separate `.github/workflows/nightly.yml` is legacy: it builds a different app
 (`net.al.aerixlauncher.pub`) and its publish steps only run for the upstream
 repository owner. It is not the testing channel.
+
+## Signing keys
+
+The public release is signed with a key that is **not in this repository and never will be**. A
+release key that "travels with the project" is a key anyone who clones it can use: same package name,
+same signature, any code inside, and every installed phone accepts it as an ordinary update. Until
+November 2026 `app_pojavlauncher/aerix_release.p12` was tracked in git with its password in
+`build.gradle` as a default, and CI never set the secret that would have overridden it - so the key
+that signed v2.3.0, v2.3.1 and v2.3.2 was public.
+
+A keystore is only a leak when its password is public too. The four upstream `pojav_*.jks` files that
+remain in the tree are useless without `POJAV_KEYSTORE_PASSWORD` / `POJAV_GPLAY_KEYSTORE_PASSWORD`, and
+Android CI legitimately signs the Play `.aab` with one of them - so they stay, and `*.p12` is ignored so
+the shape that actually leaked cannot come back. It is retired; its certificate fingerprint is
+listed in `tests/leaked_cert_fingerprint.txt` and the release job refuses to publish an APK signed
+by it, in this repo and in every fork that keeps the workflow.
+
+The live key lives in repository secrets, base64-encoded, and is decoded into the runner's temp
+directory at build time:
+
+| Secret | What it is |
+|---|---|
+| `AERIX_KEYSTORE_P12` | `base64 -w0 aerix_release.p12` - the PKCS12 file, never committed |
+| `AERIX_KEYSTORE_PASSWORD` | its store and key password (one password, alias `aerix`) |
+| `AERIX_LEGACY_P12` / `AERIX_LEGACY_PASSWORD` | the **retired** key, only until the transition release ships |
+
+To make one:
+
+```bash
+keytool -genkeypair -v -alias aerix -keyalg RSA -keysize 4096 -validity 10950 \
+  -storetype PKCS12 -keystore aerix_release.p12
+base64 -w0 aerix_release.p12 | gh secret set AERIX_KEYSTORE_P12
+gh secret set AERIX_KEYSTORE_PASSWORD      # paste the password, it is not recoverable
+```
+
+Then `gh secret delete AERIX_LEGACY_P12` and `AERIX_LEGACY_PASSWORD` once no install is left on the
+old signature, and delete the "Unpack the retired signing key" step in `release.yml`.
+
+**A local `assembleRelease` without the secrets produces an unsigned APK on purpose.** Gradle warns
+and moves on rather than falling back to something convenient, because a fallback that quietly
+signs a release with a public key is exactly how this happened. `tests/release_signing_smoke.py`
+fails the build if a default password ever comes back.
+
+Rotating the key later means one release signed by **both** the old and the new key: Android accepts
+an update when any of its signers matches the installed app, so `apksigner --ks <new> ... --ks <old>
+--v2-signer` is what lets people update instead of uninstalling and losing their worlds, instances
+and controls. The transition release stays valid only for installs whose current APK carries the
+matching signer - which is why a release published with a leaked key must itself be followed by
+**clean-install-only** APKs: re-signing v2.3.2 with anything other than v2.3.2's key would let a
+forged v2.3.2 look legitimate.
+
+Aerix Nightly keeps `app_pojavlauncher/debug.keystore`, the public AOSP debug key. That is the
+convention for debug builds, it is what lets a nightly install over another debug build, and it is
+why the nightly channel can never become someone's update vector for the stable app: different
+applicationId, different signature, and it can never overwrite a release install.
 
 ## Public releases
 

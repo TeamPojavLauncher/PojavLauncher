@@ -83,6 +83,47 @@ jobs:
         with:
           gradle-version: "8.14.3"
 
+      - name: Unpack the release signing key
+        # The key is a base64 secret, not a file in the tree, and it never touches the checkout: a
+        # signing key published in a public repository can be used by anyone to push an update that
+        # every installed copy accepts as ours. Gradle reads AERIX_KEYSTORE_FILE from here.
+        env:
+          AERIX_KEYSTORE_P12_B64: ${{ secrets.AERIX_KEYSTORE_P12 }}
+          AERIX_KEYSTORE_PASSWORD_IN: ${{ secrets.AERIX_KEYSTORE_PASSWORD }}
+        run: |
+          set -eu
+          test -n "$AERIX_KEYSTORE_P12_B64" || {
+            echo "::error::AERIX_KEYSTORE_P12 is not set. A public release is never signed with a key"
+            echo "   found in the repository, so this build stops instead of shipping something"
+            echo "   unsigned or something signed by a key the whole world already has."
+            exit 1
+          }
+          test -n "$AERIX_KEYSTORE_PASSWORD_IN" || { echo "::error::AERIX_KEYSTORE_PASSWORD is not set"; exit 1; }
+          printf '%s' "$AERIX_KEYSTORE_P12_B64" | base64 -d > "$RUNNER_TEMP/aerix_release.p12"
+          echo "AERIX_KEYSTORE_FILE=$RUNNER_TEMP/aerix_release.p12" >> "$GITHUB_ENV"
+          echo "AERIX_KEYSTORE_PASSWORD=$AERIX_KEYSTORE_PASSWORD_IN" >> "$GITHUB_ENV"
+          echo "AERIX_KEYSTORE_ALIAS=$AERIX_KEYSTORE_ALIAS" >> "$GITHUB_ENV"
+
+      - name: Unpack the retired signing key for the transition
+        # Exactly one release gets signed by BOTH the retired key and the new one, because Android
+        # accepts an update when any signer matches the installed app. Without it, everyone on a
+        # pre-rotation build has to uninstall - losing worlds, instances and controls - to update.
+        # Delete this step once nobody is on a single-signed build any more.
+        env:
+          AERIX_LEGACY_P12_B64: ${{ secrets.AERIX_LEGACY_P12 }}
+          AERIX_LEGACY_PASSWORD_IN: ${{ secrets.AERIX_LEGACY_PASSWORD }}
+        run: |
+          set -eu
+          if [ -z "$AERIX_LEGACY_P12_B64" ]; then
+            echo "false" > "$RUNNER_TEMP/legacy_key_present"
+            echo "::warning::AERIX_LEGACY_P12 is unset, so installs signed with the retired key"
+            echo "   cannot update in place and will need the clean-install APK."
+            exit 0
+          fi
+          printf '%s' "$AERIX_LEGACY_P12_B64" | base64 -d > "$RUNNER_TEMP/aerix_legacy.p12"
+          echo "AERIX_LEGACY_KEYSTORE_PASSWORD=$AERIX_LEGACY_PASSWORD_IN" >> "$GITHUB_ENV"
+          echo "true" > "$RUNNER_TEMP/legacy_key_present"
+
       - name: Set up JDK 21
         uses: actions/setup-java@v3
         with:
@@ -97,6 +138,7 @@ jobs:
           python3 tests/background_display_smoke.py
           python3 tests/error_dialog_smoke.py
           python3 tests/startup_runtime_smoke.py
+          python3 tests/release_signing_smoke.py
           python3 tests/previous_launch_log_smoke.py
           python3 tests/game_exit_relaunch_smoke.py
           python3 tests/social_profile_cosmetics_smoke.py
@@ -141,6 +183,56 @@ jobs:
           gradle :app_pojavlauncher:assembleNoruntimeRelease -PabiSplits
           ls -l app_pojavlauncher/build/outputs/apk/noruntime/release/
 
+      - name: Align and sign every APK with both keys
+        # Gradle has already signed with the new key; re-signing here is what adds the second signer.
+        # This runs before SHA256SUMS exists on purpose - checksums generated before a re-sign are
+        # a lie, and the in-app updater checks them.
+        run: |
+          set -eu
+          SDK="${ANDROID_SDK_ROOT:-$ANDROID_HOME}"
+          APKSIGNER=$(ls "$SDK"/build-tools/*/apksigner 2>/dev/null | tail -1 || true)
+          ZIPALIGN=$(ls "$SDK"/build-tools/*/zipalign 2>/dev/null | tail -1 || true)
+          test -n "$APKSIGNER" && test -n "$ZIPALIGN"
+          test -n "${AERIX_KEYSTORE_FILE:-}" || { echo "::error::no signing key"; exit 1; }
+          LEGACY="$(cat "$RUNNER_TEMP/legacy_key_present" 2>/dev/null || echo false)"
+          ALIAS=aerix
+          if [ "$LEGACY" = "true" ]; then
+            # The retired p12 holds one key, but say which one out loud: an alias guessed wrong here
+            # fails with "Keystore does not contain alias", not with a silently single-signed APK.
+            keytool -list -keystore "$RUNNER_TEMP/aerix_legacy.p12" \
+              -storepass "$AERIX_LEGACY_KEYSTORE_PASSWORD" -storetype PKCS12 | sed -n '1,8p'
+            echo "Signing with the retired key as alias: $ALIAS"
+          fi
+          shopt -s nullglob
+          signed=0
+          for apk in app_pojavlauncher/build/outputs/apk/full/release/*.apk \
+                     app_pojavlauncher/build/outputs/apk/noruntime/release/*.apk; do
+            cp "$apk" "$RUNNER_TEMP/to-sign.apk"
+            "$ZIPALIGN" -f 4 "$RUNNER_TEMP/to-sign.apk" "$RUNNER_TEMP/to-sign-aligned.apk"
+            if [ "$LEGACY" = "true" ]; then
+              "$APKSIGNER" sign \
+                --ks "$AERIX_KEYSTORE_FILE" --ks-key-alias "$AERIX_KEYSTORE_ALIAS" \
+                --ks-pass "env:AERIX_KEYSTORE_PASSWORD" --key-pass "env:AERIX_KEYSTORE_PASSWORD" \
+                --ks "$RUNNER_TEMP/aerix_legacy.p12" --ks-key-alias "$ALIAS" \
+                --ks-pass "env:AERIX_LEGACY_KEYSTORE_PASSWORD" --key-pass "env:AERIX_LEGACY_KEYSTORE_PASSWORD" \
+                --v2-signer \
+                --v1-signing-enabled false --v2-signing-enabled true --v3-signing-enabled true \
+                --out "$apk" "$RUNNER_TEMP/to-sign-aligned.apk"
+            else
+              "$APKSIGNER" sign \
+                --ks "$AERIX_KEYSTORE_FILE" --ks-key-alias "$AERIX_KEYSTORE_ALIAS" \
+                --ks-pass "env:AERIX_KEYSTORE_PASSWORD" --key-pass "env:AERIX_KEYSTORE_PASSWORD" \
+                --v1-signing-enabled false --v2-signing-enabled true --v3-signing-enabled true \
+                --out "$apk" "$RUNNER_TEMP/to-sign-aligned.apk"
+            fi
+            echo "signed $apk (legacy=$LEGACY)"
+            signed=$((signed+1))
+          done
+          # Zero is the failure that would otherwise pass: `out/` does not exist yet (the next step is
+          # what collects and renames), and a glob over a wrong path silently signs nothing at all.
+          test "$signed" -ge 6 || { echo "::error::re-signed $signed APKs, expected at least 6"; exit 1; }
+          echo "re-signed $signed APKs"
+
       - name: Name the assets after the version
         run: |
           set -e
@@ -179,6 +271,36 @@ jobs:
           for apk in out/Aerix-Launcher-*.apk; do
             echo "== $apk"
             "$AAPT2" dump badging "$apk" | grep -E "^package:|^application-label:"
+          done
+
+      - name: Check who signed these APKs
+        # The point of the whole exercise: nothing gets published signed by the key that used to live
+        # in this repository. Every signer fingerprint is compared against
+        # tests/leaked_cert_fingerprint.txt, and during the transition a single-signed APK is refused
+        # too, because a release nobody could install over is not an improvement.
+        run: |
+          set -eu
+          SDK="${ANDROID_SDK_ROOT:-$ANDROID_HOME}"
+          APKSIGNER=$(ls "$SDK"/build-tools/*/apksigner 2>/dev/null | tail -1 || true)
+          test -n "$APKSIGNER"
+          LEGACY="$(cat "$RUNNER_TEMP/legacy_key_present" 2>/dev/null || echo false)"
+          for apk in out/Aerix-Launcher-*.apk; do
+            echo "== $apk"
+            info=$("$APKSIGNER" verify --print-certs "$apk" | tr 'A-F' 'a-f')
+            printf '%s\n' "$info" | grep -E "signer #|sha-256" || true
+            n=$(printf '%s\n' "$info" | grep -c "signer #" || true)
+            while read -r banned; do
+              [ -n "$banned" ] || continue
+              if printf '%s\n' "$info" | grep -q "$banned"; then
+                echo "::error::$apk is signed by the retired key that was published in this repository."
+                exit 1
+              fi
+            done < <(grep -v "^#" tests/leaked_cert_fingerprint.txt | grep -Eo "^[0-9a-f]{64}$" || true)
+            if [ "$LEGACY" = "true" ] && [ "$n" -lt 2 ]; then
+              echo "::error::$apk carries $n signer(s); the transition release must carry both, or"
+              echo "   existing installs cannot update in place."
+              exit 1
+            fi
           done
 
       - name: Upload full APK

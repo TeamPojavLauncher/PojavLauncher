@@ -362,6 +362,11 @@ def build_index():
             <span><b>2.3.2: sorry - the missing Java was ours, not your internet</b>
             That same crash skipped the two startup lines after it, which were the CPU read and the bundled runtime unpack, so the launcher went looking for a runtime named after no architecture at all and blamed the connection when it could not find one. Startup steps are independent now, the architecture is worked out on demand, an install failure carries the reason behind "Show more", and the crash screen keeps the trace without asking for a permission.</span>
           </li>
+          <li>
+            <span class="n">08</span>
+            <span><b>2.3.3: the signing key that should never have been public</b>
+            The warning some security apps raised on install had a real reason - releases were signed with a key committed to this repository, with its password in the file beside it. That key is retired and permanently banned in CI, releases now sign from a secret no clone can read, and 2.3.3 carries both signatures so you can update without uninstalling and losing your worlds.</span>
+          </li>
         </ol>
         <div class="log-foot">
           <span>Minor release · published {RELEASE_DATE} · Android 6.0+ · arm64-v8a, armeabi-v7a and universal</span>

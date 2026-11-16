@@ -16,3 +16,12 @@ apk/
 # Python tooling scratch, never an artifact of the asset generator.
 __pycache__/
 *.py[cod]
+
+# Signing keys. A key inside a public repository is only a leak when its password is in the same
+# repository: that is what made app_pojavlauncher/aerix_release.p12 dangerous, and it is gone.
+# The four *.jks files that remain are upstream Pojav's, and each one is useless without a secret
+# (POJAV_KEYSTORE_PASSWORD, POJAV_GPLAY_KEYSTORE_PASSWORD and friends) - Android CI legitimately signs
+# the Play .aab with one of them, so they stay. Anything NEW must not be added: no .p12 in the tree,
+# and never a keystore whose password appears in a build file.
+*.p12
+*.pkcs12

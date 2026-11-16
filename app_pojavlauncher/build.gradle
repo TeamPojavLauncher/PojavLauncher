@@ -85,36 +85,63 @@ android {
             keyAlias "androiddebugkey"
             keyPassword "android"
         }
+        // Inherited from upstream, whose keystores are no longer kept in this repository. Left
+        // configurable for a builder who holds the upstream key; nothing in Aerix CI references it.
         customRelease {
+            // Upstream's key, kept in the tree because its password is NOT: without
+            // POJAV_KEYSTORE_PASSWORD these builds simply go unsigned. Only aerixRelease below is a key
+            // whose password was public, and that is why that one left the repository.
             storeFile file("pojav_release.jks")
             storePassword System.getenv("POJAV_KEYSTORE_PASSWORD")
             keyAlias "android_github_release"
             keyPassword System.getenv("POJAV_KEYSTORE_PASSWORD")
         }
-        // The key the published Aerix builds are signed with. It travels with the project next to
-        // the other keystores, so a build never depends on a secret this repository may not have;
-        // AERIX_KEYSTORE_PASSWORD overrides the password in the environment for anyone who keeps
-        // the key out of the tree.
+        // The key the published Aerix builds are signed with. It is NOT in this repository, and it
+        // must never be: a release key that travels with the project is a release key anyone can
+        // use, and whoever holds it can push an update that every installed copy accepts as ours -
+        // same package, same signature, any code inside. The line that used to fall back to a
+        // password written down in this file is what let a public key sign public releases.
+        //
+        // Release CI decodes AERIX_KEYSTORE_P12 into RUNNER_TEMP and exports AERIX_KEYSTORE_FILE and
+        // AERIX_KEYSTORE_PASSWORD (see .github/workflows/release.yml). A local release build without
+        // them goes unsigned instead: assembleRelease still compiles, and that APK is for looking at,
+        // never for publishing. The release workflow refuses to publish an unsigned APK, and refuses
+        // one signed by the retired key, so forgetting the secret is loud rather than implicit.
         aerixRelease {
-            storeFile file("aerix_release.p12")
-            storeType "PKCS12"
-            storePassword System.getenv("AERIX_KEYSTORE_PASSWORD") ?: "aerix-release"
-            keyAlias "aerix"
-            keyPassword System.getenv("AERIX_KEYSTORE_PASSWORD") ?: "aerix-release"
+            def keyFile = System.getenv("AERIX_KEYSTORE_FILE")
+            def keyPass = System.getenv("AERIX_KEYSTORE_PASSWORD")
+            if (keyFile != null && keyPass != null && new File(keyFile).isFile()) {
+                storeFile new File(keyFile)
+                storeType "PKCS12"
+                storePassword keyPass
+                keyAlias System.getenv("AERIX_KEYSTORE_ALIAS") ?: "aerix"
+                keyPassword keyPass
+            } else {
+                logger.warn("aerixRelease: no AERIX_KEYSTORE_FILE - the release APK will be UNSIGNED")
+            }
         }
         googlePlayBuild {
+            // Upstream's key, kept in the tree because its password is NOT: without
+            // POJAV_GPLAY_KEYSTORE_PASSWORD these builds simply go unsigned. Only aerixRelease below is a key
+            // whose password was public, and that is why that one left the repository.
             storeFile file("pojav_gplay.jks")
             storePassword System.getenv("POJAV_GPLAY_KEYSTORE_PASSWORD")
             keyAlias "key0"
             keyPassword System.getenv("POJAV_GPLAY_KEYSTORE_PASSWORD")
         }
         upload {
+            // Upstream's key, kept in the tree because its password is NOT: without
+            // UPLOAD_KEYSTORE_PASSWORD these builds simply go unsigned. Only aerixRelease below is a key
+            // whose password was public, and that is why that one left the repository.
             storeFile file("pojav_upload.jks")
             storePassword System.getenv("UPLOAD_KEYSTORE_PASSWORD")
             keyAlias "upload"
             keyPassword System.getenv("UPLOAD_KEYSTORE_PASSWORD")
         }
         publicBuild {
+            // Upstream's key, kept in the tree because its password is NOT: without
+            // POJAVPUB_KEYSTORE_PASSWORD these builds simply go unsigned. Only aerixRelease below is a key
+            // whose password was public, and that is why that one left the repository.
             storeFile file("pojav_pub.jks")
             storePassword System.getenv("POJAVPUB_KEYSTORE_PASSWORD")
             keyAlias "key0"

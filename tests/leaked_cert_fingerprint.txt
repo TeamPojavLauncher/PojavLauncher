@@ -1,0 +1,18 @@
+# Certificate fingerprints that must never appear on a published Aerix release.
+#
+# The release job prints `apksigner verify --print-certs` for every APK and fails if any signer's
+# certificate digest matches a line below. Add a fingerprint here the day a key is retired and it
+# stays banned forever, including in forks that keep this workflow.
+#
+# fba0764460bf766ac2491c714ded1859201e5bf7ef3e8c276e49261845b279db
+#   app_pojavlauncher/aerix_release.p12 - the key that shipped v2.3.0, v2.3.1 and v2.3.2, committed
+#   to this repository with its password written next to it in build.gradle. Removed Nov 2026.
+#   2048-bit RSA, subject "C = NP, O = Aerix, CN = Aerix Launcher". Anyone with the repository could
+#   sign a forged update, so it is retired rather than trusted-again; the one release signed by BOTH
+#   this key and its replacement exists purely so installs from before the rotation can update
+#   in place instead of uninstalling and losing their worlds.
+#
+# The debug/nightly channel is signed with app_pojavlauncher/debug.keystore, which is the public AOSP
+# debug key. That is normal for debug builds and is not listed here, because a debug certificate must
+# never reach a release signing config - and the checks above would catch it the moment it did.
+fba0764460bf766ac2491c714ded1859201e5bf7ef3e8c276e49261845b279db
