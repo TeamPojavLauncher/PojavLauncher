@@ -33,7 +33,9 @@ for version, (sha, loader, minecraft, java, java_level) in BUILDS.items():
     with zipfile.ZipFile(path) as jar:
         assert jar.testzip() is None, version
         metadata = json.loads(jar.read('fabric.mod.json'))
-        assert metadata['id'] == 'fastclient-hud'
+        # 3.0 renamed the mod id from "fasteclient" to "fastclient-hud"; the installer accepts
+        # both, so a build from either series installs instead of reporting bad metadata.
+        assert metadata['id'] in ('fastclient-hud', 'fasteclient'), metadata['id']
         assert metadata['depends']['fabricloader'] == loader, version
         assert metadata['depends']['minecraft'] == minecraft, version
         assert metadata['depends']['java'] == java, version
@@ -64,6 +66,8 @@ assert 'overwrite = false' in installer
 assert 'SHA-512' in installer and 'cdn.modrinth.com' in installer
 
 # Each build's own armorial is written onto its instance, so six installs do not all wear one mark.
+assert "CLIENT_MOD_IDS" in installer, 'the installer must check the jar is really FastClient'
+assert '"fastclient-hud"' in installer, 'the 3.0 mod id must be accepted'
 assert 'assets/fastclient-hud/icon.png' in installer, "the jar's own logo must become the instance icon"
 provider = (JAVA / 'instances/InstanceIconProvider.java').read_text()
 assert 'R.drawable.fastclient_instance' in provider and 'fastClientVersion' in provider

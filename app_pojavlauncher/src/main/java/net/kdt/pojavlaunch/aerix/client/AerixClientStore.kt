@@ -127,7 +127,17 @@ object AerixClientStore {
     var packHitSound by mutableStateOf(HitSoundPreset.VANILLA)
 
     /* ── Capes State (3D Character + Waving Cape + 15 Animated Capes) ─────── */
-    var equippedCapeId by mutableStateOf("crimson_sovereign")
+
+    /**
+     * Nothing equipped: the player wears no cape unless their own account has one.
+     *
+     * This is the default. An Aerix cape used to be equipped out of the box, which put a cape on
+     * every player who had never picked one - and, because a client cape outranks the account's
+     * own, it also replaced the cape someone had genuinely equipped.
+     */
+    const val CAPE_NONE = "none"
+
+    var equippedCapeId by mutableStateOf(CAPE_NONE)
     var wavingCapeEnabled by mutableStateOf(true)
     var animatedCapeShimmer by mutableStateOf(true)
 
@@ -242,7 +252,7 @@ object AerixClientStore {
         packNoPumpkinBlur = p.getBoolean("packNoPumpkinBlur", true)
         selectedClientVersion = p.getString("selectedClientVersion", "1.16.5") ?: "1.16.5"
 
-        equippedCapeId = p.getString("equippedCapeId", "crimson_sovereign") ?: "crimson_sovereign"
+        equippedCapeId = p.getString("equippedCapeId", CAPE_NONE) ?: CAPE_NONE
         wavingCapeEnabled = p.getBoolean("wavingCapeEnabled", true)
         animatedCapeShimmer = true
 

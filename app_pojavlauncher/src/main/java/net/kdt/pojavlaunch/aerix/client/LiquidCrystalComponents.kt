@@ -320,7 +320,8 @@ private fun shadeColor(c: Color, factor: Float): Color = Color(
  */
 @Composable
 fun Interactive3DCosmeticStage(
-    capeSpec: ClientCapeSpec,
+    /** The cape to draw on the model, or null when the player is wearing none. */
+    capeSpec: ClientCapeSpec?,
     wavingCape: Boolean,
     playerName: String,
     modifier: Modifier = Modifier
@@ -548,6 +549,9 @@ fun Interactive3DCosmeticStage(
             addQuad(hf0, hf1, hf2, hf3, skinPalette.hairBack)
 
             // 5. 3D Animated Back Cape (10x16 Minecraft pixels -> width 5.0, height 8.2 units)
+            // No cape equipped means nothing is drawn here - the model shows a bare back rather
+            // than somebody else's cape.
+            capeSpec?.let { capeSpec ->
             val capeRows = 10
             val capeCols = 5
             val capeTopY = -0.05f
@@ -607,6 +611,7 @@ fun Interactive3DCosmeticStage(
                     addQuad(p0, p1, p2, p3, cellColor)
                 }
             }
+            }
 
             // Painter's Algorithm: sort quads back-to-front by projected Z depth
             quads.sortBy { it.depth }
@@ -638,7 +643,7 @@ fun Interactive3DCosmeticStage(
             horizontalArrangement = Arrangement.spacedBy(5.dp)
         ) {
             Text(playerName, color = Color.White, fontSize = 11.sp, fontWeight = FontWeight.Bold)
-            capeSpec.badgeText?.let { b ->
+            capeSpec?.badgeText?.let { b ->
                 val bCol = when (b) {
                     "(OWNER)" -> LiquidCrystalPalette.OwnerCrimson
                     "(CO-OWNER)" -> LiquidCrystalPalette.CoOwnerSky

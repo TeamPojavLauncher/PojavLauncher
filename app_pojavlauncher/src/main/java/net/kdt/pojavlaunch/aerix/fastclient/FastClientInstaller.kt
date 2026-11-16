@@ -48,6 +48,15 @@ data class FastClientBuild(val minecraft: String, val minLoader: String, val jav
 
 object FastClientInstaller {
     /**
+     * The mod id inside the client jar.
+     *
+     * FastClient 3.0 renamed it from "fasteclient" to "fastclient-hud"; the old spelling is still
+     * accepted so a build from the previous series installs rather than failing a check that only
+     * ever meant "this really is the client and not some other jar".
+     */
+    private val CLIENT_MOD_IDS = setOf("fastclient-hud", "fasteclient")
+
+    /**
      * Mirrors of the `modpacks/` folder, mirroring [net.kdt.pojavlaunch.aerix.modpacks.AerixModpackCatalog]:
      * the release holding the catalogue, then the repository copy.
      */
@@ -286,7 +295,7 @@ object FastClientInstaller {
             status = "Downloading FastClient ${build.minecraft}…"
             val client = File(staging, "client.jar")
             downloadClient(build, client)
-            if (modId(client) != "fasteclient") throw IOException("FastClient mod metadata is invalid")
+            if (modId(client) !in CLIENT_MOD_IDS) throw IOException("FastClient mod metadata is invalid")
             progress = 0.48f
             status = "Downloading Fabric API…"
             val api = File(staging, "fabric-api.jar")

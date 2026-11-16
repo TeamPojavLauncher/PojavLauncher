@@ -1009,7 +1009,7 @@ internal fun ProfileCosmeticsPage(activity: FragmentActivity, setupFlow: Boolean
                     enabled = SocialBackend.signedIn && gameAccount != null && !cloudBusy) {
                     val owner = SocialBackend.myUserId()
                     if (owner != null) {
-                        val capeId = AerixClientCosmetics.effectiveCapeSpec().id
+                        val capeId = AerixClientStore.equippedCapeId
                         cloudBusy = true
                         SocialBackend.clearError()
                         scope.launch {
@@ -1044,11 +1044,24 @@ internal fun ProfileCosmeticsPage(activity: FragmentActivity, setupFlow: Boolean
                         }
                     }
                 }
+                SocialButton(
+                    label = "No cape" + if (AerixClientStore.equippedCapeId == AerixClientStore.CAPE_NONE) " ✓" else "",
+                    filled = AerixClientStore.equippedCapeId == AerixClientStore.CAPE_NONE
+                ) {
+                    AerixClientStore.equippedCapeId = AerixClientStore.CAPE_NONE
+                    AerixClientStore.persist()
+                    val context = activity.applicationContext
+                    net.kdt.pojavlaunch.PojavApplication.sExecutorService.execute {
+                        synchronized(AerixClientCosmetics) {
+                            AerixClientCosmetics.syncCapeAssetsToAllClientInstances(context)
+                        }
+                    }
+                }
                 AerixClientCosmetics.capes.chunked(2).forEach { row ->
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         row.forEach { cape ->
                             val unlocked = AerixClientCosmetics.canEquipCape(cape)
-                            val selected = AerixClientCosmetics.effectiveCapeSpec().id == cape.id
+                            val selected = AerixClientCosmetics.effectiveCapeSpec()?.id == cape.id
                             SocialButton(
                                 label = cape.title + if (!unlocked) " (locked)" else if (selected) " ✓" else "",
                                 modifier = Modifier.weight(1f), filled = selected, enabled = unlocked
