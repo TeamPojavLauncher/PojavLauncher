@@ -16,7 +16,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 CATALOGUE = json.loads((ROOT / "modpacks/modpacks.json").read_text())
 # Provided by the loader and the game itself, or by the Fabric API jar the installer downloads.
-BUILT_IN = {"minecraft", "fabricloader", "java", "fabric"}
+# MixinExtras is bundled inside Fabric Loader from 0.15 on and declared as a provided mod, so a mod
+# may depend on it without any jar of its own.
+BUILT_IN = {"minecraft", "fabricloader", "java", "fabric", "mixinextras"}
 
 problems = []
 

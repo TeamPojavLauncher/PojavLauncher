@@ -18,7 +18,10 @@ from zipfile import ZipFile
 root = Path(__file__).resolve().parents[1]
 manifest = json.loads((root / 'app_pojavlauncher/src/main/assets/components/fastclient/performance-mods.json').read_text())
 BUILDS = {'26.3', '26.2', '26.1.2', '1.21.11', '1.21.4', '1.21.1'}
-BUILT_IN = {'minecraft', 'java', 'fabricloader', 'fabric-api', 'fabric'}
+# Provided without a jar of their own: the game, the loader, Fabric API (its own jar), and
+# MixinExtras, which Fabric Loader bundles and declares as a provided mod from 0.15 on - which
+# is every FastClient build, since the oldest requires 0.18.4.
+BUILT_IN = {'minecraft', 'java', 'fabricloader', 'fabric-api', 'fabric', 'mixinextras'}
 
 failures = []
 
