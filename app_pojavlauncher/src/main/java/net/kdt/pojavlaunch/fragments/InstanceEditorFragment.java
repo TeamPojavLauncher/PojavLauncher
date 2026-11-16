@@ -34,6 +34,7 @@ import net.kdt.pojavlaunch.multirt.Runtime;
 import net.kdt.pojavlaunch.instances.InstanceIconProvider;
 import net.kdt.pojavlaunch.profiles.VersionSelectorDialog;
 import net.kdt.pojavlaunch.game.renderer.GameRenderer;
+import net.kdt.pojavlaunch.game.renderer.MobileGluesWarning;
 import net.kdt.pojavlaunch.utils.CropperUtils;
 
 import java.io.IOException;
@@ -86,6 +87,10 @@ public class InstanceEditorFragment extends Fragment implements CropperUtils.Cro
         // Set up behaviors
         mSaveButton.setOnClickListener(v -> {
             InstanceIconProvider.dropIcon(mInstance);
+            if (isMobileGluesChosen()) {
+                askAboutMobileGlues(this::saveAndLeave);
+                return;
+            }
             save();
             Tools.backToMainMenu(requireActivity());
         });
@@ -193,6 +198,49 @@ public class InstanceEditorFragment extends Fragment implements CropperUtils.Cro
         mVersionSelectButton = view.findViewById(R.id.vprof_editor_version_button);
         mInstanceIcon = view.findViewById(R.id.vprof_editor_instance_icon);
         mSharedDataCheckbox = view.findViewById(R.id.vprof_editor_data_checkbox_container);
+    }
+
+    /** Whether the spinner is currently on MobileGlues, which is the only choice warned about. */
+    private boolean isMobileGluesChosen() {
+        if (mDefaultRenderer == null || mRenderNames == null) return false;
+        int position = mDefaultRenderer.getSelectedItemPosition();
+        return position >= 0 && position < mRenderNames.size()
+                && MobileGluesWarning.applies(mRenderNames.get(position));
+    }
+
+    private void saveAndLeave() {
+        save();
+        Tools.backToMainMenu(requireActivity());
+    }
+
+    /**
+     * The same warning every other renderer picker shows. Here the choice has already been made in
+     * the spinner - this is the last moment before it is written to the instance, so declining puts
+     * the spinner back on the renderer the instance actually has.
+     */
+    private void askAboutMobileGlues(Runnable keep) {
+        Context context = getContext();
+        if (context == null) return;
+        String versionId = mInstance != null ? mInstance.versionId : null;
+        String recommended = MobileGluesWarning.recommendedInstead(versionId);
+        new android.app.AlertDialog.Builder(context)
+                .setTitle(MobileGluesWarning.title())
+                .setMessage(MobileGluesWarning.message())
+                .setPositiveButton(MobileGluesWarning.confirmLabel(), (dialog, which) -> keep.run())
+                .setNeutralButton(MobileGluesWarning.recommendedLabel(recommended), (dialog, which) -> {
+                    int index = mRenderNames.indexOf(recommended);
+                    if (index >= 0) mDefaultRenderer.setSelection(index);
+                })
+                .setNegativeButton(android.R.string.cancel, (dialog, which) -> restoreRendererSelection())
+                .setCancelable(false)
+                .show();
+    }
+
+    /** Put the spinner back on the renderer the instance really has, so nothing was changed. */
+    private void restoreRendererSelection() {
+        if (mDefaultRenderer == null || mRenderNames == null) return;
+        int index = mRenderNames.indexOf(mInstance != null ? mInstance.getLaunchRenderer() : null);
+        mDefaultRenderer.setSelection(index >= 0 ? index : mRenderNames.size());
     }
 
     private void save(){

@@ -1126,7 +1126,7 @@ object AerixDiscordPresence {
         const val LIBRARY = "Browsing instances"
         const val DISCOVER = "Browsing versions"
         const val CREATE_INSTANCE = "Creating an instance"
-        const val WALLPAPERS = "Picking a wallpaper"
+        const val MODPACKS = "Browsing Aerix modpacks"
         const val SETTINGS = "In settings"
         const val ACCOUNTS = "Managing accounts"
         const val FILES = "In the file browser"
@@ -1141,7 +1141,7 @@ object AerixDiscordPresence {
             "LIBRARY" -> LIBRARY
             "DISCOVER", "DOWNLOADS" -> DISCOVER
             "CREATE_INSTANCE" -> CREATE_INSTANCE
-            "WALLPAPERS" -> WALLPAPERS
+            "MODPACKS" -> MODPACKS
             "SETTINGS", "LOGS", "CONTRIBUTION", "CONTRIBUTION_DETAIL" -> SETTINGS
             "ACCOUNTS", "ADD_ACCOUNT", "OFFLINE_ACCOUNT" -> ACCOUNTS
             "FILES" -> FILES

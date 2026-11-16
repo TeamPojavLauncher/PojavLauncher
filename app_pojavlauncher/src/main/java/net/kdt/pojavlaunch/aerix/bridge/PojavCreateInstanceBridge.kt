@@ -45,6 +45,7 @@ import net.kdt.pojavlaunch.Tools
 import net.kdt.pojavlaunch.extra.ExtraConstants
 import net.kdt.pojavlaunch.extra.ExtraCore
 import net.kdt.pojavlaunch.extra.ExtraListener
+import net.kdt.pojavlaunch.game.renderer.RendererDefaults
 import net.kdt.pojavlaunch.instances.Instance
 import net.kdt.pojavlaunch.instances.Instances
 import net.kdt.pojavlaunch.modloaders.BTADownloadTask
@@ -328,9 +329,34 @@ object PojavCreateInstanceBridge {
                 instance.encodeNewIcon(icon)
                 InstanceIconProvider.dropIcon(instance)
             }
+            // A brand new instance starts on the renderer its version calls for: LTW at 1.17 and
+            // above, Emesis below it. Written onto the instance itself rather than left to the
+            // global choice, so the instance keeps its own answer when the global renderer is
+            // changed later, and the editor shows which one it is on.
+            applyVersionRenderer(instance)
             Instances.setSelectedInstance(instance)
         }
         return instance != null
+    }
+
+    /**
+     * Pin the renderer the instance's version should start on, when the instance does not already
+     * carry an explicit choice.
+     *
+     * Forge and OptiFine install in the background and name the version they produce only when the
+     * installer finishes; in that case there is no version id yet, and the launch path applies the
+     * same rule from the version it ends up launching.
+     */
+    private fun applyVersionRenderer(instance: Instance) {
+        if (!instance.renderer.isNullOrEmpty()) return
+        val versionId = instance.versionId
+        if (versionId.isNullOrEmpty() || versionId == Instance.VERSION_LATEST_RELEASE ||
+            versionId == Instance.VERSION_LATEST_SNAPSHOT
+        ) return
+        val renderer = runCatching { RendererDefaults.launchTagForVersion(null, versionId) }.getOrNull()
+        if (renderer.isNullOrEmpty()) return
+        instance.renderer = renderer
+        runCatching { instance.write() }
     }
 
     private fun runBta(version: BTAUtils.BTAVersion) {

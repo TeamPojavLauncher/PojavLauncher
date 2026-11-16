@@ -95,11 +95,12 @@ enum class LauncherSection {
     DOWNLOADS,
     CONTENT,
     FILES,
-    WALLPAPERS,
     LOGS,
     SETTINGS,
     /** The team page, between Settings and the account entry. */
     CONTRIBUTION,
+    /** Team Aerix modpacks, one press to install. Replaces the old Wallpapers rail entry. */
+    MODPACKS,
     ACCOUNTS,
     ABOUT,
     /** Pages opened on top of a section (Mirai "Create New Instance", instance settings, account sign-in). */
@@ -207,9 +208,9 @@ fun AerixNavigationRail(
                     discoverSelected(selectedSection), activeAccent, expandedRail, compactRail) { onNavigate(LauncherSection.DISCOVER) }
                 RailIconItem(R.drawable.aerix_ic_rocket_launch_filled, "Our other new releases",
                     selectedSection == LauncherSection.OTHER_RELEASES, activeAccent, expandedRail, compactRail) { onNavigate(LauncherSection.OTHER_RELEASES) }
-                RailIconItem(R.drawable.aerix_ic_format_paint_outlined, stringResource(R.string.aerix_nav_wallpapers),
-                    wallpapersSelected(selectedSection), activeAccent, expandedRail, compactRail,
-                    onClick = { onNavigate(LauncherSection.WALLPAPERS) }, guideKey = AerixGuideState.WALLPAPERS)
+                RailIconItem(R.drawable.aerix_ic_archive_filled, "Our modpacks",
+                    selectedSection == LauncherSection.MODPACKS, activeAccent, expandedRail, compactRail,
+                    guideKey = AerixGuideState.MODPACKS) { onNavigate(LauncherSection.MODPACKS) }
 
                 HorizontalDivider(modifier = Modifier.width(28.dp).padding(vertical = AerixSpacing.xxs), color = AerixSurface.borderSoft)
 
@@ -353,17 +354,12 @@ private fun discoverSelected(section: LauncherSection): Boolean =
     section == LauncherSection.DISCOVER || section == LauncherSection.DOWNLOADS
 
 /**
- * The Wallpapers entry is the Wallpapers tab of the settings page, so its highlight follows the
- * settings tab; the Settings entry stays highlighted for every other tab. Same pairing as mirai's
- * MiraiNavigationRail.kt LauncherSection.WALLPAPERS / SETTINGS handling.
+ * Settings is one destination with several tabs, so its rail entry stays highlighted on every tab.
+ * The former Wallpapers entry had to share the highlight with it; that entry is gone, so the
+ * pairing is now simply "Settings is selected whenever Settings is open".
  */
-private fun wallpapersSelected(section: LauncherSection): Boolean =
-    section == LauncherSection.WALLPAPERS ||
-        (section == LauncherSection.SETTINGS && AerixNav.settingsTab == AerixNav.TAB_WALLPAPERS)
-
 private fun settingsSelected(section: LauncherSection): Boolean =
-    (section == LauncherSection.SETTINGS && AerixNav.settingsTab != AerixNav.TAB_WALLPAPERS) ||
-        section == LauncherSection.ABOUT || section == LauncherSection.LOGS
+    section == LauncherSection.SETTINGS || section == LauncherSection.ABOUT || section == LauncherSection.LOGS
 
 @Composable
 private fun RailIconItem(

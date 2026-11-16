@@ -21,6 +21,7 @@ import net.kdt.pojavlaunch.game.renderer.extra.GLESProvider;
 import net.kdt.pojavlaunch.prefs.CustomSeekBarPreference;
 import net.kdt.pojavlaunch.prefs.LauncherPreferences;
 import net.kdt.pojavlaunch.game.renderer.GameRenderer;
+import net.kdt.pojavlaunch.game.renderer.MobileGluesWarning;
 import net.kdt.pojavlaunch.utils.DisplayRefreshMode;
 import net.kdt.pojavlaunch.utils.GpuUtils;
 
@@ -102,6 +103,15 @@ public class LauncherPreferenceVideoFragment extends LauncherPreferenceFragment 
         // defaultValue. Show the one the launcher picked until the user changes it.
         rendererListPreference.setValue(LauncherPreferences.PREF_RENDERER);
 
+        // The list writes the choice straight to the preference file, so the warning has to run
+        // before that write and take the value back when it is answered with "no".
+        rendererListPreference.setOnPreferenceChangeListener((preference, newValue) -> {
+            String chosen = String.valueOf(newValue);
+            if (!MobileGluesWarning.applies(chosen)) return true;
+            showMobileGluesWarning(chosen);
+            return false;
+        });
+
         requirePreference("renderer_settings", Preference.class).setOnPreferenceClickListener(preference -> {
             startActivity(new Intent(getContext(), MainActivity.class));
             return true;
@@ -123,6 +133,49 @@ public class LauncherPreferenceVideoFragment extends LauncherPreferenceFragment 
     public void onSharedPreferenceChanged(SharedPreferences p, String s) {
         super.onSharedPreferenceChanged(p, s);
         computeVisibility();
+    }
+
+    /**
+     * Says what MobileGlues is before the preference keeps it: not recommended, experimental, and
+     * only for 1.17+, with the renderer this version would rather run on offered as the way out.
+     */
+    private void showMobileGluesWarning(String chosenTag) {
+        Activity activity = getActivity();
+        if (activity == null || activity.isFinishing()) return;
+        String versionId = null;
+        try {
+            net.kdt.pojavlaunch.instances.Instance instance =
+                    net.kdt.pojavlaunch.instances.Instances.loadSelectedInstance();
+            if (instance != null) versionId = instance.versionId;
+        } catch (Throwable ignored) {
+            // No instance to name: the warning still applies, it just cannot name its alternative.
+        }
+        String recommended = net.kdt.pojavlaunch.game.renderer.RendererDefaults
+                .launchTagForVersion(null, versionId);
+        new android.app.AlertDialog.Builder(activity)
+                .setTitle(MobileGluesWarning.title())
+                .setMessage(MobileGluesWarning.message())
+                .setPositiveButton(MobileGluesWarning.confirmLabel(), (dialog, which) -> {
+                    LauncherPreferences.DEFAULT_PREF.edit().putString("renderer", chosenTag).apply();
+                    LauncherPreferences.loadPreferences(requireContext());
+                    ListPreference preference = findPreference("renderer");
+                    if (preference != null) preference.setValue(chosenTag);
+                    computeVisibility();
+                })
+                .setNeutralButton(MobileGluesWarning.recommendedLabel(versionId), (dialog, which) -> {
+                    LauncherPreferences.DEFAULT_PREF.edit().putString("renderer", recommended).apply();
+                    LauncherPreferences.loadPreferences(requireContext());
+                    ListPreference preference = findPreference("renderer");
+                    if (preference != null) preference.setValue(recommended);
+                    computeVisibility();
+                })
+                .setNegativeButton(android.R.string.cancel, (dialog, which) -> {
+                    // Nothing was written, so the list must be put back on the value it still has.
+                    ListPreference preference = findPreference("renderer");
+                    if (preference != null) preference.setValue(LauncherPreferences.PREF_RENDERER);
+                })
+                .setCancelable(false)
+                .show();
     }
 
     private void computeVisibility(){
