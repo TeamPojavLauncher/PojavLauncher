@@ -305,12 +305,17 @@ jobs:
           for apk in out/Aerix-Launcher-*.apk; do
             echo "== $apk"
             info=$("$APKSIGNER" verify --print-certs "$apk" | tr 'A-F' 'a-f')
-            printf '%s\n' "$info" | grep -E "signer #|sha-256" || true
-            n=$(printf '%s\n' "$info" | grep -c "signer #" || true)
+            printf '%s\n' "$info" | grep -E "signer|sha-256" || true
+            n=$(printf '%s\n' "$info" | grep -c "certificate sha-256 digest" || true)
+            if [ "$n" -eq 0 ]; then
+              n=$(printf '%s\n' "$info" | grep -c "signer" || true)
+            fi
             if [ "${LEGACY:-false}" = "true" ]; then
               if [ "$n" -lt 2 ]; then
                 echo "::error::$apk carries $n signer(s); a transition release must carry both, or"
                 echo "   existing installs cannot update in place."
+                echo "::error::Full verification info:"
+                echo "$info"
                 exit 1
               fi
             else
