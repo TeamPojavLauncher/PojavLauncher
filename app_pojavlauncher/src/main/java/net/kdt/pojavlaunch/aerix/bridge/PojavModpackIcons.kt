@@ -33,6 +33,8 @@ import net.kdt.pojavlaunch.instances.Instance
 import net.kdt.pojavlaunch.instances.InstanceIconProvider
 import net.kdt.pojavlaunch.instances.InstanceRefreshEvents
 import net.kdt.pojavlaunch.instances.Instances
+import net.kdt.pojavlaunch.aerix.modpacks.AerixModpackCatalog
+import net.kdt.pojavlaunch.aerix.modpacks.AerixModpackIcons
 import net.kdt.pojavlaunch.modloaders.modpacks.api.CurseforgeApi
 import net.kdt.pojavlaunch.modloaders.modpacks.api.ModpackApi
 import net.kdt.pojavlaunch.modloaders.modpacks.api.ModrinthApi
@@ -57,6 +59,8 @@ object PojavModpackIcons {
     private const val TAG = "ModpackIcons"
 
     private const val SOURCE_MODRINTH = "modrinth"
+    /** [Instance.modpackSource] for an instance installed from the Team Aerix catalogue. */
+    private const val SOURCE_AERIX = "aerix"
     private const val SOURCE_CURSEFORGE = "curseforge"
 
     /** Recorded in [Instance.modpackSource] once a title has been looked up and matched nothing. */
@@ -79,8 +83,11 @@ object PojavModpackIcons {
         if (instances.isEmpty()) return
         val appContext = context.applicationContext
         for (instance in instances) {
-            // An instance with its own artwork already has what this would fetch.
-            if (runCatching { instance.hasOwnIcon() }.getOrDefault(true)) continue
+            // A Team Aerix pack is repaired even when it has an icon file, because that file may be
+            // the Fabric mark an earlier install wrote - not the pack's own logo.
+            val isTeamPack = instance is Instance && instance.aerixPackId != null
+            // Otherwise: an instance with its own artwork already has what this would fetch.
+            if (!isTeamPack && runCatching { instance.hasOwnIcon() }.getOrDefault(true)) continue
             val id = runCatching { instance.instanceId }.getOrNull()?.takeIf { it.isNotBlank() } ?: continue
             if (!attempted.add(id)) continue
             queue.execute {
@@ -90,8 +97,39 @@ object PojavModpackIcons {
         }
     }
 
+    /**
+     * Which catalogue pack an instance was installed from, for instances that predate the launcher
+     * recording it: those were created under the pack's catalogue name, and that name is unique.
+     */
+    private fun packIdOf(instance: Instance): String? {
+        instance.aerixPackId?.takeIf { it.isNotBlank() }?.let { return it }
+        if (!SOURCE_AERIX.equals(instance.modpackSource, ignoreCase = true)) return null
+        val title = instance.name?.trim()?.lowercase()?.replace(Regex("[^a-z0-9]"), "") ?: return null
+        // The catalogue is normally already in hand - the tab reads it - but an install that
+        // predates this can be repaired on a launch where the tab was never opened, so it is read
+        // here, on the icon thread rather than the caller's.
+        if (AerixModpackCatalog.packs.isEmpty()) {
+            runCatching { kotlinx.coroutines.runBlocking { AerixModpackCatalog.load() } }
+        }
+        val match = AerixModpackCatalog.packs.firstOrNull { pack ->
+            pack.name.lowercase().replace(Regex("[^a-z0-9]"), "") == title
+        } ?: return null
+        // Written back once, so the next scan does not have to read the catalogue to know this.
+        instance.aerixPackId = match.id
+        instance.maybeWrite()
+        return match.id
+    }
+
     private fun repair(context: Context, id: String) {
         val instance = runCatching { Instances.loadInstance(id) }.getOrNull() ?: return
+        // A Team Aerix pack wears the mark the launcher bundles for it. This is restored rather
+        // than returned from: searching the catalog title - which is deliberately NOT the pack's
+        // Modrinth project name - found nothing, wrote "none", and left the instance showing the
+        // Fabric logo. The bundled mark is the correct answer for these, so it is rewritten.
+        if (AerixModpackIcons.writeOnto(context, instance, packIdOf(instance))) {
+            InstanceRefreshEvents.notifyChanged()
+            return
+        }
         if (instance.hasOwnIcon()) return
         // Already looked up once and found not to be a pack: never ask again.
         if (SOURCE_NONE.equals(instance.modpackSource, ignoreCase = true) &&
