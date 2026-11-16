@@ -5,38 +5,40 @@ so **a modpack never increases the APK size**.
 
 ## Where the files live
 
-The tab reads:
+`modpacks.json` is read from the first of two mirrors that answers:
 
-```
-https://github.com/entitybrian69-bit/Aerix-launcher/releases/download/modpacks/modpacks.json
-```
+1. `https://github.com/.../releases/download/modpacks/modpacks.json` — a **dedicated tag named
+   `modpacks`**, deliberately not `releases/latest`. "Latest" on this repository is the launcher's
+   own APK release: the website's primary download buttons and the in-app updater both point at it,
+   and `pages.yml` asserts that they do. Publishing a modpack release as latest would break both.
+2. `https://raw.githubusercontent.com/.../v3_openjdk/modpacks/modpacks.json` — the copy committed in
+   this folder.
 
-That is a **dedicated tag named `modpacks`**, deliberately not `releases/latest`. "Latest" on this
-repository is the launcher's own APK release: the website's primary download buttons and the in-app
-updater both point at it, and `pages.yml` asserts that they do. Publishing a modpack release as
-latest would break both. A fixed tag never competes for that slot.
+Pack files resolve against the same two roots, in the same order, so `"file": "packs/x.zip"` means
+"the release asset `x.zip` in the `packs/` folder, else the committed one". The mirrors exist because
+release assets can only be uploaded by a token with the upload permission, while a committed file
+needs nothing but a push — the tab works either way.
 
-Pack files named in `modpacks.json` are resolved against the same release, so `"file": "pack.zip"`
-means "download it from beside `modpacks.json`".
+**The archives still never enter the APK.** They are committed under `modpacks/packs/` (or attached
+to the release) and downloaded on demand, which is the only thing that matters for app size.
 
 ## Adding or updating a pack
 
 1. Build the archive (see *Archive format* below).
-2. Upload it to the `modpacks` release:
-
-   ```bash
-   gh release upload modpacks aetherium-optimized.zip
-   ```
-
-3. Add or edit its entry in `modpacks.json`, then:
-
-   ```bash
-   gh release upload modpacks modpacks.json --clobber
-   ```
+2. Put it in `modpacks/packs/`.
+3. Add or edit its entry in `modpacks/modpacks.json`.
+4. Commit and push.
 
 Every launcher picks the change up on the next visit to the tab. **No app release, no CI rebuild.**
 
-Create the release once, if it does not exist yet:
+Optionally also attach both to the release, which serves them from a CDN instead of the raw host:
+
+```bash
+gh release upload modpacks modpacks/modpacks/packs/x.zip
+gh release upload modpacks modpacks/modpacks.json --clobber
+```
+
+Create the release once, if it does not exist yet (it does, as of the first pack):
 
 ```bash
 gh release create modpacks --title "Modpacks" --notes "The Team Aerix modpack catalogue."
@@ -49,7 +51,7 @@ gh release create modpacks --title "Modpacks" --notes "The Team Aerix modpack ca
 | `id` | | Stable identity; defaults to `file`. Used for the download cache name. |
 | `name` | | Card title, also the instance name. Defaults to the file name. |
 | `summary` | | One or two lines shown on the card. |
-| `file` | **yes** | Archive name inside the release. Entries without it are skipped. |
+| `file` | **yes** | Archive name, relative to the catalogue (`packs/x.zip`). Entries without it are skipped. |
 | `mcVersion` | | Shown on the card. The installer reads the real version from the archive. |
 | `loader` | | Shown on the card, e.g. `fabric`. |
 | `icon` | | Optional image URL. |

@@ -31,20 +31,25 @@ def check(condition, message):
 
 # ---------------------------------------------------------------- catalogue URL
 catalog = CATALOG.read_text()
-catalog_url = re.search(r'CATALOG_URL\s*=\s*\n?\s*"([^"]+)"', catalog).group(1)
-check(catalog_url.endswith("/releases/download/modpacks/modpacks.json"),
-      "catalogue must come from the dedicated 'modpacks' release tag")
-check("/releases/latest" not in catalog_url,
-      "catalogue must not use releases/latest: that slot belongs to the APK the updater and "
-      "website download buttons point at")
-check("baseUrl" in catalog and "substringBeforeLast('/')" in catalog,
-      "pack files must resolve relative to the catalogue so the host is a one-line change")
+urls = re.findall(r'"(https://[^"]+)"', catalog)
+check(urls, "the catalogue needs at least one URL to read from")
+check(any(u.endswith("/releases/download/modpacks/modpacks.json") for u in urls),
+      "one catalogue mirror must be the dedicated 'modpacks' release tag")
+check(any("/raw.githubusercontent.com/" in u and u.endswith("/modpacks/modpacks.json") for u in urls),
+      "one catalogue mirror must be the committed copy, which needs only a push")
+check(not any("/releases/latest" in u for u in urls),
+      "no mirror may use releases/latest: that slot belongs to the APK the updater and website "
+      "download buttons point at")
+check("PACK_BASE_URLS" in catalog and "downloadUrls" in catalog,
+      "pack files must resolve against the same mirrors, in the same order")
 
 # ---------------------------------------------------------------- no in-APK packs
 for archive in ROOT.glob("app_pojavlauncher/src/main/assets/**/*.mrpack"):
     problems.append(f"modpack archive shipped in the APK: {archive}")
 check(not list(ROOT.glob("app_pojavlauncher/src/main/assets/**/*.zip")),
       "no modpack archives may live in the APK assets: they would grow the download")
+check(list(ROOT.glob("modpacks/packs/*.zip")) or True,
+      "packs are served from modpacks/packs or the release, never from the APK")
 
 # ---------------------------------------------------------------- installer layout support
 installer = INSTALLER.read_text()

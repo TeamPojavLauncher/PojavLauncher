@@ -110,19 +110,28 @@ object AerixModpackInstaller {
     private suspend fun download(context: android.content.Context, pack: AerixModpack): File =
         withContext(Dispatchers.IO) {
             val target = downloadTarget(context, pack)
-            target.delete()
-            statusHeadline = "Downloading ${pack.name}…"
-            DownloadUtils.downloadFileMonitored(pack.downloadUrl, target, null) { current, total ->
-                if (total > 0) {
-                    progressFraction = (current.toFloat() / total.toFloat()).coerceIn(0f, 0.7f)
-                    statusHeadline = "Downloading ${pack.name}… ${current * 100 / total}%"
-                }
-            }
-            if (!target.isFile || target.length() == 0L) {
+            var lastFailure: String? = null
+            // The pack is mirrored (release asset, then the repository copy), so a missing asset
+            // falls through to the next source instead of failing the press outright.
+            for (url in pack.downloadUrls) {
                 target.delete()
-                throw IOException("The download finished empty. Check your connection and retry.")
+                statusHeadline = "Downloading ${pack.name}…"
+                val attempt = runCatching {
+                    DownloadUtils.downloadFileMonitored(url, target, null) { current, total ->
+                        if (total > 0) {
+                            progressFraction = (current.toFloat() / total.toFloat()).coerceIn(0f, 0.7f)
+                            statusHeadline = "Downloading ${pack.name}… ${current * 100 / total}%"
+                        }
+                    }
+                }
+                if (attempt.isSuccess && target.isFile && target.length() > 0L) return@withContext target
+                lastFailure = attempt.exceptionOrNull()?.message
             }
-            target
+            target.delete()
+            throw IOException(
+                "The download failed" + (lastFailure?.let { " ($it)" } ?: "") +
+                    ". Check your connection and retry."
+            )
         }
 
     private suspend fun installArchive(context: android.content.Context, pack: AerixModpack, archive: File) {

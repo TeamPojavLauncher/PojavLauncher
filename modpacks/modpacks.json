@@ -5,7 +5,7 @@
       "id": "aetherium-optimized",
       "name": "Aetherium Optimized",
       "summary": "Aetherium with a tuned Fabric stack: Lithium, FerriteCore, EntityCulling, FpsReducer and Clumps, with configs already set for mobile. Built for Minecraft 1.20.1.",
-      "file": "aetherium-optimized.zip",
+      "file": "packs/aetherium-optimized.zip",
       "mcVersion": "1.20.1",
       "loader": "fabric",
       "icon": "",

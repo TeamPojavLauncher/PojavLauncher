@@ -35,8 +35,8 @@ import org.json.JSONObject
 /**
  * One pack as the catalogue describes it.
  *
- * [file] is resolved against [AerixModpackCatalog.baseUrl], so moving the whole catalogue to
- * another host is a one-line change here instead of an edit per pack.
+ * [file] is resolved against [AerixModpackCatalog.PACK_BASE_URLS], so moving the whole catalogue
+ * to another host is a one-line change here instead of an edit per pack.
  */
 data class AerixModpack(
     val id: String,
@@ -49,22 +49,41 @@ data class AerixModpack(
     val iconUrl: String = "",
     val sizeBytes: Long = 0L
 ) {
-    val downloadUrl: String
-        get() = if (file.startsWith("http")) file else AerixModpackCatalog.baseUrl + file
+    /** Every place this pack can be fetched from, in the order they should be tried. */
+    val downloadUrls: List<String>
+        get() = if (file.startsWith("http")) listOf(file)
+        else AerixModpackCatalog.PACK_BASE_URLS.map { it + file }
 }
 
 object AerixModpackCatalog {
 
     /**
-     * The release the catalogue lives in. A dedicated tag, not `releases/latest`: "latest" on this
-     * repository is the launcher's own APK release, and the website's download buttons plus the
-     * in-app updater both point at it. Publishing a modpack release as latest would break them.
+     * Where the catalogue is read from, tried in order until one answers.
+     *
+     * Both are mirrors of `modpacks/` in the repository, and both keep the archives out of the APK -
+     * which is the point: a modpack is downloaded on demand, never built into the launcher.
+     *
+     * Releases come first because that is the cheap route (a CDN, no clone). The raw mirror exists
+     * because release assets can only be uploaded by someone with the upload permission, whereas a
+     * committed file needs nothing but a push; when no release asset is present the raw copy still
+     * serves the pack.
+     *
+     * Neither is `releases/latest`: that slot belongs to the launcher's own APK release, and both
+     * the website's download buttons and the in-app updater point at it.
      */
-    private const val CATALOG_URL =
-        "https://github.com/entitybrian69-bit/Aerix-launcher/releases/download/modpacks/modpacks.json"
+    private val CATALOG_URLS = listOf(
+        "https://github.com/entitybrian69-bit/Aerix-launcher/releases/download/modpacks/modpacks.json",
+        "https://raw.githubusercontent.com/entitybrian69-bit/Aerix-launcher/v3_openjdk/modpacks/modpacks.json"
+    )
 
-    /** Everything after the last slash of the catalogue URL: where relative pack files live. */
-    val baseUrl: String = CATALOG_URL.substringBeforeLast('/') + "/"
+    /**
+     * Where a pack file is fetched from: the release that holds the catalogue, then the raw mirror.
+     * Relative names in the catalogue ("packs/x.zip") resolve against both.
+     */
+    val PACK_BASE_URLS: List<String> = listOf(
+        "https://github.com/entitybrian69-bit/Aerix-launcher/releases/download/modpacks/",
+        "https://raw.githubusercontent.com/entitybrian69-bit/Aerix-launcher/v3_openjdk/modpacks/"
+    )
 
     private const val USER_AGENT = "entitybrian69-bit/Aerix-launcher/modpacks"
 
@@ -102,22 +121,32 @@ object AerixModpackCatalog {
     }
 
     private suspend fun fetch(): List<AerixModpack> = withContext(Dispatchers.IO) {
-        val request = Request.Builder()
-            .url(CATALOG_URL)
-            .header("User-Agent", USER_AGENT)
-            .build()
-        // GitHub answers a missing file with an HTML error page, so a 404 is called out instead of
-        // surfacing as "unexpected character <" from the JSON parser.
-        SocialRealtime.restClient.newCall(request).execute().use { response ->
-            if (!response.isSuccessful) {
-                throw IllegalStateException(
-                    if (response.code == 404) "The modpack catalogue has not been published yet."
-                    else "The modpack catalogue could not be read (HTTP ${response.code})."
-                )
+        var lastFailure: String? = null
+        for (url in CATALOG_URLS) {
+            val request = Request.Builder()
+                .url(url)
+                .header("User-Agent", USER_AGENT)
+                .build()
+            // GitHub answers a missing file with an HTML error page, so a status is checked before
+            // parsing instead of surfacing as "unexpected character <" from the JSON parser.
+            val attempt = runCatching {
+                SocialRealtime.restClient.newCall(request).execute().use { response ->
+                    if (!response.isSuccessful) {
+                        throw IllegalStateException("HTTP ${response.code}")
+                    }
+                    val body = response.body?.string().orEmpty()
+                    val packs = parse(body)
+                    if (packs.isEmpty()) throw IllegalStateException("empty catalogue")
+                    packs
+                }
             }
-            val body = response.body?.string().orEmpty()
-            parse(body)
+            attempt.onSuccess { return@withContext it }
+            lastFailure = attempt.exceptionOrNull()?.message
         }
+        throw IllegalStateException(
+            "Could not read the modpack catalogue" +
+                (lastFailure?.let { " ($it)" } ?: "") + ". Check your connection and retry."
+        )
     }
 
     /**
