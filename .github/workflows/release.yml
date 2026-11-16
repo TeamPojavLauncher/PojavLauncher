@@ -9,7 +9,7 @@ name: Release CI
 #
 # RELEASE_MARK=2.4.0
 #
-# Last cut: v2.4.0 on 16 Nov 2026 (public release) - the first clean-signed release, and the one that stops the
+# Last cut: v2.4.0 on 16 Nov 2026 - first clean-signed release with configured repository secrets.
 # FPS counter printing garbage: its "no frame source" message was a whole sentence inside a
 # pill sized to its own text. Messages are short again, the pill caps what it draws, and the
 # A menu finally has an FPS Counter tile that turns the readout on and off mid-game.
