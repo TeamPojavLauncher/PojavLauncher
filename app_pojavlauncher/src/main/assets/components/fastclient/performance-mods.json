@@ -8,8 +8,8 @@
     },
     {
       "id": "entityculling",
-      "url": "https://github.com/tr7zw/EntityCulling/releases/download/1.12.1/entityculling-fabric-1.12.1-mc26.3.jar",
-      "sha256": "60b9a5490a0eba5caa9bcb679b1a1e700a5d63dcd82d721e0d238477c0dfaf0f"
+      "url": "https://github.com/tr7zw/EntityCulling/releases/download/1.11.3/entityculling-fabric-1.11.3-mc26.3.jar",
+      "sha256": "d2f80514ee3382b1fa7afda4df762df50743226e3cd320b829ee507357aeafbc"
     }
   ],
   "26.2": [
