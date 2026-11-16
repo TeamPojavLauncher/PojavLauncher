@@ -278,8 +278,23 @@ function loadSkin(skinUrl, model = "auto-detect") {
 
 function loadCape(capeUrl) {
     if (!skinViewer) return;
+    // CapeTexture.load() fetches whatever it is given, so a null/empty URL is a failed request,
+    // not "no cape": the viewer then keeps the cape it was already showing. An explicit clear is
+    // what taking a cape off needs.
+    if (!capeUrl) {
+        try {
+            if (skinViewer.cape) skinViewer.cape.visible = false;
+        } catch (_) {}
+        resize();
+        skinViewer.render();
+        return;
+    }
     Promise.resolve(skinViewer.loadCape(capeUrl))
         .then(() => {
+            // A successful load must undo a previous clear.
+            try {
+                if (skinViewer.cape) skinViewer.cape.visible = true;
+            } catch (_) {}
             resize();
             skinViewer.render();
         })

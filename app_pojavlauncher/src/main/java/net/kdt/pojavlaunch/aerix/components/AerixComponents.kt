@@ -88,15 +88,18 @@ fun GlassPanel(
     radius: Dp = AerixRadii.panel,
     tint: Color = AerixSurface.glassTint,
     strength: Float = 0.9f,
-    color: Color = AerixSurface.panel,
+    color: Color = Color.Unspecified,
     onClick: (() -> Unit)? = null,
     contentPadding: Dp = AerixSpacing.lg,
     content: @Composable ColumnScope.() -> Unit
 ) {
+    // Resolved inside the composable body so the "Layout transparency" setting is read while
+    // composing, not captured once as a default argument.
+    val panelColor = if (color == Color.Unspecified) AerixSurface.panel else color
     val shape = RoundedCornerShape(radius)
     val base = modifier
         .liquidGlass(shape = shape, tint = tint, strength = strength)
-        .background(color, shape)
+        .background(panelColor, shape)
     val clickable = if (onClick != null) base.clickable(role = Role.Button, onClick = onClick) else base
     Column(
         modifier = clickable.padding(contentPadding),

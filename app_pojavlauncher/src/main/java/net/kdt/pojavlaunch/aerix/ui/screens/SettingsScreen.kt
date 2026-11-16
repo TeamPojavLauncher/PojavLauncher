@@ -415,7 +415,25 @@ private fun RendererTabContent(activity: FragmentActivity) {
             }
         }
 
-        // 2. Detailed Renderer, Vulkan Driver, Graphics API, Resolution & Fullscreen SettingsCardColumn (Mirai RendererSettingsScreen — Photos 1 & 2)
+        // 2. Layout transparency — the slot the global renderer picker used to occupy. It lives on
+        // this tab because it is a device-wide look, not a per-instance renderer choice, and it is
+        // the first card so the effect of dragging it is visible on the cards right below.
+        item {
+            SettingsCardColumn(modifier = Modifier.fillMaxWidth()) {
+                MiraiSliderSettingsCard(
+                    position = CardPosition.Single,
+                    title = stringResource(R.string.aerix_settings_layout_transparency),
+                    summary = stringResource(R.string.aerix_settings_layout_transparency_sub),
+                    value = AerixPreferences.layoutTransparency,
+                    range = 25..100,
+                    step = 5,
+                    suffix = " %",
+                    onValueChange = { AerixPreferences.saveLayoutTransparency(it) }
+                )
+            }
+        }
+
+        // 3. Detailed Renderer, Vulkan Driver, Graphics API, Resolution & Fullscreen SettingsCardColumn (Mirai RendererSettingsScreen — Photos 1 & 2)
         item {
             // With no global picker on this tab, the MobileGlues settings only matter when the
             // renderer in effect is the one chosen on an instance.
