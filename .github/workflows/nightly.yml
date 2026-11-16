@@ -61,6 +61,12 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Signing note
+        # Nightly deliberately keeps the public AOSP debug key (app_pojavlauncher/debug.keystore, still
+        # tracked, because it is a known-public key and not a secret): a testing channel that can never
+        # overwrite a release install. The retired Aerix release key is gone from the tree; the upstream Pojav
+        # keystores stay, because each one needs a secret nobody has published.
+        run: echo "nightly signs with debug.keystore (public AOSP debug key, by design)"
       - name: Create out directory
         run: mkdir out
 

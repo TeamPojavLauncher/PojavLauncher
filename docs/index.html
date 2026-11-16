@@ -58,7 +58,7 @@
   <section class="hero">
     <div class="wrap hero-grid">
       <div>
-        <p class="eyebrow"><span class="dot" aria-hidden="true"></span>Version <span data-release-version>2.3.2</span> is out</p>
+        <p class="eyebrow"><span class="dot" aria-hidden="true"></span>Version <span data-release-version>2.3.3</span> is out</p>
         <h1>Minecraft: Java&nbsp;Edition, <span class="accent">on your phone</span>.</h1>
         <p class="lede">
           Instances, twelve renderers, accounts and a full skin wardrobe, animated control
@@ -74,7 +74,7 @@
         <p class="hero-meta">
           <span>Android 6.0+</span>
           <span>arm64, armv7 and universal builds</span>
-          <span id="downloadFacts">v2.3.2 · 11 Nov 2026</span>
+          <span id="downloadFacts">v2.3.3 · 11 Nov 2026</span>
         </p>
       </div>
       <div class="device">
@@ -106,7 +106,7 @@
     <div class="wrap">
       <div class="section-head reveal">
         <span class="kicker">The latest game log</span>
-        <h2 id="log-title">What <span style="color:var(--crimson)">2.3.2</span> includes</h2>
+        <h2 id="log-title">What <span style="color:var(--crimson)">2.3.3</span> includes</h2>
         <p>
           Every release writes its own log, and this is the current one - the change you can
           feel first, then the details that make it hold. The full history is in the release notes.
@@ -117,7 +117,7 @@
         <div class="log-bar">
           <span class="lights" aria-hidden="true"><i></i><i></i><i></i></span>
           <code>aerix@launcher:~$ release-notes --current</code>
-          <span class="log-tag">v2.3.2</span>
+          <span class="log-tag">v2.3.3</span>
         </div>
         <ol class="log-rows">
           <li>
@@ -154,6 +154,11 @@
             <span class="n">07</span>
             <span><b>2.3.2: sorry - the missing Java was ours, not your internet</b>
             That same crash skipped the two startup lines after it, which were the CPU read and the bundled runtime unpack, so the launcher went looking for a runtime named after no architecture at all and blamed the connection when it could not find one. Startup steps are independent now, the architecture is worked out on demand, an install failure carries the reason behind "Show more", and the crash screen keeps the trace without asking for a permission.</span>
+          </li>
+          <li>
+            <span class="n">08</span>
+            <span><b>2.3.3: the signing key that should never have been public</b>
+            The warning some security apps raised on install had a real reason - releases were signed with a key committed to this repository, with its password in the file beside it. That key is retired and permanently banned in CI, releases now sign from a secret no clone can read, and 2.3.3 carries both signatures so you can update without uninstalling and losing your worlds.</span>
           </li>
         </ol>
         <div class="log-foot">
@@ -408,7 +413,7 @@
           </p>
           <p class="counter-label">APK downloads, counted across every release</p>
           <dl class="counter-meta">
-            <div><dt>Latest release</dt><dd>v<span data-release-version>2.3.2</span></dd></div>
+            <div><dt>Latest release</dt><dd>v<span data-release-version>2.3.3</span></dd></div>
             <div><dt>Published</dt><dd><span data-release-date>11 Nov 2026</span></dd></div>
             <div><dt>Source</dt><dd><a href="https://github.com/entitybrian69-bit/Aerix-launcher/releases" target="_blank" rel="noopener">github.com · releases</a></dd></div>
           </dl>
@@ -425,7 +430,7 @@
     <div class="wrap">
       <div class="download reveal">
         <span class="kicker">Download</span>
-        <h2>Get Aerix Launcher <span class="muted" style="font-size:0.55em;font-weight:600">v<span data-release-version>2.3.2</span></span></h2>
+        <h2>Get Aerix Launcher <span class="muted" style="font-size:0.55em;font-weight:600">v<span data-release-version>2.3.3</span></span></h2>
         <p class="muted" style="max-width:56ch">
           One APK per architecture, so nothing you cannot use is in the file you download. Not
           sure which one? Take the first — it covers almost every phone made since 2016.
@@ -434,19 +439,19 @@
         <div class="dl-grid">
           <a class="dl-card" href="https://github.com/entitybrian69-bit/Aerix-launcher/releases/latest/download/Aerix-Launcher.apk" download data-dl="arm64">
             <strong>arm64-v8a <span class="tag hot">recommended</span></strong>
-            <small class="asset">Aerix-Launcher-2.3.2-arm64-v8a.apk</small>
+            <small class="asset">Aerix-Launcher-2.3.3-arm64-v8a.apk</small>
             <span class="size">88.8 MB</span>
             <small>64-bit phones — nearly all of them</small>
           </a>
           <a class="dl-card" href="https://github.com/entitybrian69-bit/Aerix-launcher/releases/latest" target="_blank" rel="noopener" data-dl="armv7">
             <strong>armeabi-v7a</strong>
-            <small class="asset">Aerix-Launcher-2.3.2-armeabi-v7a.apk</small>
+            <small class="asset">Aerix-Launcher-2.3.3-armeabi-v7a.apk</small>
             <span class="size">89.0 MB</span>
             <small>Older 32-bit phones</small>
           </a>
           <a class="dl-card" href="https://github.com/entitybrian69-bit/Aerix-launcher/releases/latest/download/Aerix-Launcher.apk" download data-dl="universal">
             <strong>Universal</strong>
-            <small class="asset">Aerix-Launcher-2.3.2.apk</small>
+            <small class="asset">Aerix-Launcher-2.3.3.apk</small>
             <span class="size">144.0 MB</span>
             <small>Every architecture, including x86 — the fallback</small>
           </a>

@@ -44,7 +44,12 @@ class BrandingIdentitySmoke(unittest.TestCase):
     def test_existing_signing_and_debug_version_configuration(self):
         gradle = (APP / "build.gradle").read_text()
         self.assertIn('storeFile file("debug.keystore")', gradle)
-        self.assertIn('storeFile file("aerix_release.p12")', gradle)
+        # The release key must NOT be named as a file in the tree. `storeFile file("aerix_release.p12")`
+        # used to sit here, and this test asserted it - the suite was enforcing the leak, which is how
+        # a shipped key stays public long after anyone remembers it was committed. A pinned assertion
+        # is only as good as the judgement behind it.
+        self.assertNotIn('storeFile file("aerix_release.p12")', gradle)
+        self.assertIn('System.getenv("AERIX_KEYSTORE_FILE")', gradle)
         self.assertIn("signingConfig signingConfigs.customDebug", gradle)
         self.assertIn("signingConfig signingConfigs.aerixRelease", gradle)
         self.assertIn('onVariants(selector().withBuildType("debug"))', gradle)
