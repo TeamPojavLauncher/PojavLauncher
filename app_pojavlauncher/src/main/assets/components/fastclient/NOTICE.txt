@@ -1,3 +1,10 @@
 FastClient by Mxinspire1
 
-The version-specific Fabric mod binaries in this folder were supplied by the creator for distribution in Aerix Launcher. The binaries are unmodified and retain their original bundled license and third-party notices. Their fabric.mod.json metadata declares All-Rights-Reserved, while their bundled LICENSE files contain CC0 text; this notice does not resolve that discrepancy or change their license. Fabric Loader and Fabric API are separate projects obtained from their upstream sources at installation time.
+The version-specific Fabric mod binaries named in ../../../../modpacks/clients/ were supplied by the
+creator for distribution in Aerix Launcher. The binaries are unmodified and retain their original
+bundled license and third-party notices. Their fabric.mod.json metadata declares
+All-Rights-Reserved, while their bundled LICENSE files contain CC0 text; this notice does not resolve
+that discrepancy or change their license. The jars are downloaded on demand from the Team Aerix
+mirror and verified against the SHA-256 pinned in FastClientInstaller, so they are never packaged
+inside the APK. Fabric Loader and Fabric API are separate projects obtained from their upstream
+sources at installation time.

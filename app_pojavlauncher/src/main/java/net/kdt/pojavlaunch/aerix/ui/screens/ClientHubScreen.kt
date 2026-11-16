@@ -67,7 +67,7 @@ fun ClientHubScreen(activity: FragmentActivity, page: ClientOwnerPage, onPageCha
                         )
                         OwnerCard(
                             photo = R.drawable.client_owner_mx_inspire,
-                            label = "Fast client 2.0",
+                            label = "Fast client 3.0",
                             onClick = { onPageChange(ClientOwnerPage.MX_INSPIRE) },
                             modifier = Modifier.weight(1f)
                         )

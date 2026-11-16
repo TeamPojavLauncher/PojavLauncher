@@ -1,26 +1,15 @@
 {
-  "1.21.11": [
+  "_comment": "Per-build performance mods. An entry either pins a GitHub release asset (url + sha256) or names a Modrinth project to resolve at install time (project + mcVersion), which is used where the upstream release publishes no checksum. Every download is verified by hash and by the mod id inside the jar.",
+  "26.3": [
     {
       "id": "lithium",
-      "url": "https://github.com/CaffeineMC/lithium/releases/download/mc1.21.11-0.21.4/lithium-fabric-0.21.4%2Bmc1.21.11.jar",
-      "sha256": "5135c41da5b43cbdcb29424bde65195143ac4084e23834c8eac065942201c78b"
+      "url": "https://github.com/CaffeineMC/lithium/releases/download/mc26.3-0.26.3/lithium-fabric-0.26.3%2Bmc26.3.jar",
+      "sha256": "103b6aab3932f119155565254a3f33b1be0da26b9bf7a5eec24851542144fc78"
     },
     {
       "id": "entityculling",
-      "url": "https://github.com/tr7zw/EntityCulling/releases/download/1.11.3/entityculling-fabric-1.11.3-mc1.21.11.jar",
-      "sha256": "79294b608e1edc8dd4746dbbeeef1ba157fc27a361a3f31d155594dc7f30ea85"
-    }
-  ],
-  "26.1.2": [
-    {
-      "id": "lithium",
-      "url": "https://github.com/CaffeineMC/lithium/releases/download/mc26.1.2-0.24.7/lithium-fabric-0.24.7%2Bmc26.1.2.jar",
-      "sha256": "a155b26df2593772e80a9f935837ba3319c68a3e774ba5e1b3a21eb64d477e86"
-    },
-    {
-      "id": "entityculling",
-      "url": "https://github.com/tr7zw/EntityCulling/releases/download/1.11.3/entityculling-fabric-1.11.3-mc26.1.jar",
-      "sha256": "65f02a584e749d4feda3a921ce43653c013f38472393b98c4831356e98b9cf55"
+      "url": "https://github.com/tr7zw/EntityCulling/releases/download/1.11.3/entityculling-fabric-1.11.3-mc26.3.jar",
+      "sha256": "d2f80514ee3382b1fa7afda4df762df50743226e3cd320b829ee507357aeafbc"
     }
   ],
   "26.2": [
@@ -31,8 +20,56 @@
     },
     {
       "id": "entityculling",
-      "url": "https://github.com/tr7zw/EntityCulling/releases/download/1.11.3/entityculling-fabric-1.11.3-mc26.2.jar",
-      "sha256": "8f977af47b8d0531da81d1801fbe6bfcaa2f1f585a6ea4dccf9885da42e6cf89"
+      "url": "https://github.com/tr7zw/EntityCulling/releases/download/1.12.1/entityculling-fabric-1.12.1-mc26.2.jar",
+      "sha256": "80e64d0ba95bab27bdf6c13918ad8a553317ce5011a67fed5e8495d72a64258d"
+    }
+  ],
+  "26.1.2": [
+    {
+      "id": "lithium",
+      "url": "https://github.com/CaffeineMC/lithium/releases/download/mc26.1.2-0.24.7/lithium-fabric-0.24.7%2Bmc26.1.2.jar",
+      "sha256": "a155b26df2593772e80a9f935837ba3319c68a3e774ba5e1b3a21eb64d477e86"
+    },
+    {
+      "id": "entityculling",
+      "url": "https://github.com/tr7zw/EntityCulling/releases/download/1.12.1/entityculling-fabric-1.12.1-mc26.1.jar",
+      "sha256": "fa351bf6de359e22915e7c1e2b4a1fa3df435c56e7efc335d9c4e71706cc653a"
+    }
+  ],
+  "1.21.11": [
+    {
+      "id": "lithium",
+      "url": "https://github.com/CaffeineMC/lithium/releases/download/mc1.21.11-0.21.4/lithium-fabric-0.21.4%2Bmc1.21.11.jar",
+      "sha256": "5135c41da5b43cbdcb29424bde65195143ac4084e23834c8eac065942201c78b"
+    },
+    {
+      "id": "entityculling",
+      "url": "https://github.com/tr7zw/EntityCulling/releases/download/1.12.1/entityculling-fabric-1.12.1-mc1.21.11.jar",
+      "sha256": "ecc629c257306f4d156430c875f2b1e74a0a8b8838821cd8cc28c3752aeda112"
+    }
+  ],
+  "1.21.4": [
+    {
+      "id": "lithium",
+      "project": "lithium",
+      "mcVersion": "1.21.4"
+    },
+    {
+      "id": "entityculling",
+      "url": "https://github.com/tr7zw/EntityCulling/releases/download/1.12.1/entityculling-fabric-1.12.1-mc1.21.4.jar",
+      "sha256": "d142f30116f3fcb69b77e34413c8c1760742452d38f6431fe9b1e558eace80bd"
+    }
+  ],
+  "1.21.1": [
+    {
+      "id": "lithium",
+      "url": "https://github.com/CaffeineMC/lithium/releases/download/mc1.21.1-0.15.4/lithium-fabric-0.15.4%2Bmc1.21.1.jar",
+      "sha256": "92329d98c57f5a22091a0adb509fdb1d60113a5602c708b799b13134bad13baa"
+    },
+    {
+      "id": "entityculling",
+      "url": "https://github.com/tr7zw/EntityCulling/releases/download/1.12.1/entityculling-fabric-1.12.1-mc1.21.1.jar",
+      "sha256": "6633d4bd692ac9bc4db26547abe31004ee06ff7f0fb99dcff60f34cf610e9779"
     }
   ]
 }
