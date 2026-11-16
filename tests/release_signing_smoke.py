@@ -158,6 +158,17 @@ check("signingConfig signingConfigs.aerixRelease" in release_block,
 check("customDebug" not in release_block,
       "a release signed with the AOSP debug key is unsigned with extra steps")
 
+# ---- 5b. The signing key step must not die on an undeclared variable ----
+# AERIX_KEYSTORE_ALIAS used to be echoed straight into $GITHUB_ENV without ever being declared into
+# the step, so `set -eu` aborted the build on any runner that did not define it. That is a release
+# that fails after the key was fine, with an error that names nothing.
+key_env = wf[wf.index("AERIX_KEYSTORE_P12_B64: ${{ secrets.AERIX_KEYSTORE_P12 }}"):]
+key_env = key_env[:key_env.index("run: |")]
+check("AERIX_KEYSTORE_ALIAS_IN: ${{ secrets.AERIX_KEYSTORE_ALIAS }}" in key_env,
+      "the alias secret must be declared into the step that reads it, or `set -u` kills the build")
+check('echo "AERIX_KEYSTORE_ALIAS=${AERIX_KEYSTORE_ALIAS_IN:-aerix}" >> "$GITHUB_ENV"' in wf,
+      "the alias must default rather than expand an undeclared variable")
+
 # ---- 6. A release can be cut without an Actions-write token ----
 # The dispatch API needs Actions:write, which this project's tooling does not have (403). A push that
 # touches this workflow still starts it, so the marker lives in the file and must match what the

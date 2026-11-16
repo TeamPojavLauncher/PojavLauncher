@@ -99,6 +99,7 @@ jobs:
         env:
           AERIX_KEYSTORE_P12_B64: ${{ secrets.AERIX_KEYSTORE_P12 }}
           AERIX_KEYSTORE_PASSWORD_IN: ${{ secrets.AERIX_KEYSTORE_PASSWORD }}
+          AERIX_KEYSTORE_ALIAS_IN: ${{ secrets.AERIX_KEYSTORE_ALIAS }}
         run: |
           set -eu
           test -n "$AERIX_KEYSTORE_P12_B64" || {
@@ -111,13 +112,19 @@ jobs:
           printf '%s' "$AERIX_KEYSTORE_P12_B64" | base64 -d > "$RUNNER_TEMP/aerix_release.p12"
           echo "AERIX_KEYSTORE_FILE=$RUNNER_TEMP/aerix_release.p12" >> "$GITHUB_ENV"
           echo "AERIX_KEYSTORE_PASSWORD=$AERIX_KEYSTORE_PASSWORD_IN" >> "$GITHUB_ENV"
-          echo "AERIX_KEYSTORE_ALIAS=$AERIX_KEYSTORE_ALIAS" >> "$GITHUB_ENV"
+          # The alias is not a secret in practice (it is "aerix", and the docs say so), but it was
+          # never declared into this step either: `set -u` would abort here on a runner that does not
+          # have it, long after the key itself was fine. Default it, and let a secret override.
+          echo "AERIX_KEYSTORE_ALIAS=${AERIX_KEYSTORE_ALIAS_IN:-aerix}" >> "$GITHUB_ENV"
 
       - name: Unpack the retired signing key for the transition
-        # Exactly one release gets signed by BOTH the retired key and the new one, because Android
-        # accepts an update when any signer matches the installed app. Without it, everyone on a
-        # pre-rotation build has to uninstall - losing worlds, instances and controls - to update.
-        # Delete this step once nobody is on a single-signed build any more.
+        # Kept for the record, and inert: v2.3.3 was the one double-signed transition release, and
+        # the signing step below pins LEGACY=false, so this only reports whether the secret is still
+        # around. Nothing here can put the retired key back into an APK.
+        #
+        # It originally existed because Android accepts an update when any signer matches the
+        # installed app - the only way to move people off a rotated key without an uninstall that
+        # costs them their worlds.
         env:
           AERIX_LEGACY_P12_B64: ${{ secrets.AERIX_LEGACY_P12 }}
           AERIX_LEGACY_PASSWORD_IN: ${{ secrets.AERIX_LEGACY_PASSWORD }}
@@ -125,8 +132,7 @@ jobs:
           set -eu
           if [ -z "$AERIX_LEGACY_P12_B64" ]; then
             echo "false" > "$RUNNER_TEMP/legacy_key_present"
-            echo "::warning::AERIX_LEGACY_P12 is unset, so installs signed with the retired key"
-            echo "   cannot update in place and will need the clean-install APK."
+            echo "The retired key is not configured; releases carry the current key alone."
             exit 0
           fi
           printf '%s' "$AERIX_LEGACY_P12_B64" | base64 -d > "$RUNNER_TEMP/aerix_legacy.p12"
