@@ -226,7 +226,7 @@ jobs:
             if [ "$LEGACY" = "true" ]; then
               # Double-sign with both keys so Android updates in place:
               # --v2-signer configuration via apksigner --next-signer
-              "$APKSIGNER" sign \
+              sign_out=$("$APKSIGNER" sign \
                 --v1-signing-enabled false --v2-signing-enabled true --v3-signing-enabled false \
                 --min-sdk-version 24 \
                 --ks "$AERIX_KEYSTORE_FILE" --ks-key-alias "$AERIX_KEYSTORE_ALIAS" \
@@ -234,7 +234,8 @@ jobs:
                 --next-signer \
                 --ks "$RUNNER_TEMP/aerix_legacy.p12" --ks-key-alias "$ALIAS" \
                 --ks-pass "env:AERIX_LEGACY_KEYSTORE_PASSWORD" --key-pass "env:AERIX_LEGACY_KEYSTORE_PASSWORD" \
-                --out "$apk" "$RUNNER_TEMP/to-sign-aligned.apk"
+                --out "$apk" "$RUNNER_TEMP/to-sign-aligned.apk" 2>&1)
+              printf '%s\n' "$sign_out" | while IFS= read -r l; do [ -n "$l" ] && echo "::warning::sign $apk: $l" || true; done
             else
               "$APKSIGNER" sign \
                 --ks "$AERIX_KEYSTORE_FILE" --ks-key-alias "$AERIX_KEYSTORE_ALIAS" \
@@ -306,7 +307,7 @@ jobs:
           for apk in out/Aerix-Launcher-*.apk; do
             echo "== $apk"
             info=$("$APKSIGNER" verify --print-certs --min-sdk-version 24 "$apk" 2>&1 | tr 'A-F' 'a-f')
-            printf '%s\n' "$info" | grep -E "signer|sha-256" || true
+            printf '%s\n' "$info" | while IFS= read -r l; do echo "::warning::$apk: $l"; done
             n=$(printf '%s\n' "$info" | grep -c "certificate sha-256 digest" || true)
             if [ "$n" -eq 0 ]; then
               n=$(printf '%s\n' "$info" | grep -c "signer" || true)
@@ -315,8 +316,6 @@ jobs:
               if [ "$n" -lt 2 ]; then
                 echo "::error::$apk carries $n signer(s); a transition release must carry both, or"
                 echo "   existing installs cannot update in place."
-                echo "::error::Full verification info:"
-                echo "$info"
                 exit 1
               fi
             else
