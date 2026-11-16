@@ -22,7 +22,7 @@ def current_version() -> str:
 
 
 VERSION = current_version()
-RELEASE_DATE = "11 Nov 2026"
+RELEASE_DATE = "16 Nov 2026"
 
 NAV = [
     ("index.html", "Home"),
@@ -364,6 +364,11 @@ def build_index():
           </li>
           <li>
             <span class="n">08</span>
+            <span><b>2.4: the FPS counter you can switch off from the A menu</b>
+            The readout sometimes printed garbage: its "no frame source" message was a whole sentence inside a pill sized to its own text, so it ran off the screen. Every message is short again, the pill caps what it draws, and the text is centred instead of riding the border. The reason for an unavailable counter moved to the accessibility description, where it cannot be clipped. The A menu now has an <b>FPS Counter</b> tile that turns the readout on and off from inside the game. This build also brings the launcher's new <b>Layout transparency</b> slider, which fades every glass card so the wallpaper shows through, and sweeps away the cape that installs from older builds could not remove.</span>
+          </li>
+          <li>
+            <span class="n">09</span>
             <span><b>2.3.3: the signing key that should never have been public</b>
             The warning some security apps raised on install had a real reason - releases were signed with a key committed to this repository, with its password in the file beside it. That key is retired and permanently banned in CI, releases now sign from a secret no clone can read, and 2.3.3 carries both signatures so you can update without uninstalling and losing your worlds.</span>
           </li>

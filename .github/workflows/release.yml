@@ -7,10 +7,10 @@ name: Release CI
 # A marked push has to touch this file to be seen at all, so each release cuts a
 # one line note here recording what it shipped.
 #
-# Last cut: v2.3.2 on 11 Nov 2026 - the sorry release. 2.3.0's startup throw skipped the CPU
-# read and the bundled runtime unpack, so a crash on open also looked like "no runtime is
-# being downloaded"; startup steps are independent, the architecture is on demand, and an
-# install failure finally carries the reason behind "Show more".
+# Last cut: v2.4.0 on 16 Nov 2026 - the first clean-signed release, and the one that stops the
+# FPS counter printing garbage: its "no frame source" message was a whole sentence inside a
+# pill sized to its own text. Messages are short again, the pill caps what it draws, and the
+# A menu finally has an FPS Counter tile that turns the readout on and off mid-game.
 #
 # The publish job uploads the build artifacts after the build job succeeds.
 # Each edition goes up three times, named after version.properties:
@@ -149,6 +149,7 @@ jobs:
           python3 tests/modpack_archives_test.py
           python3 tests/cape_default_smoke.py
           python3 tests/layout_transparency_smoke.py
+          python3 tests/fps_counter_smoke.py
           python3 tests/fastclient_performance_download_test.py
           python3 tests/recorder_wiring_smoke.py
           mkdir -p "$RUNNER_TEMP/aerix-migration-smoke"
@@ -196,6 +197,9 @@ jobs:
           test -n "$APKSIGNER" && test -n "$ZIPALIGN"
           test -n "${AERIX_KEYSTORE_FILE:-}" || { echo "::error::no signing key"; exit 1; }
           LEGACY="$(cat "$RUNNER_TEMP/legacy_key_present" 2>/dev/null || echo false)"
+          # The transition release is over: from 2.4 on, everything is signed by the current key
+          # alone. A lingering AERIX_LEGACY_P12 secret must not quietly re-add the retired key.
+          LEGACY=false
           ALIAS=aerix
           if [ "$LEGACY" = "true" ]; then
             # The retired p12 holds one key, but say which one out loud: an alias guessed wrong here
@@ -277,14 +281,15 @@ jobs:
       - name: Check who signed these APKs
         # The point of the whole exercise: nothing gets published signed by the key that used to live
         # in this repository. Every signer fingerprint is compared against
-        # tests/leaked_cert_fingerprint.txt, and during the transition a single-signed APK is refused
-        # too, because a release nobody could install over is not an improvement.
+        # tests/leaked_cert_fingerprint.txt. From 2.4 the transition is over, so every APK is expected
+        # to carry the current key alone.
         run: |
           set -eu
           SDK="${ANDROID_SDK_ROOT:-$ANDROID_HOME}"
           APKSIGNER=$(ls "$SDK"/build-tools/*/apksigner 2>/dev/null | tail -1 || true)
           test -n "$APKSIGNER"
-          LEGACY="$(cat "$RUNNER_TEMP/legacy_key_present" 2>/dev/null || echo false)"
+          # Nothing is double-signed any more; the flag only documents the old requirement.
+          LEGACY=false
           for apk in out/Aerix-Launcher-*.apk; do
             echo "== $apk"
             info=$("$APKSIGNER" verify --print-certs "$apk" | tr 'A-F' 'a-f')
@@ -297,8 +302,9 @@ jobs:
                 exit 1
               fi
             done < <(grep -v "^#" tests/leaked_cert_fingerprint.txt | grep -Eo "^[0-9a-f]{64}$" || true)
-            if [ "$LEGACY" = "true" ] && [ "$n" -lt 2 ]; then
-              echo "::error::$apk carries $n signer(s); the transition release must carry both, or"
+            # 2.4 is the first clean release: one signer, the current key, and never the retired one.
+            if [ "${LEGACY:-false}" = "true" ] && [ "$n" -lt 2 ]; then
+              echo "::error::$apk carries $n signer(s); a transition release must carry both, or"
               echo "   existing installs cannot update in place."
               exit 1
             fi

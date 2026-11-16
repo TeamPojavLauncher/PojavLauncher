@@ -14,7 +14,7 @@ APK is only built when the owner asks for a release and confirms it.
 | Build info | `https://github.com/entitybrian69-bit/Aerix-launcher/releases/download/debug-latest/NIGHTLY_BUILD.txt` (commit, versionCode, sha256) |
 | CI workflow | **Aerix Nightly (testing)** (`aerix-debug.yml`) |
 | CI artifact | `aerix-nightly-apk` |
-| Source | this branch (`version.properties` = `2.3.3`) |
+| Source | this branch (`version.properties` = `2.4.0`) |
 | Variant | `noruntimeNightly` |
 | applicationId | `net.al.aerixlauncher.debug` |
 | Label | Aerix Nightly |
@@ -120,6 +120,11 @@ matching signer - which is why a release published with a leaked key must itself
 **clean-install-only** APKs: re-signing v2.3.2 with anything other than v2.3.2's key would let a
 forged v2.3.2 look legitimate.
 
+**v2.3.3 was that one transition release, and it is over.** From v2.4.0 on, every APK carries the
+current key alone: the signing step pins `LEGACY=false` rather than trusting whether the retired
+key's secret is still present, so a leftover secret cannot quietly re-add a key that was published.
+Anyone still on v2.3.2 or older needs v2.3.3 once, and then every later release installs over it.
+
 Aerix Nightly keeps `app_pojavlauncher/debug.keystore`, the public AOSP debug key. That is the
 convention for debug builds, it is what lets a nightly install over another debug build, and it is
 why the nightly channel can never become someone's update vector for the stable app: different
@@ -131,8 +136,8 @@ Public APKs are **not** stored in the Git repository. The universal APK is
 147 MB, above GitHub's 100 MB limit for repository files, so release builds live
 as assets on the GitHub Releases page and nowhere else.
 
-Current public release: **v2.3.2** (notes in
-`docs/releases/v2.3.2.md`).
+Current public release: **v2.4.0** (notes in
+`docs/releases/v2.4.0.md`).
 
 The website is a second step, not part of the cut. GitHub Pages is set to *GitHub Actions*, and
 `pages.yml` deploys only from `v3_openjdk` - a side branch verifies `docs/` and stops there, on purpose,

@@ -1138,6 +1138,19 @@ private fun ClientSquaresGridPage(
             }
         ),
         ClientSquareModule(
+            id = "fps_counter",
+            title = "FPS Counter",
+            icon = FeatureIconKind.FPS,
+            // The same switch the launch screen shows and the launcher's video options own, exposed
+            // where the player actually is when they want it: mid-game, in the A menu.
+            isActive = { AerixClientStore.fpsOverlayEnabled },
+            statusText = { if (AerixClientStore.fpsOverlayEnabled) "ENABLED" else "DISABLED" },
+            onClick = {
+                AerixClientStore.fpsOverlayEnabled = !AerixClientStore.fpsOverlayEnabled
+                AerixClientStore.persist()
+            }
+        ),
+        ClientSquareModule(
             id = "cps",
             title = "CPS Counter",
             icon = FeatureIconKind.CPS,

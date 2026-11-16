@@ -38,6 +38,15 @@ public class FpsView extends View {
     };
     private int stalledSamples;
     private String frameSource = "frame-counter";
+
+    /**
+     * The most characters that fit on one line of the pill.
+     *
+     * Everything the counter can say is now short - "58 FPS (avg. 57) @ 120 Hz" is the longest of
+     * them at 26 - but a measurement can still come back absurd (a bogus telemetry number, a counter
+     * that jumped), and one long string must never be able to draw outside the screen.
+     */
+    private static final int MAX_TEXT_CHARS = 30;
     private final Runnable poll = new Runnable() {
         @Override public void run() {
             if (!running) return;
@@ -64,8 +73,15 @@ public class FpsView extends View {
                 frameSource = "none";
                 sampler.reset();
                 stalledSamples++;
-                updateText(getContext().getString(stalledSamples > 4
-                        ? R.string.fps_overlay_unavailable_reason : R.string.fps_overlay_unavailable));
+                // The full reason is a whole sentence, and it is shown in a pill that is as wide as
+                // its text - on a phone it ran off the screen and read as garbled characters. The
+                // pill says the short thing; the reason goes where the text is not clipped. It has
+                // to be set after updateText, which rewrites the description itself.
+                updateText(getContext().getString(R.string.fps_overlay_unavailable));
+                if (stalledSamples == 5) {
+                    setContentDescription(getContext().getString(R.string.fps_overlay_unavailable_reason)
+                            + ". " + getContext().getString(R.string.fps_overlay_drag));
+                }
             } else if (sampler.sample(count, SystemClock.elapsedRealtimeNanos())) {
                 // With the refresh-rate request on, the panel rate is the thing being tested, so it is
                 // printed next to the frame count: "58 FPS @ 120 Hz" proves the display moved even
@@ -101,12 +117,37 @@ public class FpsView extends View {
         background.setColor(0xB0000000);
         textPaint.setColor(Color.WHITE);
         textPaint.setTypeface(android.graphics.Typeface.MONOSPACE);
-        textPaint.setTextAlign(Paint.Align.LEFT);
+        // Centred, not left-aligned: the pill is exactly as wide as the text it measured, and a
+        // left-aligned draw at the padding edge left the glyphs riding the border - the other half
+        // of what read as "weird text".
+        textPaint.setTextAlign(Paint.Align.CENTER);
         textPaint.setTextSize(getResources().getDisplayMetrics().scaledDensity * 12f);
         setContentDescription(getContext().getString(R.string.fps_overlay_drag));
         ViewCompat.setOnApplyWindowInsetsListener(this, (v, insets) -> { post(this::restorePosition); return insets; });
     }
+    /**
+     * Keeps the pill to one line of sane text.
+     *
+     * The old "no frame source" message was a whole sentence, wider than a phone screen: the view
+     * measured that width, the text ran off the edge, and what was left next to the pill's border
+     * read as random characters. Nothing drawn here is longer than the pill can hold now, and this
+     * is the guard that keeps it that way if a new message is added later.
+     */
+    private String fit(String value) {
+        if (value == null) return "";
+        String cleaned = value.replace('\n', ' ').replace('\r', ' ').trim();
+        if (cleaned.length() <= MAX_TEXT_CHARS) return cleaned;
+        int keep = cleaned.offsetByCodePoints(0, MAX_TEXT_CHARS - 1);
+        String head = cleaned.substring(0, keep);
+        // Never end on an unpaired surrogate half: that draws as an empty box, not a letter.
+        if (!head.isEmpty() && Character.isHighSurrogate(head.charAt(head.length() - 1))) {
+            head = head.substring(0, head.length() - 1);
+        }
+        return head + "\u2026";
+    }
+
     private void updateText(String value) {
+        value = fit(value);
         if (value.equals(text)) return;
         text = value;
         setContentDescription(value + " (" + frameSource + "). "
@@ -249,6 +290,7 @@ public class FpsView extends View {
         super.onDraw(canvas);
         backgroundRect.set(0, 0, getWidth(), getHeight());
         canvas.drawRoundRect(backgroundRect, getHeight() / 4f, getHeight() / 4f, background);
-        canvas.drawText(text, getPaddingLeft(), -textPaint.getFontMetrics().ascent + getPaddingTop(), textPaint);
+        canvas.drawText(text, getWidth() / 2f,
+                -textPaint.getFontMetrics().ascent + getPaddingTop(), textPaint);
     }
 }
