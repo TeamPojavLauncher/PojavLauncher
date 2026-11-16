@@ -96,6 +96,25 @@ The installer refuses a mismatch: if the chosen row says 1.20.1 and the archive'
 `mojo_instance.json` says otherwise, it stops with a readable message instead of installing the
 wrong game version.
 
+## The pack's mark in the app
+
+A pack installed from the tab must never appear in the library wearing the **Fabric** logo. Two
+things guarantee that, in this order:
+
+1. **The mark bundled in the APK.** `res/drawable/aerix_modpack_<id>.xml` (dashes become
+   underscores) is drawn onto the instance the moment it is created — offline, and before any
+   download could finish. `AerixModpackIcons.drawableFor()` maps a catalogue id to it.
+2. **The artwork the catalogue publishes.** `"icon": "icons/x.png"` is only fetched when this build
+   ships no bundled mark for that pack.
+
+Instances created *before* the launcher recorded their pack are repaired automatically: an instance
+whose `modpackSource` is `aerix` is matched to a catalogue entry by name, remembered under
+`aerixPackId`, and given its bundled mark on the next library scan.
+
+Adding a pack therefore means adding **two** things that share an id: its entry in `modpacks.json`,
+and `res/drawable/aerix_modpack_<id>.xml`. `tests/modpacks_smoke.py` asserts the pairing, so a pack
+cannot ship without its mark.
+
 ## Archive format
 
 Two layouts install in one press:

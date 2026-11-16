@@ -255,6 +255,9 @@ object AerixModpackInstaller {
                     inst.modpackIconUrl = manifest.iconUrl.ifBlank { pack.iconUrl }
                     inst.modpackProjectId = null
                     inst.modpackSource = "aerix"
+                    // Which catalogue pack this is, so the bundled mark can be restored if the
+                    // instance's icon file is ever lost.
+                    inst.aerixPackId = pack.id
                 },
                 prefix.ifBlank { "aerix_modpack" }
             )
@@ -263,10 +266,19 @@ object AerixModpackInstaller {
             progressFraction = 0.9f
             extractInstance(archive, instance.gameDirectory)
 
-            // The export carries the pack's own artwork, but as WebP, which the launcher's icon
-            // loader cannot read. It is re-encoded to the icon file the instance already expects so
-            // the pack shows its logo instead of a stock loader mark.
-            writePackIcon(instance, File(instance.gameDirectory, "icon.webp"))
+            // The instance wears the pack's mark from the moment it exists, not after a download:
+            // the bundled copy cannot fail, so a fresh install never shows the Fabric logo even for
+            // the second it takes to resolve anything else. A pack this build ships no mark for
+            // falls back to the artwork the catalogue publishes.
+            if (!AerixModpackIcons.writeOnto(context, instance, pack.id)) {
+                writePackIcon(instance, pack.iconUrls)
+            }
+
+            // The export carries its artwork as WebP, which the launcher's icon loader cannot read.
+            // It is re-encoded onto the icon file the instance expects, so the pack shows its own
+            // logo rather than a stock loader mark.
+            val exportedIcon = File(instance.gameDirectory, "icon.webp")
+            if (exportedIcon.isFile) writePackIcon(instance, exportedIcon)
 
             progressFraction = 1f
             Instances.setSelectedInstance(instance)
@@ -276,8 +288,10 @@ object AerixModpackInstaller {
         }
 
     /**
-     * Puts the pack's artwork where the launcher looks for an instance icon. Best effort: a pack
-     * without artwork, or one whose image cannot be decoded, keeps the Fabric mark it started with.
+     * Puts the pack's downloaded artwork where the launcher looks for an instance icon.
+     *
+     * Best effort, and only ever an improvement: it overwrites the bundled mark, so a catalogue
+     * that publishes real artwork still wins once that artwork is in hand.
      */
     private fun writePackIcon(instance: Instance, source: File) {
         if (!source.isFile) return
@@ -292,6 +306,26 @@ object AerixModpackInstaller {
         }
         // The WebP copy has done its job either way; the instance keeps only what it can read.
         source.delete()
+    }
+
+    /**
+     * Downloads the first of the pack's artwork mirrors that answers and writes it as the icon.
+     *
+     * The whole point of running this after the bundled mark is that the artwork can be updated
+     * without shipping a launcher: the catalogue's file is authoritative, the app's copy is the
+     * guarantee that something decent is there first.
+     */
+    private fun writePackIcon(instance: Instance, urls: List<String>) {
+        if (urls.isEmpty()) return
+        runCatching {
+            val bytes = java.io.ByteArrayOutputStream()
+                .also { out -> DownloadUtils.download(urls.first(), out) }
+                .toByteArray()
+            if (bytes.isEmpty()) return
+            net.kdt.pojavlaunch.modloaders.modpacks.imagecache.ModIconCache
+                .writeInstanceIcon(instance, bytes)
+            net.kdt.pojavlaunch.instances.InstanceIconProvider.dropIcon(instance)
+        }
     }
 
     /** Copies every file in the archive onto [destination], skipping the export's metadata file. */

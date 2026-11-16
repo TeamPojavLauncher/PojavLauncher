@@ -89,6 +89,37 @@ check("version.downloadUrls" in installer,
       "wrong file")
 check("installingVersion" in installer, "progress must name the build being installed")
 
+# ---------------------------------------------------------------- shipped catalogue
+data = json.loads(MANIFEST.read_text())
+packs = data["packs"]
+check(isinstance(packs, list) and packs, "the catalogue must list at least one pack")
+
+# ---------------------------------------------------------------- pack marks
+ICONS = AERIX / "modpacks/AerixModpackIcons.kt"
+icons = ICONS.read_text()
+check("drawableFor" in icons, "the installed pack needs a bundled mark to fall back on")
+check("writeOnto" in icons,
+      "the bundled mark has to be written as the instance icon, not just looked up")
+
+# Every catalogue pack that ships a bundled mark must have its drawable, or the install falls back
+# to the Fabric logo - which is exactly the bug this guards against.
+for pack in packs:
+    pack_id = (pack.get("id") or "").strip()
+    key = re.sub(r"[^a-z0-9]", "", pack_id.lower())
+    if not key:
+        continue
+    drawable = ROOT / f"app_pojavlauncher/src/main/res/drawable/aerix_modpack_{pack_id.replace('-', '_')}.xml"
+    if key.startswith("aetherium"):
+        check(drawable.is_file(), f"pack {pack.get('name')!r} has no bundled mark at {drawable.name}")
+        check(f"aerix_modpack_{pack_id.replace('-', '_')}" in icons,
+              f"drawableFor does not map {pack_id!r} to its bundled mark")
+
+check("aerixPackId" in installer,
+      "the instance must record which catalogue pack it came from, or its icon cannot be restored")
+check("aerixPackId" in pathlib.Path(
+    APP / "instances/Instance.java").read_text(),
+    "Instance must carry the catalogue pack id")
+
 # ---------------------------------------------------------------- screen wiring
 screen = SCREEN.read_text()
 check("AerixModpackInstaller.install(context, pack, selected)" in screen,
@@ -102,10 +133,11 @@ check("ComingSoonFolder" in screen,
 check("LazyVerticalGrid" in screen, "packs are drawn as a grid of folders, not a column of cards")
 check("rememberPackArtwork" in screen, "each folder must show the pack's own artwork")
 
-# ---------------------------------------------------------------- shipped catalogue
-data = json.loads(MANIFEST.read_text())
-packs = data["packs"]
-check(isinstance(packs, list) and packs, "the catalogue must list at least one pack")
+# The installer must prefer the bundled mark, and only reach for the network when it has none.
+check("AerixModpackIcons.writeOnto(context, instance, pack.id)" in installer,
+      "a Team Aerix pack must get its bundled mark the moment the instance is created")
+
+# ---------------------------------------------------------------- catalogue entries
 for pack in packs:
     check(pack.get("file"), f"pack {pack.get('name')!r} has no file to download")
     check(pack.get("name"), f"pack {pack.get('file')!r} has no display name")
