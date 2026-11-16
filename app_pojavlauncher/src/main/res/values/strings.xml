@@ -634,7 +634,7 @@ Your original layout is kept unchanged. Continue importing?</string>
     <string name="fps_overlay_waiting">-- FPS</string>
     <string name="fps_overlay_unavailable">FPS unavailable</string>
     <string name="fps_overlay_unavailable_reason">FPS unavailable - no frame source (install the Aerix client mod or use the GLFW renderer)</string>
-    <string name="fps_overlay_stalled">0 FPS - the game is not presenting frames</string>
+    <string name="fps_overlay_stalled">0 FPS - no frames</string>
     <string name="fps_overlay_value">%1$d FPS (avg. %2$d)</string>
     <string name="fps_overlay_drag">Drag the FPS counter to move it</string>
     <string name="fps_overlay_value_hz">%1$d FPS (avg. %2$d) @ %3$d Hz</string>

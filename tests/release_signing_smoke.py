@@ -138,6 +138,12 @@ check("--v2-signer" in wf and "aerix_legacy.p12" in wf,
 check("legacy_key_present" in wf,
       "the double-sign must be driven by whether the retired key was provided, so the step after the "
       "transition can be deleted without editing the loop")
+# The transition was exactly one release (2.3.3). From 2.4 the flag is pinned off in the workflow, so a
+# lingering AERIX_LEGACY_P12 secret cannot quietly bring the retired key back into a public build.
+check("LEGACY=false" in sign_block,
+      "the transition must be closed: sign_step must pin LEGACY=false instead of trusting the secret")
+check('if [ "${LEGACY:-false}" = "true" ] && [ "$n" -lt 2 ]' in wf,
+      "the two-signer requirement must stay tied to the transition flag, not to every release")
 check("carries $n signer(s)" in wf or "signer(s); the transition release" in wf,
       "a single-signed transition release must fail the build rather than brick existing installs")
 
