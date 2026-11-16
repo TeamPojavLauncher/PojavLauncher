@@ -43,16 +43,21 @@ for game, entries in manifest.items():
         if data is None:
             continue
         assert len(data) <= 40_000_000
-        assert hashlib.sha256(data).hexdigest() == entry['sha256'], entry['url']
+        actual = hashlib.sha256(data).hexdigest()
+        assert actual == entry['sha256'], (
+            f"{game} {entry['id']}: sha256 {actual} does not match the pinned "
+            f"{entry['sha256']} for {entry['url']}")
         with ZipFile(io.BytesIO(data)) as jar:
             metadata = json.loads(jar.read('fabric.mod.json'))
-            assert metadata['id'] == entry['id']
+            assert metadata['id'] == entry['id'], (game, entry['id'], metadata.get('id'))
             nested_ids = set()
             for nested in metadata.get('jars', []):
                 with ZipFile(io.BytesIO(jar.read(nested['file']))) as nested_jar:
                     nested_ids.add(json.loads(nested_jar.read('fabric.mod.json'))['id'])
             required = set(metadata.get('depends', {}))
             unknown = required - {'minecraft', 'java', 'fabricloader', 'fabric-api', 'fabric'} - nested_ids
-            assert not unknown, (game, entry['id'], unknown, nested_ids)
+            assert not unknown, (
+                f"{game} {entry['id']} {metadata.get('version')} declares {sorted(unknown)}, "
+                f"which neither Fabric API nor a bundled jar provides")
             print(f"::notice title=FastClient mod metadata::{game} {entry['id']} {metadata.get('version')} depends={json.dumps(metadata.get('depends', {}), separators=(',', ':'))} nested={','.join(sorted(nested_ids))}")
 print('Pinned FastClient performance mod downloads verified')
