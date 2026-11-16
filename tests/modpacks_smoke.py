@@ -76,11 +76,31 @@ check("ModpacksScreen(navigate)" in shell, "the shell must render the modpack pa
 check("LauncherSection.WALLPAPERS" not in shell,
       "the shell must not still route a Wallpapers section that no longer exists")
 
+# ---------------------------------------------------------------- versions
+check("AerixModpackVersion" in catalog, "a pack must be able to offer more than one build")
+check("parseVersions" in catalog, "the catalogue must read a pack's versions array")
+check("offeredVersions" in catalog,
+      "a pack entry without a versions array must still offer its single build")
+check("iconUrls" in catalog, "pack artwork must resolve against the same mirrors as the archives")
+check("AerixModpackVersion" in installer,
+      "the installer must install the build the user picked, not always the first one")
+check("version.downloadUrls" in installer,
+      "the download must follow the chosen build's mirrors, or a two-version pack installs the "
+      "wrong file")
+check("installingVersion" in installer, "progress must name the build being installed")
+
 # ---------------------------------------------------------------- screen wiring
 screen = SCREEN.read_text()
-check("AerixModpackInstaller.install" in screen, "the card button must run the installer")
+check("AerixModpackInstaller.install(context, pack, selected)" in screen,
+      "the button must install the build the version picker has selected")
 check("load(force = true)" in screen, "a failed catalogue read must offer a retry")
-check("sizeBytes" in screen, "the card reports the download size when the catalogue has one")
+check("sizeBytes" in screen, "the screen reports the download size when the catalogue has one")
+check("ModpackPage" in screen, "tapping a pack folder must open the pack's own page")
+check("VersionRow" in screen, "the pack page must list its builds as a choice")
+check("ComingSoonFolder" in screen,
+      "the grid must reserve room for the packs that are still coming")
+check("LazyVerticalGrid" in screen, "packs are drawn as a grid of folders, not a column of cards")
+check("rememberPackArtwork" in screen, "each folder must show the pack's own artwork")
 
 # ---------------------------------------------------------------- shipped catalogue
 data = json.loads(MANIFEST.read_text())
@@ -89,6 +109,23 @@ check(isinstance(packs, list) and packs, "the catalogue must list at least one p
 for pack in packs:
     check(pack.get("file"), f"pack {pack.get('name')!r} has no file to download")
     check(pack.get("name"), f"pack {pack.get('file')!r} has no display name")
+    versions = pack.get("versions") or []
+    for version in versions:
+        check(version.get("file"),
+              f"pack {pack.get('name')!r} lists a version with no file to download")
+        check(version.get("mcVersion"),
+              f"pack {pack.get('name')!r} lists a version with no Minecraft version")
+    # Artwork is optional, but a relative one must actually be committed, or the folder is blank.
+    icon = (pack.get("icon") or "").strip()
+    if icon and not icon.startswith("http"):
+        check((ROOT / "modpacks" / icon).is_file(),
+              f"pack {pack.get('name')!r} points at artwork that is not in modpacks/{icon}")
+    # Every build must name an archive that is committed, so the mirrors can serve it.
+    for version in versions or [pack]:
+        f = (version.get("file") or "").strip()
+        if f and not f.startswith("http"):
+            check((ROOT / "modpacks" / f).is_file(),
+                  f"pack {pack.get('name')!r} points at {f}, which is not committed")
 
 if problems:
     print("modpacks smoke: FAILED")
