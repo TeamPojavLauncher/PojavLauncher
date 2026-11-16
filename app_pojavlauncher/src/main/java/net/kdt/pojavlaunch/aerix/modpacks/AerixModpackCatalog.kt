@@ -140,7 +140,8 @@ object AerixModpackCatalog {
                     packs
                 }
             }
-            attempt.onSuccess { return@withContext it }
+            val packs = attempt.getOrNull()
+            if (packs != null) return@withContext packs
             lastFailure = attempt.exceptionOrNull()?.message
         }
         throw IllegalStateException(

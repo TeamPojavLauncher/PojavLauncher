@@ -124,7 +124,7 @@ internal fun ModpacksScreen(navigate: (LauncherSection) -> Unit) {
                     )
                 }
                 else -> items(AerixModpackCatalog.packs, key = { it.id }) { pack ->
-                    ModpackCard(pack)
+                    ModpackCard(pack, navigate)
                 }
             }
 
@@ -204,7 +204,7 @@ private fun CatalogueErrorCard(message: String, onRetry: () -> Unit) {
 }
 
 @Composable
-private fun ModpackCard(pack: AerixModpack) {
+private fun ModpackCard(pack: AerixModpack, navigate: (LauncherSection) -> Unit) {
     val accent = AerixThemeManager.currentAccent()
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
