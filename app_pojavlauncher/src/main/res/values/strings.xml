@@ -70,8 +70,8 @@
     <string name="mcl_setting_renderer_gles2_4">GL4ES (OpenGL ES 2) - 1.21.4 and lower</string>
     <string name="mcl_setting_renderer_nggl4es">Krypton Wrapper (OpenGL ES 3.2) - 26.2 and lower</string>
     <string name="mcl_setting_renderer_vulkan_zink">Zink (Vulkan) - all versions</string>
-    <string name="mcl_setting_renderer_ltw">LTW (OpenGL ES 3) - 1.17+ only</string>
-    <string name="mcl_setting_renderer_mobileglues">MobileGlues (OpenGL ES) - (1.17+ only)</string>
+    <string name="mcl_setting_renderer_ltw">LTW (OpenGL ES 3) - 1.17+ only, the default there</string>
+    <string name="mcl_setting_renderer_mobileglues">MobileGlues (OpenGL ES) - 1.17+ only, experimental</string>
     <string name="mcl_setting_renderer_sfpew">SFPEW/MobileGlues (OpenGL ES) - (all versions)</string>
     <string name="mcl_setting_renderer_proton">Proton (OpenGL over PowerVR) - 32-bit devices only</string>
     <string name="aerix_wallpaper_tab_wallpaper">Wallpapers</string>
@@ -656,8 +656,8 @@ Your original layout is kept unchanged. Continue importing?</string>
     <string name="aerix_guide_play_body">The panel on the right always shows the selected instance. Play launches it; the gear beside it opens the settings for that instance.</string>
     <string name="aerix_guide_renderer_title">Renderers</string>
     <string name="aerix_guide_renderer_body">Emesis is bundled and works everywhere. If a game will not start, this is the first setting to try - another renderer, or a lower resolution.</string>
-    <string name="aerix_guide_wallpapers_title">Make it yours</string>
-    <string name="aerix_guide_wallpapers_body">25 photographs, 12 real recorded Minecraft animations, and any clip of your own. The accent colour follows whatever you pick.</string>
+    <string name="aerix_guide_modpacks_title">Packs, one press</string>
+    <string name="aerix_guide_modpacks_body">Our own modpacks, ready to play. One press downloads the pack and builds its instance: Minecraft version, mod loader and mods included.</string>
     <string name="aerix_guide_end_title">That is everything</string>
     <string name="aerix_guide_end_body">Add an account from the avatar at the bottom of the rail, then create your first instance. The guide can be shown again from Settings.</string>
     <string name="aerix_guide_replay">Show the guide again</string>

@@ -189,6 +189,11 @@ object FastClientInstaller {
             performanceMods.forEach { it.copyTo(File(mods, it.name), overwrite = false) }
             created.name = "FastClient ${build.minecraft}"
             created.fastClientVersion = build.minecraft
+            // A FastClient build is 1.21-era, so it starts on the renderer that era wants. The
+            // profile it writes is named after Fabric, not after the game, so the version name
+            // alone would not say which renderer this needs.
+            created.renderer = net.kdt.pojavlaunch.game.renderer.RendererDefaults
+                .launchTagForVersion(null, build.minecraft)
             created.write()
             Instances.setSelectedInstance(created)
             progress = 1f

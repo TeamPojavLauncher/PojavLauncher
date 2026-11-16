@@ -37,7 +37,8 @@ object AerixGuideState {
     const val CREATE = "create"
     const val LIBRARY = "library"
     const val PLAY = "play"
-    const val WALLPAPERS = "wallpapers"
+    /** The "Our modpacks" rail entry. */
+    const val MODPACKS = "modpacks"
     const val SETTINGS = "settings"
 
     var running by mutableStateOf(false)
@@ -103,9 +104,9 @@ fun rememberGuideSteps(): List<GuideStep> {
             body = stringResource(R.string.aerix_guide_renderer_body)
         ),
         GuideStep(
-            anchor = AerixGuideState.WALLPAPERS,
-            title = stringResource(R.string.aerix_guide_wallpapers_title),
-            body = stringResource(R.string.aerix_guide_wallpapers_body)
+            anchor = AerixGuideState.MODPACKS,
+            title = stringResource(R.string.aerix_guide_modpacks_title),
+            body = stringResource(R.string.aerix_guide_modpacks_body)
         ),
         GuideStep(
             anchor = null,

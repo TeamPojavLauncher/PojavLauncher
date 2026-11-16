@@ -158,6 +158,8 @@ import net.kdt.pojavlaunch.aerix.components.SliderSettingRow
 import net.kdt.pojavlaunch.aerix.components.SwitchSettingRow
 import net.kdt.pojavlaunch.aerix.components.getMiraiInstanceRendererId
 import net.kdt.pojavlaunch.aerix.components.miraiRendererEntries
+import net.kdt.pojavlaunch.aerix.components.MiraiRendererEntry
+import net.kdt.pojavlaunch.game.renderer.MobileGluesWarning
 import net.kdt.pojavlaunch.aerix.components.saveMiraiInstanceRendererId
 import net.kdt.pojavlaunch.aerix.theme.AerixRadii
 import net.kdt.pojavlaunch.aerix.theme.AerixSpacing
@@ -1277,6 +1279,35 @@ private fun InstanceSettingsPane(
     var currentMiraiRendererId by remember(draft.renderer) {
         mutableStateOf(getMiraiInstanceRendererId(activity, instanceKey, draft.renderer))
     }
+    // Picking MobileGlues here is held until the warning has been read, exactly like the settings
+    // page: the instance is not changed while the dialog is open.
+    var pendingMobileGlues by remember { mutableStateOf<MiraiRendererEntry?>(null) }
+    pendingMobileGlues?.let { entry ->
+        val close = { pendingMobileGlues = null }
+        MobileGluesWarningDialog(
+            versionId = draft.versionId,
+            onConfirm = {
+                close()
+                currentMiraiRendererId = entry.uniqueId
+                draft.renderer = entry.backendRendererId
+                saveMiraiInstanceRendererId(instanceKey, entry)
+                PojavInstanceEditorBridge.save(activity)
+            },
+            onRecommended = { recommended ->
+                close()
+                // The renderer this instance's version wants, taken from the list the device
+                // actually offers; the plain "Follow Global" entry stays reachable as the fallback.
+                val replacement = rendererEntries.firstOrNull { it.uniqueId == recommended }
+                if (replacement != null) {
+                    currentMiraiRendererId = replacement.uniqueId
+                    draft.renderer = replacement.backendRendererId
+                    saveMiraiInstanceRendererId(instanceKey, replacement)
+                    PojavInstanceEditorBridge.save(activity)
+                }
+            },
+            onDismiss = close
+        )
+    }
 
     val runtimeChoices = remember {
         buildList {
@@ -1427,10 +1458,15 @@ private fun InstanceSettingsPane(
                     MiraiRendererSummaryLayout(renderer = item)
                 },
                 onValueChange = { entry ->
-                    currentMiraiRendererId = entry.uniqueId
-                    draft.renderer = entry.backendRendererId
-                    saveMiraiInstanceRendererId(instanceKey, entry)
-                    PojavInstanceEditorBridge.save(activity)
+                    if (MobileGluesWarning.applies(entry.backendRendererId)) {
+                        // Nothing is written until the warning is answered.
+                        pendingMobileGlues = entry
+                    } else {
+                        currentMiraiRendererId = entry.uniqueId
+                        draft.renderer = entry.backendRendererId
+                        saveMiraiInstanceRendererId(instanceKey, entry)
+                        PojavInstanceEditorBridge.save(activity)
+                    }
                 }
             )
 

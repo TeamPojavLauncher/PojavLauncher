@@ -206,10 +206,10 @@ fun SettingsScreen(activity: FragmentActivity, tabKey: String, onTabChanged: (St
             .padding(horizontal = AerixSpacing.md, vertical = AerixSpacing.sm),
         verticalArrangement = Arrangement.spacedBy(AerixSpacing.md)
     ) {
-        // The Wallpapers page is reached from its own rail entry and is a full page of its own:
-        // it carries no settings tab strip, and the rail's settings entry returns to Renderer, so
-        // nothing is unreachable. This is what lifts the page's own controls to the top.
-        if (activeKey != AerixNav.TAB_WALLPAPERS) AerixPillTabRow(modifier = Modifier.fillMaxWidth()) {
+        // Every settings page keeps the tab strip. The Wallpapers page used to be reachable from a
+        // rail entry of its own and hid the strip for that reason; that entry is now the modpack
+        // page, so Wallpapers is a normal tab like the rest.
+        AerixPillTabRow(modifier = Modifier.fillMaxWidth()) {
             settingTabItems.forEach { item ->
                 val selected = activeKey == item.key
                 AerixPillTab(
