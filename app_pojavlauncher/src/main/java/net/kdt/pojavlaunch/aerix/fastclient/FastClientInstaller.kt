@@ -129,7 +129,7 @@ object FastClientInstaller {
         }
         throw IOException(
             "Could not download FastClient ${build.minecraft}" +
-                (lastFailure?.let { " ($it)" } else "") + ". Check your connection and retry."
+                (lastFailure?.let { " ($it)" } ?: "") + ". Check your connection and retry."
         )
     }
 
