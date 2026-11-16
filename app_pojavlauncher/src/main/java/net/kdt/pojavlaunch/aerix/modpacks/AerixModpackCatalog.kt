@@ -33,26 +33,79 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 /**
- * One pack as the catalogue describes it.
+ * One downloadable build of a pack.
+ *
+ * A pack page offers these as a choice, because the same pack is often built for more than one
+ * Minecraft version and installing the wrong one is the whole failure mode worth designing out.
  *
  * [file] is resolved against [AerixModpackCatalog.PACK_BASE_URLS], so moving the whole catalogue
  * to another host is a one-line change here instead of an edit per pack.
+ */
+data class AerixModpackVersion(
+    /** "1.20.1", shown next to the loader on the version picker. */
+    val mcVersion: String,
+    /** "fabric", shown beside the version. Defaults to the pack's loader when the entry omits it. */
+    val loader: String = "",
+    /** Archive name, relative to the catalogue. */
+    val file: String,
+    val sizeBytes: Long = 0L,
+    /** Optional per-version note, e.g. "Recommended" or "Needs 6 GB of RAM". */
+    val note: String = ""
+) {
+    val downloadUrls: List<String>
+        get() = if (file.startsWith("http")) listOf(file)
+        else AerixModpackCatalog.PACK_BASE_URLS.map { it + file }
+}
+
+/**
+ * One pack as the catalogue describes it.
+ *
+ * A pack without an explicit [versions] array still works: it simply has the one build that its
+ * top-level [file]/[mcVersion]/[size] describe, which keeps a one-build pack a one-line entry.
  */
 data class AerixModpack(
     val id: String,
     val name: String,
     val summary: String,
+    /** The default build, also the only one when [versions] is not given. */
     val file: String,
     /** Filled in from the catalogue when it says so; otherwise read out of the archive itself. */
     val mcVersion: String = "",
     val loader: String = "",
     val iconUrl: String = "",
-    val sizeBytes: Long = 0L
+    val sizeBytes: Long = 0L,
+    /** Every build of this pack, in the order the picker should offer them. */
+    val versions: List<AerixModpackVersion> = emptyList()
 ) {
-    /** Every place this pack can be fetched from, in the order they should be tried. */
+    /** What the version picker lists; always at least one entry. */
+    val offeredVersions: List<AerixModpackVersion>
+        get() = versions.ifEmpty {
+            listOf(
+                AerixModpackVersion(
+                    mcVersion = mcVersion,
+                    loader = loader,
+                    file = file,
+                    sizeBytes = sizeBytes
+                )
+            )
+        }
+
+    /** Every place the default build can be fetched from, in the order they should be tried. */
     val downloadUrls: List<String>
-        get() = if (file.startsWith("http")) listOf(file)
-        else AerixModpackCatalog.PACK_BASE_URLS.map { it + file }
+        get() = offeredVersions.first().downloadUrls
+
+    /**
+     * Where this pack's artwork can be fetched from, tried in order; empty when it names none.
+     *
+     * Like [file], a relative name ("icons/x.png") resolves against the same two mirrors, so the
+     * artwork can be committed next to the catalogue instead of needing a third-party host.
+     */
+    val iconUrls: List<String>
+        get() = when {
+            iconUrl.isBlank() -> emptyList()
+            iconUrl.startsWith("http") -> listOf(iconUrl)
+            else -> AerixModpackCatalog.PACK_BASE_URLS.map { it + iconUrl }
+        }
 }
 
 object AerixModpackCatalog {
@@ -167,15 +220,40 @@ object AerixModpackCatalog {
             val item = array.optJSONObject(index) ?: continue
             val file = item.optString("file").trim()
             if (file.isEmpty()) continue
+            val loader = item.optString("loader")
             out += AerixModpack(
                 id = item.optString("id").ifBlank { file },
                 name = item.optString("name").ifBlank { file.substringAfterLast('/') },
                 summary = item.optString("summary"),
                 file = file,
                 mcVersion = item.optString("mcVersion"),
-                loader = item.optString("loader"),
+                loader = loader,
                 iconUrl = item.optString("icon"),
-                sizeBytes = item.optLong("size", 0L)
+                sizeBytes = item.optLong("size", 0L),
+                versions = parseVersions(item.optJSONArray("versions"), loader)
+            )
+        }
+        return out
+    }
+
+    /**
+     * Reads a pack's `versions` array. Entries without a `file` are skipped rather than guessed at,
+     * and an entry that omits `loader` inherits the pack's, since a pack is normally one loader
+     * across all its builds.
+     */
+    private fun parseVersions(array: JSONArray?, packLoader: String): List<AerixModpackVersion> {
+        if (array == null || array.length() == 0) return emptyList()
+        val out = ArrayList<AerixModpackVersion>(array.length())
+        for (index in 0 until array.length()) {
+            val item = array.optJSONObject(index) ?: continue
+            val file = item.optString("file").trim()
+            if (file.isEmpty()) continue
+            out += AerixModpackVersion(
+                mcVersion = item.optString("mcVersion").trim(),
+                loader = item.optString("loader").ifBlank { packLoader },
+                file = file,
+                sizeBytes = item.optLong("size", 0L),
+                note = item.optString("note").trim()
             )
         }
         return out

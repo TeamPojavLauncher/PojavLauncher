@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "packs": [
     {
       "id": "aetherium-optimized",
@@ -8,8 +8,17 @@
       "file": "packs/aetherium-optimized.zip",
       "mcVersion": "1.20.1",
       "loader": "fabric",
-      "icon": "",
-      "size": 4078430
+      "icon": "icons/aetherium-optimized.png",
+      "size": 4078430,
+      "versions": [
+        {
+          "mcVersion": "1.20.1",
+          "loader": "fabric",
+          "file": "packs/aetherium-optimized.zip",
+          "size": 4078430,
+          "note": "The build the team plays on. Recommended."
+        }
+      ]
     }
   ]
 }

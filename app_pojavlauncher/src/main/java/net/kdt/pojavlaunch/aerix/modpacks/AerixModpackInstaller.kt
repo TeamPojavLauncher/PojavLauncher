@@ -60,13 +60,24 @@ internal data class MojoInstanceManifest(
 
 object AerixModpackInstaller {
 
-    /** Where a downloaded pack waits until it has been installed and can be deleted. */
-    private fun downloadTarget(context: android.content.Context, pack: AerixModpack): File =
-        File(context.cacheDir, "aerix_modpack_" + pack.id.replace(Regex("[^A-Za-z0-9_.-]"), "_") + ".zip")
+    /**
+     * Where a downloaded pack waits until it has been installed and can be deleted.
+     *
+     * The cache name carries the archive name as well as the pack id: a pack with two builds would
+     * otherwise download one version and install the other from the file the first one left behind.
+     */
+    private fun downloadTarget(context: android.content.Context, pack: AerixModpack, version: AerixModpackVersion): File {
+        val packPart = pack.id.replace(Regex("[^A-Za-z0-9_.-]"), "_")
+        val versionPart = version.file.substringAfterLast('/').replace(Regex("[^A-Za-z0-9_.-]"), "_")
+        return File(context.cacheDir, "aerix_modpack_${packPart}_$versionPart")
+    }
 
     var isInstalling by mutableStateOf(false)
         private set
     var installingName by mutableStateOf<String?>(null)
+        private set
+    /** The build being installed, so a card can name the version in its progress line. */
+    var installingVersion by mutableStateOf<AerixModpackVersion?>(null)
         private set
     var progressFraction by mutableFloatStateOf(0f)
         private set
@@ -82,38 +93,48 @@ object AerixModpackInstaller {
     fun clearError() { lastError = null }
 
     /**
-     * Downloads [pack] and turns it into a playable instance.
+     * Downloads the chosen build of [pack] and turns it into a playable instance.
      *
      * Everything after the download runs off the UI thread: it touches the network twice (Fabric
      * meta) and writes a whole game directory, which must never happen on the main thread.
      */
-    suspend fun install(context: android.content.Context, pack: AerixModpack) {
+    suspend fun install(
+        context: android.content.Context,
+        pack: AerixModpack,
+        version: AerixModpackVersion = pack.offeredVersions.first()
+    ) {
         if (isInstalling) return
         isInstalling = true
         installingName = pack.name
+        installingVersion = version
         lastError = null
         installedInstance = null
         progressFraction = 0f
         statusHeadline = "Starting…"
         try {
-            val archive = download(context, pack)
-            installArchive(context, pack, archive)
+            val archive = download(context, pack, version)
+            installArchive(context, pack, version, archive)
         } catch (throwable: Throwable) {
             lastError = throwable.message ?: "The modpack could not be installed."
         } finally {
             isInstalling = false
             installingName = null
+            installingVersion = null
             statusHeadline = ""
         }
     }
 
-    private suspend fun download(context: android.content.Context, pack: AerixModpack): File =
+    private suspend fun download(
+        context: android.content.Context,
+        pack: AerixModpack,
+        version: AerixModpackVersion
+    ): File =
         withContext(Dispatchers.IO) {
-            val target = downloadTarget(context, pack)
+            val target = downloadTarget(context, pack, version)
             var lastFailure: String? = null
             // The pack is mirrored (release asset, then the repository copy), so a missing asset
             // falls through to the next source instead of failing the press outright.
-            for (url in pack.downloadUrls) {
+            for (url in version.downloadUrls) {
                 target.delete()
                 statusHeadline = "Downloading ${pack.name}…"
                 val attempt = runCatching {
@@ -134,10 +155,15 @@ object AerixModpackInstaller {
             )
         }
 
-    private suspend fun installArchive(context: android.content.Context, pack: AerixModpack, archive: File) {
+    private suspend fun installArchive(
+        context: android.content.Context,
+        pack: AerixModpack,
+        version: AerixModpackVersion,
+        archive: File
+    ) {
         val kind = withContext(Dispatchers.IO) { detectLayout(archive) }
         when (kind) {
-            Layout.MOJO_INSTANCE -> installMojoInstance(context, pack, archive)
+            Layout.MOJO_INSTANCE -> installMojoInstance(context, pack, version, archive)
             Layout.MODRINTH, Layout.CURSEFORGE -> installModpackArchive(context, pack, archive)
             Layout.UNKNOWN -> {
                 archive.delete()
@@ -176,12 +202,25 @@ object AerixModpackInstaller {
      * [mojo_instance.json] at the top level, and leaving it there would make the copy look like a
      * nested export if the folder is ever exported again.
      */
-    private suspend fun installMojoInstance(context: android.content.Context, pack: AerixModpack, archive: File) =
+    private suspend fun installMojoInstance(
+        context: android.content.Context,
+        pack: AerixModpack,
+        version: AerixModpackVersion,
+        archive: File
+    ) =
         withContext(Dispatchers.IO) {
             val manifest = readManifest(archive)
                 ?: throw IOException("This pack is missing its instance metadata.")
             if (manifest.mcVersion.isBlank()) {
                 throw IOException("This pack does not name its Minecraft version.")
+            }
+            // The export is authoritative, but a pack page offering 1.20.1 while its archive
+            // says something else is exactly the mistake worth reporting rather than installing.
+            if (version.mcVersion.isNotBlank() && version.mcVersion != manifest.mcVersion) {
+                throw IOException(
+                    "This archive is for Minecraft ${manifest.mcVersion}, but the version you " +
+                        "picked is ${version.mcVersion}. Try the other version."
+                )
             }
 
             statusHeadline = "Preparing Fabric ${manifest.loaderVersion}…"

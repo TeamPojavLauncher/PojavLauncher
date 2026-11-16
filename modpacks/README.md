@@ -14,8 +14,9 @@ so **a modpack never increases the APK size**.
 2. `https://raw.githubusercontent.com/.../v3_openjdk/modpacks/modpacks.json` — the copy committed in
    this folder.
 
-Pack files resolve against the same two roots, in the same order, so `"file": "packs/x.zip"` means
-"the release asset `x.zip` in the `packs/` folder, else the committed one". The mirrors exist because
+Pack files *and pack artwork* resolve against the same two roots, in the same order, so
+`"file": "packs/x.zip"` means "the release asset `x.zip` in the `packs/` folder, else the committed
+one", and `"icon": "icons/x.png"` means the same for the logo. The mirrors exist because
 release assets can only be uploaded by a token with the upload permission, while a committed file
 needs nothing but a push — the tab works either way.
 
@@ -44,21 +45,56 @@ Create the release once, if it does not exist yet (it does, as of the first pack
 gh release create modpacks --title "Modpacks" --notes "The Team Aerix modpack catalogue."
 ```
 
+## How the tab is laid out
+
+The tab is a **grid of folders**, one per pack, plus a reserved tile for the packs that are still
+coming. Tapping a folder opens that pack's page, which is where the decision to install happens:
+
+1. the pack's artwork, name and summary;
+2. **every Minecraft version the pack offers**, as a list you pick one from;
+3. one "Download & play" button that installs the build you picked.
+
+A pack with a single build shows that build as the only row rather than pretending there is a
+choice - the page still names it, so the button is never a guess.
+
 ## Entry fields
 
 | Field | Required | Notes |
 |---|---|---|
 | `id` | | Stable identity; defaults to `file`. Used for the download cache name. |
-| `name` | | Card title, also the instance name. Defaults to the file name. |
-| `summary` | | One or two lines shown on the card. |
-| `file` | **yes** | Archive name, relative to the catalogue (`packs/x.zip`). Entries without it are skipped. |
-| `mcVersion` | | Shown on the card. The installer reads the real version from the archive. |
-| `loader` | | Shown on the card, e.g. `fabric`. |
-| `icon` | | Optional image URL. |
-| `size` | | Optional byte count; shown on the card as "12.3 MB". |
+| `name` | | Folder title, also the instance name. Defaults to the file name. |
+| `summary` | | One or two lines shown on the pack page. |
+| `file` | **yes** | Archive name, relative to the catalogue (`packs/x.zip`). Entries without it are skipped. Also the default build. |
+| `mcVersion` | | Shown on the folder. The installer reads the real version from the archive. |
+| `loader` | | Shown beside the version, e.g. `fabric`. |
+| `icon` | | Optional artwork. A full URL, or a path relative to this folder (`icons/x.png`), which is served by the same two mirrors as the archives. |
+| `size` | | Optional byte count; shown as "12.3 MB". |
+| `versions` | | Optional list of builds. Each entry takes `file` (required), `mcVersion`, `loader`, `size` and `note`. |
+
+A pack with no `versions` array offers exactly one build, described by its top-level `file`,
+`mcVersion` and `size` - so a one-build pack stays a one-line entry. A pack with `versions` offers
+one row per entry, in the order they are written, and the archive name keeps each build's download
+cache separate.
 
 A bare JSON array is also accepted, so the file can lose the `packs` wrapper without breaking older
 launchers. Unknown fields are ignored.
+
+### Shipping a second Minecraft version of a pack
+
+```json
+"versions": [
+  { "mcVersion": "1.20.1", "file": "packs/aetherium-optimized.zip", "size": 4078430,
+    "note": "The build the team plays on. Recommended." },
+  { "mcVersion": "1.21.1", "file": "packs/aetherium-optimized-1.21.1.zip", "size": 4210000 }
+]
+```
+
+Build the archive for the new version, commit it under `packs/`, add the entry, push. The folder
+starts reading "2 versions" and the pack page offers both - **no app release, no CI rebuild.**
+
+The installer refuses a mismatch: if the chosen row says 1.20.1 and the archive's own
+`mojo_instance.json` says otherwise, it stops with a readable message instead of installing the
+wrong game version.
 
 ## Archive format
 
