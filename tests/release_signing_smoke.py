@@ -158,6 +158,34 @@ check("signingConfig signingConfigs.aerixRelease" in release_block,
 check("customDebug" not in release_block,
       "a release signed with the AOSP debug key is unsigned with extra steps")
 
+# ---- 5b. The signing key step must not die on an undeclared variable ----
+# AERIX_KEYSTORE_ALIAS used to be echoed straight into $GITHUB_ENV without ever being declared into
+# the step, so `set -eu` aborted the build on any runner that did not define it. That is a release
+# that fails after the key was fine, with an error that names nothing.
+key_env = wf[wf.index("AERIX_KEYSTORE_P12_B64: ${{ secrets.AERIX_KEYSTORE_P12 }}"):]
+key_env = key_env[:key_env.index("run: |")]
+check("AERIX_KEYSTORE_ALIAS_IN: ${{ secrets.AERIX_KEYSTORE_ALIAS }}" in key_env,
+      "the alias secret must be declared into the step that reads it, or `set -u` kills the build")
+check('echo "AERIX_KEYSTORE_ALIAS=${AERIX_KEYSTORE_ALIAS_IN:-aerix}" >> "$GITHUB_ENV"' in wf,
+      "the alias must default rather than expand an undeclared variable")
+
+# ---- 6. A release can be cut without an Actions-write token ----
+# The dispatch API needs Actions:write, which this project's tooling does not have (403). A push that
+# touches this workflow still starts it, so the marker lives in the file and must match what the
+# condition tests for - a bumped version with a stale marker would build nothing and say nothing.
+wf_text = wf
+marker_lines = [line for line in wf_text.splitlines() if line.startswith("# RELEASE_MARK=")]
+check(len(marker_lines) == 1, "the workflow needs exactly one RELEASE_MARK line to confirm a cut")
+if marker_lines:
+    marker = marker_lines[0].split("=", 1)[1].strip()
+    version_file = (ROOT / "version.properties").read_text()
+    version = [l.split("=", 1)[1].strip() for l in version_file.splitlines()
+               if l.startswith("versionName=")][0]
+    check(marker == version,
+          f"RELEASE_MARK ({marker}) must equal version.properties ({version}), or the cut ships nothing")
+    check(f"contains(github.event.head_commit.message, 'RELEASE_MARK={marker}')" in wf_text,
+          "the build condition must test for the marker the file actually carries")
+
 if failures:
     for f in failures:
         print(f"  FAIL {f}")
