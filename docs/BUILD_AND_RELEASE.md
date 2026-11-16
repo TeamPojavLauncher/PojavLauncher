@@ -107,6 +107,18 @@ gh secret set AERIX_KEYSTORE_PASSWORD      # paste the password, it is not recov
 Then `gh secret delete AERIX_LEGACY_P12` and `AERIX_LEGACY_PASSWORD` once no install is left on the
 old signature, and delete the "Unpack the retired signing key" step in `release.yml`.
 
+`AERIX_KEYSTORE_ALIAS` is optional and defaults to `aerix`; it is read through
+`AERIX_KEYSTORE_ALIAS_IN` so the step still starts on a runner where it is unset.
+
+**A missing `AERIX_KEYSTORE_P12` stops the release instead of producing something.**
+`Unpack the release signing key` fails with *"AERIX_KEYSTORE_P12 is not set"* and every later step is
+skipped, so no APK, no release and no website change happens. That is the intended behaviour - the
+alternative is publishing a build signed by a key that lives in this repository, which is how the
+public key ended up in a release in the first place. The two secrets are the only things a release
+needs that a clone cannot supply, so a run that stops there means the repository secrets are missing
+or were never created, not that the code is broken. Nothing about a missing secret can be fixed from
+inside the workflow: add it with the two `gh secret set` lines above and re-run the marked push.
+
 **A local `assembleRelease` without the secrets produces an unsigned APK on purpose.** Gradle warns
 and moves on rather than falling back to something convenient, because a fallback that quietly
 signs a release with a public key is exactly how this happened. `tests/release_signing_smoke.py`
