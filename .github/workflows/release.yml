@@ -7,12 +7,20 @@ name: Release CI
 # A marked push has to touch this file to be seen at all, so each release cuts a
 # one line note here recording what it shipped.
 #
+# RELEASE_MARK=2.4.0
+#
 # Last cut: v2.4.0 on 16 Nov 2026 - the first clean-signed release, and the one that stops the
 # FPS counter printing garbage: its "no frame source" message was a whole sentence inside a
 # pill sized to its own text. Messages are short again, the pill caps what it draws, and the
 # A menu finally has an FPS Counter tile that turns the readout on and off mid-game.
 #
 # The publish job uploads the build artifacts after the build job succeeds.
+#
+# CUTTING A RELEASE: the dispatch path needs an Actions-write token, and the tooling that cuts
+# releases here only has contents write (a dispatch returns HTTP 403 "Resource not accessible by
+# integration"). A workflow file cannot raise a commit message, so the marker is carried by the
+# RELEASE_MARK line below instead: bump it. Touching this file starts the job, the bumped value is
+# the confirmation, and the version.properties read below is still the final word on what ships.
 # Each edition goes up three times, named after version.properties:
 #   Aerix-Launcher-<version>-arm64-v8a.apk       64-bit phones
 #   Aerix-Launcher-<version>-armeabi-v7a.apk     32-bit phones
@@ -46,7 +54,8 @@ jobs:
   build:
     if: >-
       github.event.inputs.confirm == 'RELEASE' ||
-      (github.event_name == 'push' && contains(github.event.head_commit.message, '[build-release]'))
+      (github.event_name == 'push' && contains(github.event.head_commit.message, '[build-release]')) ||
+      (github.event_name == 'push' && contains(github.event.head_commit.message, 'RELEASE_MARK=2.4.0'))
     runs-on: ubuntu-22.04
     env:
       POJAV_KEYSTORE_PASSWORD: ${{ secrets.POJAV_KEYSTORE_PASSWORD }}
