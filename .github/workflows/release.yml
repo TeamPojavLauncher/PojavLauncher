@@ -227,12 +227,13 @@ jobs:
               # Double-sign with both keys so Android updates in place:
               # --v2-signer configuration via apksigner --next-signer
               "$APKSIGNER" sign \
+                --v1-signing-enabled false --v2-signing-enabled true --v3-signing-enabled false \
+                --min-sdk-version 24 \
                 --ks "$AERIX_KEYSTORE_FILE" --ks-key-alias "$AERIX_KEYSTORE_ALIAS" \
                 --ks-pass "env:AERIX_KEYSTORE_PASSWORD" --key-pass "env:AERIX_KEYSTORE_PASSWORD" \
                 --next-signer \
                 --ks "$RUNNER_TEMP/aerix_legacy.p12" --ks-key-alias "$ALIAS" \
                 --ks-pass "env:AERIX_LEGACY_KEYSTORE_PASSWORD" --key-pass "env:AERIX_LEGACY_KEYSTORE_PASSWORD" \
-                --v1-signing-enabled false --v2-signing-enabled true --v3-signing-enabled false \
                 --out "$apk" "$RUNNER_TEMP/to-sign-aligned.apk"
             else
               "$APKSIGNER" sign \
@@ -304,7 +305,7 @@ jobs:
           LEGACY=true
           for apk in out/Aerix-Launcher-*.apk; do
             echo "== $apk"
-            info=$("$APKSIGNER" verify --print-certs "$apk" | tr 'A-F' 'a-f')
+            info=$("$APKSIGNER" verify --print-certs --min-sdk-version 24 "$apk" 2>&1 | tr 'A-F' 'a-f')
             printf '%s\n' "$info" | grep -E "signer|sha-256" || true
             n=$(printf '%s\n' "$info" | grep -c "certificate sha-256 digest" || true)
             if [ "$n" -eq 0 ]; then
