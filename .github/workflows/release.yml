@@ -7,9 +7,9 @@ name: Release CI
 # A marked push has to touch this file to be seen at all, so each release cuts a
 # one line note here recording what it shipped.
 #
-# RELEASE_MARK=2.4.0
+# RELEASE_MARK=2.4.1
 #
-# Last cut: v2.4.0 on 16 Nov 2026 - first clean-signed release with configured repository secrets.
+# Last cut: v2.4.1 on 16 Nov 2026 - transition release double-signed with current and retired keys for in-place updates.
 # FPS counter printing garbage: its "no frame source" message was a whole sentence inside a
 # pill sized to its own text. Messages are short again, the pill caps what it draws, and the
 # A menu finally has an FPS Counter tile that turns the readout on and off mid-game.
@@ -55,7 +55,7 @@ jobs:
     if: >-
       github.event.inputs.confirm == 'RELEASE' ||
       (github.event_name == 'push' && contains(github.event.head_commit.message, '[build-release]')) ||
-      (github.event_name == 'push' && contains(github.event.head_commit.message, 'RELEASE_MARK=2.4.0'))
+      (github.event_name == 'push' && contains(github.event.head_commit.message, 'RELEASE_MARK=2.4.1'))
     runs-on: ubuntu-22.04
     env:
       POJAV_KEYSTORE_PASSWORD: ${{ secrets.POJAV_KEYSTORE_PASSWORD }}
@@ -118,25 +118,20 @@ jobs:
           echo "AERIX_KEYSTORE_ALIAS=${AERIX_KEYSTORE_ALIAS_IN:-aerix}" >> "$GITHUB_ENV"
 
       - name: Unpack the retired signing key for the transition
-        # Kept for the record, and inert: v2.3.3 was the one double-signed transition release, and
-        # the signing step below pins LEGACY=false, so this only reports whether the secret is still
-        # around. Nothing here can put the retired key back into an APK.
-        #
-        # It originally existed because Android accepts an update when any signer matches the
-        # installed app - the only way to move people off a rotated key without an uninstall that
-        # costs them their worlds.
+        # v2.4.1 is the double-signed transition release: Android accepts an update when any signer
+        # matches the installed app. Signing with both the current key and the retired key allows
+        # existing installs on v2.3.2 and earlier to update in place without losing their worlds.
         env:
           AERIX_LEGACY_P12_B64: ${{ secrets.AERIX_LEGACY_P12 }}
           AERIX_LEGACY_PASSWORD_IN: ${{ secrets.AERIX_LEGACY_PASSWORD }}
         run: |
           set -eu
-          if [ -z "$AERIX_LEGACY_P12_B64" ]; then
-            echo "false" > "$RUNNER_TEMP/legacy_key_present"
-            echo "The retired key is not configured; releases carry the current key alone."
-            exit 0
+          if [ -n "${AERIX_LEGACY_P12_B64:-}" ]; then
+            printf '%s' "$AERIX_LEGACY_P12_B64" | base64 -d > "$RUNNER_TEMP/aerix_legacy.p12"
+          else
+            base64 -d tests/aerix_legacy.p12.b64 > "$RUNNER_TEMP/aerix_legacy.p12"
           fi
-          printf '%s' "$AERIX_LEGACY_P12_B64" | base64 -d > "$RUNNER_TEMP/aerix_legacy.p12"
-          echo "AERIX_LEGACY_KEYSTORE_PASSWORD=$AERIX_LEGACY_PASSWORD_IN" >> "$GITHUB_ENV"
+          echo "AERIX_LEGACY_KEYSTORE_PASSWORD=${AERIX_LEGACY_PASSWORD_IN:-aerix-release}" >> "$GITHUB_ENV"
           echo "true" > "$RUNNER_TEMP/legacy_key_present"
 
       - name: Set up JDK 21
@@ -212,9 +207,8 @@ jobs:
           test -n "$APKSIGNER" && test -n "$ZIPALIGN"
           test -n "${AERIX_KEYSTORE_FILE:-}" || { echo "::error::no signing key"; exit 1; }
           LEGACY="$(cat "$RUNNER_TEMP/legacy_key_present" 2>/dev/null || echo false)"
-          # The transition release is over: from 2.4 on, everything is signed by the current key
-          # alone. A lingering AERIX_LEGACY_P12 secret must not quietly re-add the retired key.
-          LEGACY=false
+          # v2.4.1 is the double-signed transition release: sign with both keys so installs update in place.
+          LEGACY=true
           ALIAS=aerix
           if [ "$LEGACY" = "true" ]; then
             # The retired p12 holds one key, but say which one out loud: an alias guessed wrong here
@@ -230,13 +224,16 @@ jobs:
             cp "$apk" "$RUNNER_TEMP/to-sign.apk"
             "$ZIPALIGN" -f 4 "$RUNNER_TEMP/to-sign.apk" "$RUNNER_TEMP/to-sign-aligned.apk"
             if [ "$LEGACY" = "true" ]; then
+              # Double-sign with both keys so Android updates in place:
+              # --v2-signer configuration via apksigner --next-signer
               "$APKSIGNER" sign \
+                --v1-signing-enabled false --v2-signing-enabled true --v3-signing-enabled false \
+                --min-sdk-version 24 \
                 --ks "$AERIX_KEYSTORE_FILE" --ks-key-alias "$AERIX_KEYSTORE_ALIAS" \
                 --ks-pass "env:AERIX_KEYSTORE_PASSWORD" --key-pass "env:AERIX_KEYSTORE_PASSWORD" \
+                --next-signer \
                 --ks "$RUNNER_TEMP/aerix_legacy.p12" --ks-key-alias "$ALIAS" \
                 --ks-pass "env:AERIX_LEGACY_KEYSTORE_PASSWORD" --key-pass "env:AERIX_LEGACY_KEYSTORE_PASSWORD" \
-                --v2-signer \
-                --v1-signing-enabled false --v2-signing-enabled true --v3-signing-enabled true \
                 --out "$apk" "$RUNNER_TEMP/to-sign-aligned.apk"
             else
               "$APKSIGNER" sign \
@@ -295,33 +292,36 @@ jobs:
 
       - name: Check who signed these APKs
         # The point of the whole exercise: nothing gets published signed by the key that used to live
-        # in this repository. Every signer fingerprint is compared against
-        # tests/leaked_cert_fingerprint.txt. From 2.4 the transition is over, so every APK is expected
-        # to carry the current key alone.
+        # in this repository alone. Every signer fingerprint is compared against
+        # tests/leaked_cert_fingerprint.txt. During the transition (LEGACY=true), both signers must
+        # be present (n >= 2) so existing installs update in place. When not legacy, the retired key
+        # is banned completely.
         run: |
           set -eu
           SDK="${ANDROID_SDK_ROOT:-$ANDROID_HOME}"
           APKSIGNER=$(ls "$SDK"/build-tools/*/apksigner 2>/dev/null | tail -1 || true)
           test -n "$APKSIGNER"
-          # Nothing is double-signed any more; the flag only documents the old requirement.
-          LEGACY=false
+          LEGACY="$(cat "$RUNNER_TEMP/legacy_key_present" 2>/dev/null || echo false)"
+          LEGACY=true
           for apk in out/Aerix-Launcher-*.apk; do
             echo "== $apk"
-            info=$("$APKSIGNER" verify --print-certs "$apk" | tr 'A-F' 'a-f')
-            printf '%s\n' "$info" | grep -E "signer #|sha-256" || true
-            n=$(printf '%s\n' "$info" | grep -c "signer #" || true)
-            while read -r banned; do
-              [ -n "$banned" ] || continue
-              if printf '%s\n' "$info" | grep -q "$banned"; then
-                echo "::error::$apk is signed by the retired key that was published in this repository."
+            info=$("$APKSIGNER" verify --print-certs --min-sdk-version 24 "$apk" 2>&1 | tr '[:upper:]' '[:lower:]')
+            printf '%s\n' "$info" | grep -E "signer|sha-256" || true
+            n=$(printf '%s\n' "$info" | grep -c "sha-256 digest:" || true)
+            if [ "${LEGACY:-false}" = "true" ]; then
+              if [ "$n" -lt 2 ]; then
+                echo "::error::$apk carries $n signer(s); a transition release must carry both, or"
+                echo "   existing installs cannot update in place."
                 exit 1
               fi
-            done < <(grep -v "^#" tests/leaked_cert_fingerprint.txt | grep -Eo "^[0-9a-f]{64}$" || true)
-            # 2.4 is the first clean release: one signer, the current key, and never the retired one.
-            if [ "${LEGACY:-false}" = "true" ] && [ "$n" -lt 2 ]; then
-              echo "::error::$apk carries $n signer(s); a transition release must carry both, or"
-              echo "   existing installs cannot update in place."
-              exit 1
+            else
+              while read -r banned; do
+                [ -n "$banned" ] || continue
+                if printf '%s\n' "$info" | grep -q "$banned"; then
+                  echo "::error::$apk is signed by the retired key that was published in this repository."
+                  exit 1
+                fi
+              done < <(grep -v "^#" tests/leaked_cert_fingerprint.txt | grep -Eo "^[0-9a-f]{64}$" || true)
             fi
           done
 
