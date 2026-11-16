@@ -50,11 +50,18 @@ jobs:
           import re
           from pathlib import Path
 
+          # Modpack archives live on the dedicated `modpacks` release tag, never on the site and
+          # never in the APK. A link to that tag from a page would advertise a direct binary
+          # download the site has no way to vet, so it is rejected here like a debug build.
+          MODPACK_RELEASE = "/releases/download/modpacks/"
           for page_path in sorted(Path("docs").glob("*.html")):
               html = page_path.read_text(encoding="utf-8")
               assert ("debug-latest" not in html and "Aerix-Launcher-debug" not in html
                       and "Aerix-Nightly.apk" not in html), (
                   f"{page_path}: public website must never link to a testing build"
+              )
+              assert MODPACK_RELEASE not in html, (
+                  f"{page_path}: the website must not link straight at modpack archives"
               )
           for page in ("docs/index.html", "docs/install.html"):
               html = Path(page).read_text(encoding="utf-8")

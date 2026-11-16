@@ -39,6 +39,13 @@ public class Instance extends DisplayInstance {
     public String modpackProjectId;
     /** "modrinth" or "curseforge" for an instance built from a modpack, null otherwise. */
     public String modpackSource;
+    /**
+     * The Team Aerix catalogue pack this instance was installed from, if any.
+     *
+     * Kept so the mark bundled in res/ can be restored without a network round trip, and so the
+     * modpack artwork sweep knows this instance already wears the artwork it is meant to.
+     */
+    public String aerixPackId;
 
     protected Instance() {
     }

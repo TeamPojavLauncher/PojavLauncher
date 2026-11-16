@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Aetherium Optimized - the pack's own mark, drawn as vector art.
+
+  This is the icon the Team Aerix catalogue ships for "Aetherium Optimized": a purple diamond with a
+  pale diamond at its centre. It lives in res/ so it is available the instant the instance is
+  created - offline, and before any screen has had a chance to download anything.
+
+  The diamond is drawn as two flat tones rather than a gradient: gradient-filled vectors only render
+  from API 24, and this app supports API 23. Two tones read the same at icon size, where the diamond
+  is 40-90dp across.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Solid backing, so the diamond keeps its colour on a light or transparent tile. -->
+    <path
+        android:pathData="M0,0h108v108h-108z"
+        android:fillColor="#241E52" />
+
+    <!-- Upper half of the diamond: the lighter violet. -->
+    <path
+        android:pathData="M54,10L98,54L10,54Z"
+        android:fillColor="#8B5CF6" />
+
+    <!-- Lower half: the deeper purple. -->
+    <path
+        android:pathData="M10,54L98,54L54,98Z"
+        android:fillColor="#4C1D95" />
+
+    <!-- The pale diamond at the centre, the part that makes the mark readable at 40dp. -->
+    <path
+        android:pathData="M54,36L72,54L54,72L36,54Z"
+        android:fillColor="#F3F0FF" />
+</vector>

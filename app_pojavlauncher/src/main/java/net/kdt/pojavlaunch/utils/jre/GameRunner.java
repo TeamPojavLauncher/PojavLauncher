@@ -27,6 +27,7 @@ import net.kdt.pojavlaunch.prefs.LauncherPreferences;
 import net.kdt.pojavlaunch.plugins.LibraryPlugin;
 import net.kdt.pojavlaunch.game.renderer.GameRenderer;
 import net.kdt.pojavlaunch.game.renderer.RenderSpec;
+import net.kdt.pojavlaunch.game.renderer.RendererDefaults;
 import net.kdt.pojavlaunch.utils.DateUtils;
 import net.kdt.pojavlaunch.utils.FileUtils;
 import net.kdt.pojavlaunch.utils.GpuUtils;
@@ -290,6 +291,31 @@ public class GameRunner {
 
         RenderSpec renderer = gameRenderer.getCurrentRenderer();
 
+        // The version decides the renderer unless somebody already did. 1.17 and newer run on LTW,
+        // everything below runs on Emesis, and a pick the player made (per instance or globally)
+        // still wins - this replaces only the auto-selected default that a version mismatch makes
+        // wrong, which is exactly what the compatibility switches below used to band-aid one symptom
+        // at a time. Choosing from what is actually packaged means a stripped build is never told to
+        // start on a renderer whose libraries it does not carry.
+        if(!versionInfo.disableRendererChecks
+                && !Tools.isValidString(instance.renderer)
+                && RendererDefaults.appliesToAutoSelection(renderer)) {
+            String versionDefault = RendererDefaults.launchTagForVersion(versionInfo, versionId);
+            RenderSpec defaultSpec = GameRenderer.getKnownRenderer(versionDefault);
+            if(defaultSpec != null && renderer != null && !versionDefault.equals(renderer.tag())) {
+                Log.i("GameRunner", "Renderer for " + versionId + " is " + versionDefault
+                        + " (was " + renderer.tag() + ")");
+                Logger.appendToLog("Renderer: " + versionId + " starts on " + versionDefault
+                        + " instead of " + renderer.tag());
+                // A device that cannot run the version's renderer keeps what it has; the compatibility
+                // switches below are the last word on a renderer this device genuinely cannot start.
+                if(defaultSpec.compatibleDevice(activity)) {
+                    gameRenderer.setCurrentRenderer(defaultSpec);
+                    renderer = gameRenderer.getCurrentRenderer();
+                }
+            }
+        }
+
         // Never silently replace an explicit per-instance choice. Follow Global retains the
         // existing compatibility switches; unsupported explicit choices may fail at runtime.
         if(!versionInfo.disableRendererChecks && !Tools.isValidString(instance.renderer)) {
@@ -477,8 +503,13 @@ public class GameRunner {
             }
         }
 
-        Tools.restartLauncherActivity(activity);
-        Tools.fullyExit();
+        // The game runs in its own process (AndroidManifest: android:process=":game"), so this is
+        // where that process ends. The launcher has to be asked back *before* the kill, and with a
+        // gap, or Android drops the request and the launcher never returns - see
+        // Tools.RELAUNCH_GRACE_MS. Every other exit path out of this process already waited
+        // (PojavLaunchBridge, GameActivity.switchAccount); this one, which is the path every normal
+        // game exit takes, did not.
+        Tools.restartLauncherActivityThenExit(activity);
     }
 
     private static void disableSplash(File dir) {

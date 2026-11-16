@@ -80,6 +80,7 @@ jobs:
           python3 tests/skin_preview_camera_smoke.py
           python3 tests/client_background_smoke.py
           python3 tests/instance_renderer_smoke.py
+          python3 tests/renderer_defaults_smoke.py
           python3 tests/fastclient_assets_smoke.py
           python3 tests/fastclient_performance_download_test.py
           python3 tests/recorder_wiring_smoke.py
@@ -94,7 +95,8 @@ jobs:
           python3 tests/background_display_smoke.py
           python3 tests/error_dialog_smoke.py
           python3 tests/startup_runtime_smoke.py
-          python3 tests/release_signing_smoke.py
+          python3 tests/previous_launch_log_smoke.py
+          python3 tests/game_exit_relaunch_smoke.py
           python3 tests/rust_removed_smoke.py
           python3 tests/offline_username_smoke.py
           python3 tests/aerix_cloud_skin_smoke.py
@@ -104,6 +106,8 @@ jobs:
           python3 tests/aerix_account_setup_smoke.py
           python3 tests/world_invite_chat_smoke.py
           python3 tests/servers_ui_smoke.py
+          python3 tests/modpacks_smoke.py
+          python3 tests/modpack_archives_test.py
           mkdir -p "$RUNNER_TEMP/aerix-migration-test"
           javac -d "$RUNNER_TEMP/aerix-migration-test" \
             app_pojavlauncher/src/main/java/net/kdt/pojavlaunch/tasks/DataMigrationPolicy.java \

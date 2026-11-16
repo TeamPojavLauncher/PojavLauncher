@@ -931,8 +931,7 @@ public final class Tools {
                 .setNegativeButton(android.R.string.cancel, null)
                 .setPositiveButton(android.R.string.ok, (p1, p2) -> {
                     try {
-                        Tools.restartLauncherActivity(ctx);
-                        Tools.fullyExit();
+                        Tools.restartLauncherActivityThenExit(ctx);
                     } catch (Throwable th) {
                         Log.w(Tools.APP_NAME, "Could not enable System.exit() method!", th);
                     }
@@ -971,6 +970,33 @@ public final class Tools {
         Intent intent = new Intent(context, LauncherActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         context.getApplicationContext().startActivity(intent);
+    }
+
+    /**
+     * How long a relaunch request gets to leave this process before it is killed.
+     *
+     * <p>{@link #restartLauncherActivity} only asks Android to bring the launcher back - it does not
+     * wait, and {@link #fullyExit} is an immediate {@code Process.killProcess}. Run them back to back
+     * and the kill can win, Android drops the pending start, and the launcher never returns. From the
+     * player's side the whole app just vanished: no dialog, no exception, nothing in latestcrash.txt,
+     * because nothing threw. Reopening it repeats the cycle, which is what makes a dropped intent look
+     * like an unfixable crash.
+     *
+     * <p>Long enough that Android has the request, short enough that a dead game window does not
+     * linger. Every exit path out of the game process is expected to use this same value.
+     */
+    public static final long RELAUNCH_GRACE_MS = 700L;
+
+    /**
+     * Brings the launcher back and then ends this process, with {@link #RELAUNCH_GRACE_MS} between the
+     * two so the relaunch is not swallowed on the way out.
+     *
+     * <p>Use this instead of pairing the two calls by hand. The gap is invisible at the call site and
+     * easy to "simplify" away, and three separate paths got it wrong that way.
+     */
+    public static void restartLauncherActivityThenExit(Context context) {
+        restartLauncherActivity(context);
+        MAIN_HANDLER.postDelayed(Tools::fullyExit, RELAUNCH_GRACE_MS);
     }
 
     /** Extra asking the launcher to start the game again as soon as it is up. */

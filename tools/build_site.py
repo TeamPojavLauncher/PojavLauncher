@@ -362,11 +362,6 @@ def build_index():
             <span><b>2.3.2: sorry - the missing Java was ours, not your internet</b>
             That same crash skipped the two startup lines after it, which were the CPU read and the bundled runtime unpack, so the launcher went looking for a runtime named after no architecture at all and blamed the connection when it could not find one. Startup steps are independent now, the architecture is worked out on demand, an install failure carries the reason behind "Show more", and the crash screen keeps the trace without asking for a permission.</span>
           </li>
-          <li>
-            <span class="n">08</span>
-            <span><b>2.3.3: the signing key that should never have been public</b>
-            The warning some security apps raised on install had a real reason - releases were signed with a key committed to this repository, with its password in the file beside it. That key is retired and permanently banned in CI, releases now sign from a secret no clone can read, and 2.3.3 carries both signatures so you can update without uninstalling and losing your worlds.</span>
-          </li>
         </ol>
         <div class="log-foot">
           <span>Minor release · published {RELEASE_DATE} · Android 6.0+ · arm64-v8a, armeabi-v7a and universal</span>
@@ -805,13 +800,13 @@ def build_features():
 
 def build_renderers():
     rows = [
-        ("Emesis", "Bundled, default", "GL → GLES translation. The widest compatibility across Adreno and Mali, and needs no plugin APK.", "Start here"),
+        ("Emesis", "Bundled, default below 1.17", "GL → GLES translation. The widest compatibility across Adreno and Mali, and needs no plugin APK. Every instance under 1.17 starts on it.", "Start here"),
         ("Zink", "Mesa on Vulkan", "Desktop OpenGL implemented on top of Vulkan. Fast on phones with a good Vulkan driver; poor on bad ones.", "New phones"),
         ("Zink (Legacy)", "Mesa on Vulkan", "The older Zink build, aimed at 1.8 – 1.16 era games and mods.", "Old versions"),
-        ("OpenLTW", "LWJGL on TLW", "A modern translation path that suits current versions and modern mod loaders.", "Modern versions"),
+        ("OpenLTW", "Bundled, default at 1.17+", "A modern translation path that suits current versions and modern mod loaders. Every instance at 1.17 and newer starts on it.", "Modern versions"),
         ("GL4ES", "Classic GLES1/2 shim", "The long-standing fallback. Broadest device support, lowest feature level; used automatically if nothing else can load.", "Last resort"),
         ("NG-GL4ES", "Newer GL4ES", "A newer GL4ES build with fixes the original never got.", "GL4ES with fixes"),
-        ("MG-ES", "MobileGlues", "A GL 4.x translation layer for modern versions. Wants a capable GPU.", "Powerful GPU"),
+        ("MG-ES", "MobileGlues", "A GL 4.x translation layer for modern versions, 1.17+ only. Wants a capable GPU, and the launcher warns you before you pick it: it is experimental and we do not recommend it.", "Not recommended"),
         ("SFPEW", "Fixed-pipeline wrapper", "Simple FPE Wrapper: translates the fixed-function GL that old mods and Angelica-style mods rely on.", "Old mods"),
         ("Mesa", "Desktop GL via Mesa", "Mesa's software/hardware desktop GL path, for the cases that need real desktop GL semantics.", "Experimental"),
         ("Mesa (external)", "External Mesa build", "The same, using a Mesa build supplied outside the launcher.", "Experimental"),
@@ -839,9 +834,11 @@ def build_renderers():
     <div class="wrap">
       <div class="callout reveal">
         <span aria-hidden="true">◆</span>
-        <p><strong>Start with Emesis.</strong> It is bundled, needs no plugin APK, and works on the
-        widest range of devices. Change the renderer per instance, not globally, so a game that
-        needs Zink does not force everything else onto it.</p>
+        <p><strong>Nothing to choose.</strong> The automatic pick follows the game version: <strong>1.17
+        and newer run on OpenLTW</strong>, and <strong>anything below 1.17 runs on Emesis</strong>. Both are
+        bundled, need no plugin APK, and are set per instance. MobileGlues, Zink and the rest stay
+        available in the renderer list for the cases that need them - change the renderer per
+        instance, not globally, so a game that needs Zink does not force everything else onto it.</p>
       </div>
 
       <div class="table-wrap reveal mt-32">
@@ -890,7 +887,7 @@ def build_renderers():
         <h2>A short decision tree</h2>
       </div>
       <ol class="steps reveal">
-        <li><h3>Does it start on Emesis?</h3><p>Stop there. The default is the default because it works on the most hardware.</p></li>
+        <li><h3>Does it start on the renderer it picked?</h3><p>Stop there. A 1.17+ instance starts on OpenLTW and an older one starts on Emesis, and both are the default because they work on the most hardware.</p></li>
         <li><h3>Black screen, crash on launch, or unreadable graphics?</h3><p>Try <b>Zink</b> if your phone has a recent Vulkan driver, otherwise <b>OpenLTW</b> for modern versions.</p></li>
         <li><h3>Running something old — 1.8 to 1.16?</h3><p><b>Zink (Legacy)</b> or <b>GL4ES</b>, and expect to lower the resolution.</p></li>
         <li><h3>Modded, with graphics mods?</h3><p><b>MG-ES</b> or <b>Zink</b> if the GPU is capable; shaders and Sodium-style mods are where renderer choice matters most.</p></li>

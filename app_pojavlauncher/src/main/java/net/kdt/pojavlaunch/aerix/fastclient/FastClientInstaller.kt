@@ -9,7 +9,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import net.kdt.pojavlaunch.aerix.social.SocialRealtime
 import net.kdt.pojavlaunch.instances.Instance
+import net.kdt.pojavlaunch.instances.InstanceIconProvider
 import net.kdt.pojavlaunch.instances.Instances
+import net.kdt.pojavlaunch.modloaders.modpacks.imagecache.ModIconCache
 import net.kdt.pojavlaunch.modloaders.ComparableVersionString
 import net.kdt.pojavlaunch.modloaders.FabriclikeUtils
 import okhttp3.Request
@@ -23,16 +25,45 @@ import java.security.MessageDigest
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.zip.ZipFile
 
-/** FastClient jars were provided by its creator for distribution in Aerix. */
+/**
+ * One FastClient release, as its creator publishes it.
+ *
+ * [sha256] is checked before anything is unpacked, so a truncated download or a substituted file
+ * fails the install instead of landing in the player's mods folder.
+ */
 data class FastClientBuild(val minecraft: String, val minLoader: String, val java: Int, val sha256: String) {
-    val asset get() = "components/fastclient/fastclient-hud-$minecraft.jar"
+    /**
+     * Where the jar is fetched from: the catalogue release first, then the repository copy.
+     *
+     * The jars are ~4.6 MB each and there are six of them, so they are not in the APK: six builds
+     * would add 28 MB to every download of the launcher for a player who installs one of them, or
+     * none. FastClient is only ever installed from this screen, which is online by definition -
+     * the Fabric profile and Fabric API it needs come off the network in the same install.
+     */
+    val downloadUrls: List<String>
+        get() = FastClientInstaller.BASE_URLS.map { "$it$asset" }
+
+    val asset get() = "clients/fastclient-hud-$minecraft.jar"
 }
 
 object FastClientInstaller {
+    /**
+     * Mirrors of the `modpacks/` folder, mirroring [net.kdt.pojavlaunch.aerix.modpacks.AerixModpackCatalog]:
+     * the release holding the catalogue, then the repository copy.
+     */
+    internal val BASE_URLS = listOf(
+        "https://github.com/entitybrian69-bit/Aerix-launcher/releases/download/modpacks/",
+        "https://raw.githubusercontent.com/entitybrian69-bit/Aerix-launcher/v3_openjdk/modpacks/"
+    )
+
+    /** Every release the creator publishes, newest first. */
     val builds = listOf(
-        FastClientBuild("1.21.11", "0.18.4", 21, "4419bf1ca9dfdd8ed4f10c46a794bff3f72524b5d51a62a7223b12d03127f638"),
-        FastClientBuild("26.1.2", "0.18.5", 25, "128502036f844b10d8d7023d07ac5aef06b5eae445cfb3782c7cc4995830d835"),
-        FastClientBuild("26.2", "0.19.3", 25, "c8ab99cf7795c31f1bc010184783b73b3fac9defb1e95185108fe468ab8d647d")
+        FastClientBuild("26.3", "0.19.5", 25, "abbccbf0b51a03593cc902f51074001c00a33aca6b3c739ea16d89318df4b97b"),
+        FastClientBuild("26.2", "0.19.3", 25, "4dd9bf7655ac659f18372231d1b600a0bd5c47b361671d9bf64173441fe1e853"),
+        FastClientBuild("26.1.2", "0.18.5", 25, "3d6d7c4b0d4155fb566510e3079ff9440c59a01c89c85e107a56c749afe2d26c"),
+        FastClientBuild("1.21.11", "0.18.4", 21, "0606953355f851548fad0cd04adc06938ddf98ba7f435d96f5385a568d825420"),
+        FastClientBuild("1.21.4", "0.18.4", 21, "42b6b99f78f7ecabf4c7db722941d6d5a64ae5316e9994d1331bd91f4af374ca"),
+        FastClientBuild("1.21.1", "0.18.4", 21, "2c7620b0d1dc8e912119df40de8f3fa29a9f2034132e1a29a72920bc43106d1d")
     )
     private val installationLock = AtomicBoolean(false)
     var installingVersion by mutableStateOf<String?>(null)
@@ -71,6 +102,47 @@ object FastClientInstaller {
         if (!actual.equals(expected, ignoreCase = true)) throw IOException("Mod checksum mismatch")
     }
 
+    /**
+     * Fetches the build's jar from the first mirror that answers, and only keeps it if its hash
+     * matches the one this launcher was built against.
+     *
+     * The hash check is what makes an on-demand download as safe as shipping the file: the bytes
+     * are either exactly the creator's release or the install stops.
+     */
+    private fun downloadClient(build: FastClientBuild, output: File) {
+        var lastFailure: String? = null
+        for (url in build.downloadUrls) {
+            output.delete()
+            val attempt = runCatching {
+                SocialRealtime.restClient.newCall(
+                    Request.Builder().url(url).header("User-Agent", "AerixLauncher/FastClient").build()
+                ).execute().use { response ->
+                    if (!response.isSuccessful) throw IOException("HTTP ${response.code}")
+                    val body = response.body ?: throw IOException("the download was empty")
+                    if (body.contentLength() > 40_000_000) throw IOException("the file is too large")
+                    copyVerified(body.byteStream(), output, "SHA-256", build.sha256)
+                }
+            }
+            if (attempt.isSuccess) return
+            lastFailure = attempt.exceptionOrNull()?.message
+            output.delete()
+        }
+        throw IOException(
+            "Could not download FastClient ${build.minecraft}" +
+                (lastFailure?.let { " ($it)" } ?: "") + ". Check your connection and retry."
+        )
+    }
+
+    /** One entry of a downloaded jar, or null when the build does not ship it. */
+    private fun readEntry(jar: File, name: String): ByteArray? = runCatching {
+        ZipFile(jar).use { zip ->
+            val entry = zip.getEntry(name) ?: return null
+            // Artwork only: never let a malformed jar pull a large payload into memory here.
+            if (entry.size !in 1L..4_000_000L) return null
+            zip.getInputStream(entry).use { it.readBytes() }
+        }
+    }.getOrNull()
+
     private fun modId(file: File): String = ZipFile(file).use { zip ->
         val entry = zip.getEntry("fabric.mod.json") ?: throw IOException("Downloaded file is not a Fabric mod")
         if (entry.size !in 1L..262144L) throw IOException("Invalid Fabric mod metadata")
@@ -107,7 +179,14 @@ object FastClientInstaller {
         if (modId(output) != "fabric-api") throw IOException("Downloaded Fabric API has an unexpected mod ID")
     }
 
-    /** Pinned, version-specific upstream releases. Verify both hash and Fabric mod identity. */
+    /**
+     * Pinned, version-specific upstream releases. Verify both hash and Fabric mod identity.
+     *
+     * An entry is either a GitHub release asset pinned by sha256, or a Modrinth project resolved to
+     * the build's Minecraft version at install time. The second form exists because some upstream
+     * releases predate GitHub publishing asset digests: inventing a checksum for them would be worse
+     * than reading one from an API that does publish it, and that is also what Fabric API uses.
+     */
     private fun downloadPerformanceMods(context: Context, version: String, staging: File): List<File> {
         val manifest = context.assets.open("components/fastclient/performance-mods.json")
             .bufferedReader().use { JSONObject(it.readText()) }
@@ -118,24 +197,67 @@ object FastClientInstaller {
         for (index in 0 until entries.length()) {
             val entry = entries.getJSONObject(index)
             val id = entry.getString("id")
-            val url = entry.getString("url")
-            val hash = entry.getString("sha256")
-            if (id !in setOf("lithium", "entityculling") || !ids.add(id) ||
-                !url.startsWith("https://github.com/") || !hash.matches(Regex("[a-f0-9]{64}"))) {
+            if (id !in setOf("lithium", "entityculling") || !ids.add(id)) {
                 throw IOException("Invalid performance mod configuration")
             }
             status = "Downloading ${if (id == "lithium") "Lithium" else "Entity Culling"}…"
             val output = File(staging, "$id.jar")
-            SocialRealtime.restClient.newCall(Request.Builder().url(url).header("User-Agent", "AerixLauncher/FastClient").build()).execute().use { response ->
-                if (!response.isSuccessful) throw IOException("$id download failed (HTTP ${response.code})")
-                val body = response.body ?: throw IOException("$id download was empty")
-                if (body.contentLength() > 40_000_000) throw IOException("$id is too large")
-                copyVerified(body.byteStream(), output, "SHA-256", hash)
+            val project = entry.optString("project")
+            if (project.isNotEmpty()) {
+                downloadModrinthMod(project, entry.optString("mcVersion", version), id, output)
+            } else {
+                val url = entry.getString("url")
+                val hash = entry.getString("sha256")
+                if (!url.startsWith("https://github.com/") || !hash.matches(Regex("[a-f0-9]{64}"))) {
+                    throw IOException("Invalid performance mod configuration")
+                }
+                SocialRealtime.restClient.newCall(Request.Builder().url(url).header("User-Agent", "AerixLauncher/FastClient").build()).execute().use { response ->
+                    if (!response.isSuccessful) throw IOException("$id download failed (HTTP ${response.code})")
+                    val body = response.body ?: throw IOException("$id download was empty")
+                    if (body.contentLength() > 40_000_000) throw IOException("$id is too large")
+                    copyVerified(body.byteStream(), output, "SHA-256", hash)
+                }
             }
             if (modId(output) != id) throw IOException("Unexpected mod ID in $id download")
             result.add(output)
         }
         return result
+    }
+
+    /**
+     * Resolves [project] to its newest Fabric build for [mcVersion] and downloads it, verified
+     * against the SHA-512 Modrinth publishes for the file.
+     */
+    private fun downloadModrinthMod(project: String, mcVersion: String, id: String, output: File) {
+        val loader = URLEncoder.encode("[\"fabric\"]", "UTF-8")
+        val game = URLEncoder.encode("[\"$mcVersion\"]", "UTF-8")
+        val metadataUrl = "https://api.modrinth.com/v2/project/$project/version?loaders=$loader&game_versions=$game"
+        val data = SocialRealtime.restClient.newCall(
+            Request.Builder().url(metadataUrl).header("User-Agent", "AerixLauncher/FastClient").build()
+        ).execute().use { response ->
+            if (!response.isSuccessful) throw IOException("$id lookup failed (HTTP ${response.code})")
+            val body = response.body ?: throw IOException("$id response was empty")
+            if (body.contentLength() > 2_000_000) throw IOException("$id response is too large")
+            body.string().also { if (it.length > 2_000_000) throw IOException("$id response is too large") }
+        }
+        val versions = JSONArray(data)
+        if (versions.length() == 0) throw IOException("$id is not available for Minecraft $mcVersion")
+        val files = versions.getJSONObject(0).getJSONArray("files")
+        val item = (0 until files.length()).map { files.getJSONObject(it) }.firstOrNull { it.optBoolean("primary") }
+            ?: throw IOException("$id download is missing")
+        val url = item.optString("url")
+        val hash = item.optJSONObject("hashes")?.optString("sha512").orEmpty()
+        if (!url.startsWith("https://cdn.modrinth.com/") || !hash.matches(Regex("[a-fA-F0-9]{128}"))) {
+            throw IOException("$id download metadata is invalid")
+        }
+        SocialRealtime.restClient.newCall(
+            Request.Builder().url(url).header("User-Agent", "AerixLauncher/FastClient").build()
+        ).execute().use { response ->
+            if (!response.isSuccessful) throw IOException("$id download failed (HTTP ${response.code})")
+            val body = response.body ?: throw IOException("$id download was empty")
+            if (body.contentLength() > 40_000_000) throw IOException("$id is too large")
+            copyVerified(body.byteStream(), output, "SHA-512", hash)
+        }
     }
 
     /** Creates a separate private instance. Never changes an existing instance or its mods. */
@@ -161,9 +283,9 @@ object FastClientInstaller {
             staging = File(context.cacheDir, "fastclient-" + java.util.UUID.randomUUID()).apply {
                 if (!mkdirs()) throw IOException("Could not create installation staging folder")
             }
-            status = "Checking FastClient files…"
+            status = "Downloading FastClient ${build.minecraft}…"
             val client = File(staging, "client.jar")
-            copyVerified(context.assets.open(build.asset), client, "SHA-256", build.sha256)
+            downloadClient(build, client)
             if (modId(client) != "fasteclient") throw IOException("FastClient mod metadata is invalid")
             progress = 0.48f
             status = "Downloading Fabric API…"
@@ -182,6 +304,12 @@ object FastClientInstaller {
                 instance.isAerixClient = false
             }, "fastclient_${build.minecraft.replace('.', '_')}")
             status = "Creating FastClient instance…"
+            // The build's own artwork is written here rather than left to the "fastclient" static
+            // icon: the static one is shared by every FastClient install, so it can only ever be a
+            // generic mark, while this jar ships the creator's current logo. The static icon is
+            // still the fallback for instances whose file cannot be read.
+            ModIconCache.writeInstanceIcon(created, readEntry(client, "assets/fastclient-hud/icon.png"))
+            InstanceIconProvider.dropIcon(created)
             val mods = File(created.gameDirectory, "mods")
             if (!mods.mkdirs() && !mods.isDirectory) throw IOException("Could not create mods folder")
             client.copyTo(File(mods, "fastclient-hud-${build.minecraft}.jar"), overwrite = false)
@@ -189,6 +317,11 @@ object FastClientInstaller {
             performanceMods.forEach { it.copyTo(File(mods, it.name), overwrite = false) }
             created.name = "FastClient ${build.minecraft}"
             created.fastClientVersion = build.minecraft
+            // A FastClient build is 1.21-era, so it starts on the renderer that era wants. The
+            // profile it writes is named after Fabric, not after the game, so the version name
+            // alone would not say which renderer this needs.
+            created.renderer = net.kdt.pojavlaunch.game.renderer.RendererDefaults
+                .launchTagForVersion(null, build.minecraft)
             created.write()
             Instances.setSelectedInstance(created)
             progress = 1f

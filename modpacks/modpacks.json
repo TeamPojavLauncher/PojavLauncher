@@ -1,0 +1,43 @@
+{
+  "version": 2,
+  "packs": [
+    {
+      "id": "aetherium-optimized",
+      "name": "Aetherium Optimized",
+      "summary": "Aetherium with a tuned Fabric stack: Lithium, FerriteCore, EntityCulling, FpsReducer and Clumps, with configs already set for mobile. Built for Minecraft 1.20.1.",
+      "file": "packs/aetherium-optimized.zip",
+      "mcVersion": "1.20.1",
+      "loader": "fabric",
+      "icon": "icons/aetherium-optimized.png",
+      "size": 4078430,
+      "versions": [
+        {
+          "mcVersion": "1.20.1",
+          "loader": "fabric",
+          "file": "packs/aetherium-optimized.zip",
+          "size": 4078430,
+          "note": "The build the team plays on. Recommended."
+        }
+      ]
+    },
+    {
+      "id": "mx-boost",
+      "name": "Mx Boost",
+      "summary": "The Mx Inspire performance and PvP stack: Sodium, Iris, Lithium, Krypton, Entity Culling and ReplayMod, plus Carpet PvP, Appleskin, Cloth Config and CreativeCore. Every config is already tuned for a phone. Built for Minecraft 1.21.1.",
+      "file": "packs/mx-boost.zip",
+      "mcVersion": "1.21.1",
+      "loader": "fabric",
+      "icon": "icons/mx-boost.png",
+      "size": 31152004,
+      "versions": [
+        {
+          "mcVersion": "1.21.1",
+          "loader": "fabric",
+          "file": "packs/mx-boost.zip",
+          "size": 31152004,
+          "note": "The build the team plays on. Recommended."
+        }
+      ]
+    }
+  ]
+}

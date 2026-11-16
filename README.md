@@ -105,7 +105,7 @@ This is **not** a generic, automated app template. This is **not** a bloated tea
 Aerix natively organizes launcher layouts, renderer stacks, and instance folders inside one clean workspace.
 
 *   **⚡ Quick Access:** Your most recently launched singleplayer worlds and instances stay right on the main dashboard.
-*   **🧩 Serious Render Stack:** Pick the exact engine that maps to your SoC. LTW and LTW Legacy are built completely from source in this repository (covering Minecraft 1.17+ and 1.8–1.16.5 respectively), alongside GL4ES, VirGL, Zink-class (Vulkan), and Mesa architectures. Aerix also bundles MobileGlues for 1.17+, dual VGPU parameters for 1.16.5 and older, and automatically configures the best default renderer on boot.
+*   **🧩 Serious Render Stack:** Pick the exact engine that maps to your SoC. LTW and LTW Legacy are built completely from source in this repository (covering Minecraft 1.17+ and 1.8–1.16.5 respectively), alongside GL4ES, VirGL, Zink-class (Vulkan), and Mesa architectures. Aerix also bundles MobileGlues for 1.17+, dual VGPU parameters for 1.16.5 and older, and picks the renderer from the game version: **1.17 and newer start on LTW, anything below 1.17 starts on Emesis**, with the choice written onto each instance and never taken from a manual pick.
 *   **🧮 Smart RAM Allocation:** A global memory allocation slider paired with per-instance overrides for running dense modpacks.
 *   **📱 Universal UI Pass:** Responsive UI scaling, menu layouts, skins, and launch hooks are verified across multiple device displays.
 *   **🛠️ Agile Deployment:** Polish passes and bug fixes land regularly, with an open automated check hook mapping straight to the GitHub Releases API.

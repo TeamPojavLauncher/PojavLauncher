@@ -105,7 +105,7 @@ import net.kdt.pojavlaunch.aerix.ui.screens.SettingsScreen
 import net.kdt.pojavlaunch.aerix.ui.screens.ServersScreen
 import net.kdt.pojavlaunch.aerix.ui.screens.SocialsScreen
 import net.kdt.pojavlaunch.aerix.ui.screens.SocialsNavigation
-import net.kdt.pojavlaunch.aerix.ui.screens.WallpapersScreen
+import net.kdt.pojavlaunch.aerix.ui.screens.ModpacksScreen
 
 @Composable
 fun AerixLauncherScreen(activity: FragmentActivity) {
@@ -116,15 +116,7 @@ fun AerixLauncherScreen(activity: FragmentActivity) {
     var clientOwnerPage by rememberSaveable { mutableStateOf(ClientOwnerPage.OWNERS) }
     val navigate: (LauncherSection) -> Unit = { target ->
         when (target) {
-            // The Wallpapers rail entry is the Wallpapers tab of the settings page, as in mirai's rail.
-            LauncherSection.WALLPAPERS -> {
-                AerixNav.settingsTab = AerixNav.TAB_WALLPAPERS
-                AerixNav.navigate(LauncherSection.SETTINGS)
-            }
-            LauncherSection.SETTINGS -> {
-                if (AerixNav.settingsTab == AerixNav.TAB_WALLPAPERS) AerixNav.settingsTab = AerixNav.TAB_RENDERER
-                AerixNav.navigate(LauncherSection.SETTINGS)
-            }
+            LauncherSection.SETTINGS -> AerixNav.navigate(LauncherSection.SETTINGS)
             LauncherSection.ABOUT -> {
                 AerixNav.settingsTab = AerixNav.TAB_ABOUT
                 AerixNav.navigate(LauncherSection.SETTINGS)
@@ -210,11 +202,11 @@ fun AerixLauncherScreen(activity: FragmentActivity) {
                             LauncherSection.AERIX_CLIENT -> ClientHubScreen(activity, clientOwnerPage) { clientOwnerPage = it }
                             LauncherSection.LIBRARY -> LibraryScreen(activity)
                             LauncherSection.SERVERS -> ServersScreen(activity)
+                            LauncherSection.MODPACKS -> ModpacksScreen(navigate)
                             LauncherSection.SOCIALS -> SocialsScreen(activity) { AerixNav.finishTo(LauncherSection.HOME) }
                             LauncherSection.DISCOVER, LauncherSection.DOWNLOADS -> DiscoverScreen(activity, navigate)
                             LauncherSection.FILES -> FileManagerScreen(activity)
                             LauncherSection.LOGS -> LogScreen(activity)
-                            LauncherSection.WALLPAPERS -> WallpapersScreen()
                             LauncherSection.SETTINGS -> SettingsScreen(
                                 activity = activity,
                                 tabKey = AerixNav.settingsTab,
