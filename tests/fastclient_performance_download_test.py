@@ -11,10 +11,20 @@ from zipfile import ZipFile
 
 root = Path(__file__).resolve().parents[1]
 manifest = json.loads((root / 'app_pojavlauncher/src/main/assets/components/fastclient/performance-mods.json').read_text())
-assert set(manifest) == {'1.21.11', '26.1.2', '26.2'}
+BUILDS = {'26.3', '26.2', '26.1.2', '1.21.11', '1.21.4', '1.21.1'}
+assert set(manifest) - {'_comment'} == BUILDS, set(manifest)
 for game, entries in manifest.items():
+    if game == '_comment':
+        continue
     assert {entry['id'] for entry in entries} == {'lithium', 'entityculling'}
     for entry in entries:
+        # Some upstream releases publish no asset digest, so the manifest may resolve them from
+        # Modrinth at install time instead. Those are checked for shape only; the pinned ones are
+        # downloaded and hashed here.
+        if 'project' in entry:
+            assert entry['project'] in {'lithium', 'entityculling'}, entry
+            assert entry['mcVersion'], entry
+            continue
         req = Request(entry['url'], headers={'User-Agent': 'AerixLauncher/CI'})
         data = None
         for attempt in range(3):

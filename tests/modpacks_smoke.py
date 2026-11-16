@@ -108,11 +108,26 @@ for pack in packs:
     key = re.sub(r"[^a-z0-9]", "", pack_id.lower())
     if not key:
         continue
-    drawable = ROOT / f"app_pojavlauncher/src/main/res/drawable/aerix_modpack_{pack_id.replace('-', '_')}.xml"
-    if key.startswith("aetherium"):
-        check(drawable.is_file(), f"pack {pack.get('name')!r} has no bundled mark at {drawable.name}")
-        check(f"aerix_modpack_{pack_id.replace('-', '_')}" in icons,
-              f"drawableFor does not map {pack_id!r} to its bundled mark")
+    res = ROOT / "app_pojavlauncher/src/main/res"
+    name = f"aerix_modpack_{pack_id.replace('-', '_')}"
+    # The mark may be a vector or a small bitmap; a logo that is lettering is not something to trace
+    # into paths, and a 384px WebP of it costs a few kilobytes.
+    marks = [res / "drawable" / f"{name}.xml", res / "drawable-nodpi" / f"{name}.webp",
+             res / "drawable-nodpi" / f"{name}.png"]
+    if key.startswith(("aetherium", "mxboost")):
+        check(any(mark.is_file() for mark in marks),
+              f"pack {pack.get('name')!r} has no bundled mark named {name} in drawable/ or drawable-nodpi/")
+        check(name in icons, f"drawableFor does not map {pack_id!r} to its bundled mark")
+        # A bitmap mark must stay small: the whole point is that packs cost the APK almost nothing.
+        for mark in marks[1:]:
+            if mark.is_file():
+                check(mark.stat().st_size < 40_000,
+                      f"{mark.name} is {mark.stat().st_size} B; keep the bundled mark under 40 kB")
+
+# A pack with a bundled mark must not then have the archive's own artwork written over it, which is
+# how the right logo got replaced by whatever the export happened to carry.
+check('AerixModpackIcons.drawableFor(pack.id) == 0' in installer,
+      "the archive's own icon must only be used when the app ships no mark for the pack")
 
 check("aerixPackId" in installer,
       "the instance must record which catalogue pack it came from, or its icon cannot be restored")

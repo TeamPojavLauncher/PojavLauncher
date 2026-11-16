@@ -12,6 +12,10 @@
  * modpacks/modpacks.json, and a drawable named `aerix_modpack_<id with dashes as underscores>`.
  * A pack without one still installs, and still falls back to the artwork the catalogue publishes.
  *
+ * The drawable may be a vector or a bitmap. A pack whose logo is lettering - not a shape that can
+ * be written as paths without shipping a traced copy - uses a WebP, resized to 384px and kept to a
+ * few kilobytes, which is a third of what the same mark costs as a PNG in modpacks/icons/.
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -86,6 +90,7 @@ object AerixModpackIcons {
         val key = packId.lowercase().filter { it.isLetterOrDigit() }
         return when {
             key.startsWith("aetherium") -> R.drawable.aerix_modpack_aetherium_optimized
+            key.startsWith("mxboost") -> R.drawable.aerix_modpack_mx_boost
             else -> 0
         }
     }

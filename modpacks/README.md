@@ -35,7 +35,7 @@ Every launcher picks the change up on the next visit to the tab. **No app releas
 Optionally also attach both to the release, which serves them from a CDN instead of the raw host:
 
 ```bash
-gh release upload modpacks modpacks/modpacks/packs/x.zip
+gh release upload modpacks modpacks/packs/x.zip
 gh release upload modpacks modpacks/modpacks.json --clobber
 ```
 
@@ -115,6 +115,19 @@ Adding a pack therefore means adding **two** things that share an id: its entry 
 and `res/drawable/aerix_modpack_<id>.xml`. `tests/modpacks_smoke.py` asserts the pairing, so a pack
 cannot ship without its mark.
 
+The mark may also be a small bitmap under `res/drawable-nodpi/` — `aerix_modpack_<id>.webp` — for a
+logo that is *lettering* rather than a shape; tracing text into vector paths produces a worse result
+than a 384px WebP, which costs about 4 kB. The smoke test caps a bitmap mark at 40 kB.
+
+## The client jars
+
+`modpacks/clients/` holds the FastClient builds the "Fast client" page installs, one per Minecraft
+version. They live here and **not** in `assets/`: six builds is 28 MB, and putting that in the APK
+would grow every download of the launcher for a player who installs one of them — or none.
+`FastClientInstaller` fetches the jar from the same two mirrors as the packs and checks it against
+the SHA-256 pinned in its own `builds` list, so a truncated or substituted file fails the install
+instead of reaching the mods folder.
+
 ## Archive format
 
 Two layouts install in one press:
@@ -123,7 +136,14 @@ Two layouts install in one press:
   `mojo_instance.json`, `mods/`, `config/`, `shaderpacks/` and `icon.webp`. The installer reads the
   game version and Fabric loader version out of `mojo_instance.json`
   (`"versionId": "fabric-loader-0.14.25-1.20.1"`), copies the whole folder into a new instance, and
-  re-encodes `icon.webp` to the PNG the launcher's instance icons actually read.
+  re-encodes `icon.webp` to the PNG the launcher's instance icons actually read. The `icon.webp`
+  name is historical: the bytes are a PNG, which the installer decodes as-is.
+
+A pack rebuilt from a plain MultiMC-style export (a folder of `mods/` and `config/` with no
+metadata) needs a `mojo_instance.json` written for it first — that file is what names the game and
+loader, and without it the archive is rejected. Two things are worth checking when repacking one:
+**no two jars in `mods/` may declare the same Fabric mod id** (the loader refuses to start), and a
+duplicated download usually arrives as `name.jar (2)`.
 * **`.mrpack` (Modrinth) or a CurseForge zip** — handed to the existing modpack installer, which
   already understood these.
 

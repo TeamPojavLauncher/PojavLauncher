@@ -19,6 +19,25 @@
           "note": "The build the team plays on. Recommended."
         }
       ]
+    },
+    {
+      "id": "mx-boost",
+      "name": "Mx Boost",
+      "summary": "The Mx Inspire performance and PvP stack: Sodium, Iris, Lithium, Krypton, Entity Culling and ReplayMod, plus Carpet PvP, Appleskin, Cloth Config and CreativeCore. Every config is already tuned for a phone. Built for Minecraft 1.21.1.",
+      "file": "packs/mx-boost.zip",
+      "mcVersion": "1.21.1",
+      "loader": "fabric",
+      "icon": "icons/mx-boost.png",
+      "size": 31152004,
+      "versions": [
+        {
+          "mcVersion": "1.21.1",
+          "loader": "fabric",
+          "file": "packs/mx-boost.zip",
+          "size": 31152004,
+          "note": "The build the team plays on. Recommended."
+        }
+      ]
     }
   ]
 }

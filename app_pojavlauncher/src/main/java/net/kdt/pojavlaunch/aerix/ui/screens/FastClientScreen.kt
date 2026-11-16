@@ -67,7 +67,7 @@ fun FastClientScreen(activity: FragmentActivity, onBack: () -> Unit) {
             }
         }
         Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(AerixSpacing.sm)) {
-            Text("Install a separate FastClient instance. Fabric Loader, Fabric API, Lithium and Entity Culling are downloaded during setup; Minecraft files download when you launch.", color = AerixSurface.textSecondary, fontSize = 12.sp)
+            Text("Install a separate FastClient instance. The client, Fabric Loader, Fabric API, Lithium and Entity Culling are downloaded during setup, so nothing is bundled in the app; Minecraft files download when you launch.", color = AerixSurface.textSecondary, fontSize = 12.sp)
             // The same pack search the Aerix Client page has, filtered by the versions FastClient is
             // actually built for. A pack keeps its own mods here: FastClient is an instance of its own,
             // not a mod that can be dropped into somebody else's.

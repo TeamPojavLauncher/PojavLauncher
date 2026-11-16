@@ -274,11 +274,18 @@ object AerixModpackInstaller {
                 writePackIcon(instance, pack.iconUrls)
             }
 
-            // The export carries its artwork as WebP, which the launcher's icon loader cannot read.
-            // It is re-encoded onto the icon file the instance expects, so the pack shows its own
-            // logo rather than a stock loader mark.
+            // The export's own artwork, when this build ships no bundled mark for the pack. It is
+            // re-encoded onto the icon file the instance expects, so the pack shows its own logo
+            // rather than a stock loader mark. The name says WebP but exporters have written PNG
+            // bytes under it for years, so it is decoded by content, not by extension.
+            //
+            // It runs only in that fallback case: this re-encode used to run unconditionally, after
+            // the bundled mark had been written, which replaced the right logo with whatever the
+            // archive happened to contain.
             val exportedIcon = File(instance.gameDirectory, "icon.webp")
-            if (exportedIcon.isFile) writePackIcon(instance, exportedIcon)
+            if (exportedIcon.isFile && AerixModpackIcons.drawableFor(pack.id) == 0) {
+                writePackIcon(instance, exportedIcon)
+            }
 
             progressFraction = 1f
             Instances.setSelectedInstance(instance)
