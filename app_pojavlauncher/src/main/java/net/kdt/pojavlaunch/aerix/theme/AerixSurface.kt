@@ -27,14 +27,35 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import net.kdt.pojavlaunch.aerix.bridge.AerixPreferences
 
 object AerixSurface {
     val canvas = Color(0xFF07131D)
+
+    /**
+     * Scales the alpha of a surface colour by the "Layout transparency" setting.
+     *
+     * The setting is a percentage of the card colour's own alpha, not of full opacity: at 100 the
+     * colours below are exactly as designed, and lowering it only ever makes a surface more
+     * see-through, so a card can never end up more solid than the theme intends.
+     *
+     * Reading the preference here - rather than at each call site - is what makes the slider apply
+     * to every card, pill and panel at once: they are all built from the colours below.
+     */
+    private fun glass(base: Color): Color {
+        val percent = AerixPreferences.layoutTransparency
+        if (percent >= 100) return base
+        return base.copy(alpha = (base.alpha * percent / 100f).coerceIn(0f, 1f))
+    }
+
     // Neutral smoky glass lets the chosen wallpaper show through, without a blue colour cast.
-    val panel = Color(0x66343839)
-    val panelRaised = Color(0x80515858)
-    val panelTrack = Color(0x604A5050)
-    val panelGlassTint = Color(0x3D596362)
+    // Plain getters, not @Composable ones, so they stay readable outside composition too. They still
+    // pick up the slider live: [glass] reads a snapshot-backed preference, and any read of that
+    // during composition subscribes the caller to its changes.
+    val panel: Color get() = glass(Color(0x66343839))
+    val panelRaised: Color get() = glass(Color(0x80515858))
+    val panelTrack: Color get() = glass(Color(0x604A5050))
+    val panelGlassTint: Color get() = glass(Color(0x3D596362))
     val border = Color(0x78F2F7F5)
     val borderSoft = Color(0x48F2F7F5)
     val borderHighlight = Color(0xDDF5FFFA)

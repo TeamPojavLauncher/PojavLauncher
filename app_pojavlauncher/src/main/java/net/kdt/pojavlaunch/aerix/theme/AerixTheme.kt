@@ -61,7 +61,12 @@ private fun aerixTypography(family: FontFamily) = Typography(
     labelSmall = defaults.labelSmall.aerixText(family, FontWeight.Medium),
 )
 
-private val aerixDark = darkColorScheme(
+/**
+ * Built as a function, not a val: its surface roles come from `AerixSurface.panel*`, which follow
+ * the "Layout transparency" setting, so the scheme has to be assembled on every pass rather than
+ * baked once into a top-level property.
+ */
+private fun aerixDark(): ColorScheme = darkColorScheme(
     primary = AerixSurface.accentDefault,
     onPrimary = AerixSurface.onAccentDefault,
     primaryContainer = AerixSurface.accentContainerDefault,
@@ -96,7 +101,7 @@ private val aerixDark = darkColorScheme(
     surfaceContainerLow = AerixSurface.panelTrack,
     surfaceContainer = AerixSurface.canvas,
     surfaceContainerHigh = AerixSurface.panel,
-    surfaceContainerHighest = AerixSurface.panelRaised,
+    surfaceContainerHighest = AerixSurface.panelRaised
 )
 
 /**
@@ -105,7 +110,7 @@ private val aerixDark = darkColorScheme(
  */
 private fun customAccentScheme(accent: Color): ColorScheme {
     val onAccent = if (accent.luminance() > 0.45f) AerixSurface.onAccentDefault else Color.White
-    return aerixDark.copy(
+    return aerixDark().copy(
         primary = accent,
         onPrimary = onAccent,
         primaryContainer = accent.copy(alpha = 0.33f),
@@ -118,11 +123,11 @@ private fun customAccentScheme(accent: Color): ColorScheme {
 fun AerixLauncherTheme(content: @Composable () -> Unit) {
     val theme = AerixPreferences.colorTheme
     val custom = AerixPreferences.customColor
-    val scheme = remember(theme, custom) {
-        when (theme) {
-            AerixColorTheme.AERIX -> aerixDark
-            AerixColorTheme.CUSTOM -> customAccentScheme(Color(custom))
-        }
+    // aerixDark() reads AerixPreferences.layoutTransparency, so Material's surface roles follow the
+    // "Layout transparency" slider the same way the Aerix cards do.
+    val scheme = when (theme) {
+        AerixColorTheme.AERIX -> aerixDark()
+        AerixColorTheme.CUSTOM -> customAccentScheme(Color(custom))
     }
     AerixFonts.initialize(LocalContext.current)
     val fontId = AerixFonts.selectedId

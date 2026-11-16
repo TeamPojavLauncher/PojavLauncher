@@ -93,6 +93,9 @@ object AerixClientStore {
     const val LOCKED_DARK_TILE_HEX = 0xFF252830L
 
     // Fresh v2 preferences namespace so ALL HUD items default to OFF and zero-overlap positions apply immediately
+    /** The cape the previous build equipped for everybody on first launch. */
+    private const val LEGACY_DEFAULT_CAPE = "crimson_sovereign"
+
     private const val PREFS_FILE = "aerix_client_v2_prefs"
 
     private var prefs: SharedPreferences? = null
@@ -136,6 +139,16 @@ object AerixClientStore {
      * own, it also replaced the cape someone had genuinely equipped.
      */
     const val CAPE_NONE = "none"
+
+    /**
+     * Marks that the new-builds-with-no-cape decision has been applied to this install.
+     *
+     * Changing a default is not enough on its own: the previous build *saved* its default cape to
+     * the preferences file, so a player who never opened the capes page still has
+     * `equippedCapeId = "crimson_sovereign"` stored. Without this migration the new default only
+     * ever applies to a fresh install - which is exactly how the cape kept coming back.
+     */
+    private const val MIGRATION_CAPE_DEFAULT = "migratedCapeDefaults"
 
     var equippedCapeId by mutableStateOf(CAPE_NONE)
     var wavingCapeEnabled by mutableStateOf(true)
@@ -252,7 +265,23 @@ object AerixClientStore {
         packNoPumpkinBlur = p.getBoolean("packNoPumpkinBlur", true)
         selectedClientVersion = p.getString("selectedClientVersion", "1.16.5") ?: "1.16.5"
 
-        equippedCapeId = p.getString("equippedCapeId", CAPE_NONE) ?: CAPE_NONE
+        val storedCape = p.getString("equippedCapeId", CAPE_NONE) ?: CAPE_NONE
+        equippedCapeId = if (p.getBoolean(MIGRATION_CAPE_DEFAULT, false)) {
+            storedCape
+        } else {
+            // One-time: a cape this build chose for the player was never a choice, so it is
+            // dropped. An imported cape ("custom") and a cape the player picked themselves are
+            // indistinguishable from the old default in here, so they are kept - only the exact
+            // value the old build wrote on first launch is treated as unchosen.
+            val migrated = if (storedCape == LEGACY_DEFAULT_CAPE) CAPE_NONE else storedCape
+            // Write the cleared value back as well as the flag, so the prefs file no longer holds a
+            // cape the player never chose even if the flag is ever reset.
+            p.edit()
+                .putBoolean(MIGRATION_CAPE_DEFAULT, true)
+                .putString("equippedCapeId", migrated)
+                .apply()
+            migrated
+        }
         wavingCapeEnabled = p.getBoolean("wavingCapeEnabled", true)
         animatedCapeShimmer = true
 

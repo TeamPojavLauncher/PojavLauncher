@@ -221,6 +221,8 @@
     <string name="aerix_settings_choose">Choose</string>
     <string name="aerix_settings_cancel">Cancel</string>
 
+    <string name="aerix_settings_layout_transparency">Layout transparency</string>
+    <string name="aerix_settings_layout_transparency_sub">Fade the cards and panels so the wallpaper shows through. 100% keeps the design as drawn.</string>
     <string name="aerix_settings_bg_blur">Wallpaper blur</string>
     <string name="aerix_settings_bg_blur_sub">Soften the wallpaper behind panels (Android 12 and newer)</string>
     <string name="aerix_settings_hue">Hue</string>

@@ -31,10 +31,14 @@ def check(condition, message):
 check('const val CAPE_NONE = "none"' in store, "AerixClientStore must name the unequipped state")
 check('var equippedCapeId by mutableStateOf(CAPE_NONE)' in store,
       "the default cape must be none, not a cape nobody chose")
-check('equippedCapeId = p.getString("equippedCapeId", CAPE_NONE) ?: CAPE_NONE' in store,
+check('p.getString("equippedCapeId", CAPE_NONE)' in store,
       "reading the preference must default to none as well")
-check('crimson_sovereign' not in store,
-      "no specific cape may be hardcoded as the starting choice")
+# The one tolerated mention of a named cape is the migration's record of what the old build wrote.
+for line in store.splitlines():
+    code = line.strip()
+    if "crimson_sovereign" in code and not code.startswith(("*", "//", "/*")):
+        check('LEGACY_DEFAULT_CAPE' in code,
+              "a named cape may only appear as the legacy default the migration clears")
 
 # 2. Resolving an unequipped cape yields null - never a substitute.
 check('fun effectiveCapeSpec(): ClientCapeSpec?' in cosmetics,
@@ -74,6 +78,45 @@ bridge = (ROOT / "aerix_client_mod/src/main/java/aerix/client/mod/ModernCapeBrid
 check('if (frameStamp != Long.MIN_VALUE) {' in bridge,
       "the bridge must drop the frames it holds in memory when the folder goes away")
 check('frameImages.clear()' in bridge, "the held frames must actually be released")
+
+# 7. An install that already saved the old default must have it cleared once. Changing the default
+#    is not enough: the old build wrote its choice into the prefs file, and that value wins.
+check('MIGRATION_CAPE_DEFAULT' in store,
+      "a one-time migration is needed for installs that already saved the old default")
+check('private const val LEGACY_DEFAULT_CAPE = "crimson_sovereign"' in store,
+      "the migration must name the exact value the old build wrote")
+check('if (p.getBoolean(MIGRATION_CAPE_DEFAULT, false))' in store,
+      "the migration must run only until its flag is set")
+check('if (storedCape == LEGACY_DEFAULT_CAPE) CAPE_NONE else storedCape' in store,
+      "the migration clears only the unchosen legacy default, keeping a cape the player picked")
+check('.putString("equippedCapeId", migrated)' in store,
+      "the cleared value must be written back, so the prefs file stops holding the old cape")
+check('p.edit()' in store and 'putBoolean(MIGRATION_CAPE_DEFAULT, true)' in store,
+      "the migration must record that it ran, or it would undo the player's next choice")
+
+# 8. The 3D preview must actually erase a cape it already drew. loadCape(null) used to return early,
+#    leaving the previous cape on the doll - so unequipping looked like it did nothing.
+viewer = (ROOT / "app_pojavlauncher/src/main/assets/skinview/skinview.js").read_text()
+
+
+def js_function(name):
+    start = viewer.index(f"function {name}(")
+    return viewer[start:viewer.index("\n}\n", start) + 3]
+
+
+cape_fn = js_function("loadCape")
+check('if (!capeUrl) {' in cape_fn, "loadCape must treat a null or empty URL as 'no cape'")
+check('skinViewer.cape.visible = false' in cape_fn,
+      "a null cape URL must hide the cape, not leave the old one drawn")
+check('skinViewer.cape.visible = true' in cape_fn,
+      "a successful load must re-show a cape that was hidden before")
+check(cape_fn.index('skinViewer.cape.visible = false') < cape_fn.index('skinViewer.loadCape(capeUrl)'),
+      "the clear must happen before the fetch, so a failed fetch cannot fall back to the old cape")
+
+# 9. Both fixes must stay wired into CI.
+for workflow in ("aerix-debug.yml", "release.yml"):
+    text = (ROOT / ".github/workflows" / workflow).read_text()
+    check("cape_default_smoke.py" in text, f"{workflow} must run the cape default check")
 
 if problems:
     print("cape default check: FAILED")

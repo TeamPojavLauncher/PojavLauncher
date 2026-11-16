@@ -97,6 +97,16 @@ object AerixPreferences {
 
     const val DEFAULT_CUSTOM_COLOR = 0xFF8DEFE0.toInt()
     const val DEFAULT_BACKGROUND_OPACITY = 60
+
+    /**
+     * How solid the cards, pills and panels on top of the wallpaper are, as a percentage.
+     *
+     * Separate from [backgroundOpacity], which washes even the wallpaper: this one leaves the
+     * wallpaper alone and only changes the surfaces drawn over it, so a player can keep the art
+     * bright and still have crisp cards - or see straight through them.
+     */
+    const val KEY_LAYOUT_TRANSPARENCY = "layoutTransparency"
+    const val DEFAULT_LAYOUT_TRANSPARENCY = 100
     const val DEFAULT_ANIMATE_SPEED = 3
     const val DEFAULT_WALLPAPER = "wp_01_lush_caves"
     /** Mirai AllSettings.logBufferFlushInterval default. */
@@ -109,6 +119,9 @@ object AerixPreferences {
     var customColor by mutableIntStateOf(DEFAULT_CUSTOM_COLOR)
         private set
     var backgroundOpacity by mutableIntStateOf(DEFAULT_BACKGROUND_OPACITY)
+        private set
+    /** 25 = barely there glass, 100 = the card colours exactly as designed. */
+    var layoutTransparency by mutableIntStateOf(DEFAULT_LAYOUT_TRANSPARENCY)
         private set
     /** The dashboard skin, as state so switching it recomposes the shell instead of restarting it. */
     var uiStyle by mutableStateOf(AerixLauncherUiStyle.CLEAN)
@@ -206,6 +219,7 @@ object AerixPreferences {
         }.getOrDefault(AerixColorTheme.AERIX)
         customColor = p.getInt(KEY_CUSTOM_COLOR, DEFAULT_CUSTOM_COLOR)
         backgroundOpacity = p.getInt(KEY_BACKGROUND_OPACITY, DEFAULT_BACKGROUND_OPACITY).coerceIn(20, 100)
+        layoutTransparency = p.getInt(KEY_LAYOUT_TRANSPARENCY, DEFAULT_LAYOUT_TRANSPARENCY).coerceIn(25, 100)
         fullScreen = p.getBoolean(KEY_FULL_SCREEN, true)
         uiStyle = runCatching {
             AerixLauncherUiStyle.valueOf(p.getString(KEY_UI_STYLE, AerixLauncherUiStyle.CLEAN.name)!!)
@@ -308,6 +322,11 @@ object AerixPreferences {
     fun saveBackgroundOpacity(value: Int) {
         backgroundOpacity = value.coerceIn(20, 100)
         edit { putInt(KEY_BACKGROUND_OPACITY, backgroundOpacity) }
+    }
+
+    fun saveLayoutTransparency(value: Int) {
+        layoutTransparency = value.coerceIn(25, 100)
+        edit { putInt(KEY_LAYOUT_TRANSPARENCY, layoutTransparency) }
     }
 
     /**
