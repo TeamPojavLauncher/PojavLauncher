@@ -154,15 +154,23 @@ public class RendererDefaultsSmoke {
                 "a null version id still has to answer");
 
         // Snapshots carry no readable number: their release date decides, which is the same
-        // boundary the core-context switch uses.
+        // boundary the core-context switch uses. DateUtils.dateBefore takes a ZERO-BASED month, so
+        // 2021, 3, 9 is 9 April 2021 - and the fixture has to sit on the correct side of it.
         JVersionList.Version snapshot = new JVersionList.Version();
         snapshot.id = "24w14a";
-        snapshot.releaseTime = "2021-04-01T00:00:00+00:00";
+        snapshot.releaseTime = "2021-06-08T00:00:00+00:00";
         check("opengles3_ltw".equals(RendererDefaults.tagForVersion(snapshot, "24w14a")),
                 "a 1.17-cycle snapshot should pick LTW");
         snapshot.releaseTime = "2020-01-01T00:00:00+00:00";
         check("emesis".equals(RendererDefaults.tagForVersion(snapshot, "24w14a")),
                 "a pre-1.17 snapshot should pick Emesis");
+        // The boundary itself: the day before is Emesis, the day of is LTW.
+        snapshot.releaseTime = "2021-04-08T00:00:00+00:00";
+        check("emesis".equals(RendererDefaults.tagForVersion(snapshot, "24w14a")),
+                "the day before the 1.17 boundary is still the Emesis era");
+        snapshot.releaseTime = "2021-04-09T00:00:00+00:00";
+        check("opengles3_ltw".equals(RendererDefaults.tagForVersion(snapshot, "24w14a")),
+                "the boundary day itself is the LTW era");
 
         // The warning itself.
         check(MobileGluesWarning.applies("opengles_mobileglues"), "the warning applies to MobileGlues");
