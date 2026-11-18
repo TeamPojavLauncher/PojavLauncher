@@ -22,11 +22,10 @@ import net.kdt.pojavlaunch.game.renderer.def.Renderers;
 import net.kdt.pojavlaunch.game.renderer.impl.GLESRenderSpec;
 import net.kdt.pojavlaunch.instances.Instance;
 import net.kdt.pojavlaunch.utils.DownloadUtils;
-import net.kdt.pojavlaunch.lifecycle.LifecycleAwareAlertDialog;
+import net.kdt.pojavlaunch.utils.lifecycle.LifecycleAwareAlertDialog;
 import net.kdt.pojavlaunch.multirt.MultiRTUtils;
 import net.kdt.pojavlaunch.multirt.Runtime;
 import net.kdt.pojavlaunch.prefs.LauncherPreferences;
-import net.kdt.pojavlaunch.plugins.LibraryPlugin;
 import net.kdt.pojavlaunch.game.renderer.GameRenderer;
 import net.kdt.pojavlaunch.game.renderer.RenderSpec;
 import net.kdt.pojavlaunch.utils.DateUtils;
@@ -37,6 +36,7 @@ import net.kdt.pojavlaunch.utils.JREUtils;
 import net.kdt.pojavlaunch.utils.JSONUtils;
 import net.kdt.pojavlaunch.utils.MCOptionUtils;
 import net.kdt.pojavlaunch.utils.OldVersionsUtils;
+import net.kdt.pojavlaunch.utils.plugins.LibraryPlugin;
 
 import java.io.File;
 import java.io.IOException;
@@ -304,15 +304,30 @@ public class GameRunner {
             javaArgList.add("-Dlog4j.configurationFile=" + configFile);
         }
 
+        // This allows some mods to use additional libs provided via plugin so we don't need to bloat our app with uncommon stuff
+        String additionalNativesDir;
+        LibraryPlugin natives;
+        if((natives = LibraryPlugin.discoverPlugin(activity, LibraryPlugin.ID_NATIVES_PLUGIN)) != null){
+            additionalNativesDir = natives.getLibraryPath();
+            File dir = new File(additionalNativesDir);
+            if(dir.isDirectory()){
+                String overrides = String.join(" ", dir.list((f, s) -> s.endsWith(".so")));
+                JREUtils.setLibraryOverrides(additionalNativesDir, overrides);
+            }
+            additionalNativesDir = ':' + additionalNativesDir;
+        } else additionalNativesDir = "";
+
         versionInfo.logging = null;
 
         File versionSpecificNativesDir = new File(Tools.DIR_CACHE, "natives/"+versionId);
         if(versionSpecificNativesDir.exists()) {
             String dirPath = versionSpecificNativesDir.getAbsolutePath();
-            javaArgList.add("-Djava.library.path="+dirPath+":"+Tools.NATIVE_LIB_DIR);
+            javaArgList.add("-Djava.library.path="+dirPath+":"+Tools.NATIVE_LIB_DIR+additionalNativesDir);
             javaArgList.add("-Djna.boot.library.path="+dirPath);
             // Sometimes, the game can extract natives itself onto this path
             javaArgList.add("-Dorg.lwjgl.librarypath="+dirPath);
+        } else {
+            javaArgList.add("-Djava.library.path="+Tools.NATIVE_LIB_DIR+additionalNativesDir);
         }
 
         File lwjglExtractDir = new File(Tools.DIR_CACHE, "lwjgl_native/"+versionId);
